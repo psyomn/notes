@@ -1,0 +1,86 @@
+\section{Analysis}
+
+We investigate possible approaches in order to bring up persistance of data for
+(possibly small) applications. Persistance in applications may be required to 
+be created once. On the other hand, if the application is to be updated over
+different time intervals, we wish to have some sort of mechanism to manage the
+versioning. So we identify two sorts of transactions: monolithic, and
+sequential transactions.
+
+\subsection{Monolithic Transaction Creation}
+
+By a monolithic transaction, we want to contrast between something that occurs
+once, and is responsible to bring up the whole database in one go, in contrast
+to a sequential upgrade, where small steps are performed to reach the desired
+outcome.
+
+A monolithic build would require all of the required schemas to be in one file
+(or at least something in standalone format).
+
+\subsubsection{Benefits}
+
+One noted benefit to this approach is that building the the database with only
+one final schema would be much quicker than to send the database small requests
+each time there needs to be an alteration.
+
+\subsubsection{Cons}
+
+Maintainable versioning can not be done this way. For instance, if we were to 
+change application from version 1.0, to version 2.0, and the database needed
+changing, this method would suggest that everything would be teared down, and
+put back up. If there is no data that we care about that is being persisted,
+then there is no harm done, and this is totally a feasable approach. If however
+the data currently needs to be persisted from one version to the other, or even
+altered for the next version, this approach would not be good.
+
+\subsection{Sequential Transaction Creation}
+
+By sequential transaction creation, we wish to contrast against the
+aforementioned method of schema creation on the database. That is, sequential
+transaction creation is the collection of small steps in order to bring up 
+the whole database.
+
+\subsubsection{Benefits}
+
+Versioning would be possible this way. Each revision to be executed in order to
+alter the database is able not only add and remove whole tables, but to drop,
+add columns, change their types, seed data to tables, and all sorts of other
+goodness.
+
+\subsubsection{Cons}
+
+As opposed in committing everything in one bang, applying alterations to the 
+database this way would be slower.
+
+\subsection{Best of two worlds}
+
+Sacrifice of performance can be minimized to an extent; however this would be
+to the mercy of the developers. Monolithic transactions in combination with
+sequential may be used in order to achieve a situation that is somewhat better
+performant than a pure sequential creation of the database. 
+
+We can create fixed points that bundles a collection of sequential
+transactions. This grouping would denote that version `A' would require
+sequences `1-4', and version `B' would require sequences `5-10'. 
+
+Therefore, instead of doing a sequential create, we can omitt everything
+previous to version `B' by having a fixed point that bundles all the
+transactions from version `A' in one, and then perform the last sequential
+operations that are required to upgrade to version `B'.
+
+\subsection{Additional Requirements}
+
+In order to make this mechanism work, we also need an additional part. We wish
+to somehow store the current version of the database somewhere in order to 
+query about the transactions that are required to be fired off. 
+
+The best in this case would be to store a table inside the database that would
+contain such information. This would allow us to easily retrieve information
+about the current version of the database, along with a description, and a date
+the transaction was performed in case the software product that is using this
+concept needs to have failures or otherwise evaluated.
+
+The descriptions that are to be added for each revision, in one of these 
+entites, could be contained within the transactions that are to be done to the
+database. This allows for more information to be extracted if things go wrong.
+

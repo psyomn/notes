@@ -1,0 +1,58 @@
+\section{Introduction}
+
+My experience has made me see that managing a database on a running
+environment, as well as in development is tedious and error prone.  Ultimately
+it would be great to have a centralized, and specialized module to take care of
+these aspects, without external intervention where this could apply. That is,
+the concern of having a schema to date for the application in question, may be
+self contained by that very application.
+
+When decoupling this concern from applications that may benefit from such a
+design and implementation we must note two important points before approaching
+the problem in this manner:
+
+\begin{itemize}
+\item
+If the application \textit{must} load the whole database configuration in one
+shot (quicker)
+\item
+If the application \textit{must} build the database configuration sequentially
+(slower, but provides application version management)
+\end{itemize}
+
+Both points are backed up by two valid use cases: we are concerned about
+applications that might need to create the schema once, and applications that
+might require a sequential upgrade. The former could be triggered when an
+application runs for the first time. The latter would prove useful when the
+application is switching from one version to another (note that due to the
+versioning system, we are able to roll-back changes if required)
+
+This document wishes to demonstrate the possibility of such an architectural
+design. In this document, analysis and architectural diagrams will be presented
+to demonstrate the rationale of the solution to the problem statement. You can
+consult the table of contents, list of figures, and list of listings for any
+specific, required information. 
+
+At the last section of this case study, we will iterate once again over the
+benefits of using such an organization of resources, as well as reasoning why
+such an approach might not be optimal.
+
+\subsection{Where did the idea come from?}
+
+I was browsing some code with a friend, and we were making snide remarks on
+some of the ways things were done. There was something that caught my eye: the
+way they actually handled database versioning was not bad. It was not perfect
+in my opinion however. And since then I have been thinking of different
+approaches that could handle database versioning (and now keeping my notes in
+Tex).
+
+\subsection{Where is the idea going to?}
+
+Ultimately I wish this to be a little more sophisticated in the future if I
+have time to think more about the way I'm doing things as describe in this 
+document. It would be a very nice thing if it is possible to provide a library,
+or architecture other developers can use in order to supplement their needs. It
+would be even better if they could in turn chip in, or give a shout about what
+aspect they like or dislike about this approach in order to provide the best
+for the innocent bystanders.
+

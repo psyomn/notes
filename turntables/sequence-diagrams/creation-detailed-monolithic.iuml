@@ -1,0 +1,17 @@
+
+' Author : Simon Symeonidis
+@startuml
+title Creation using the Monolithic Method
+
+CreationMechanism -> DbRegistry        : execute(sql)
+DbRegistry       --> CreationMechanism : ok : Constant
+
+note left of CreationMechanism
+The SQL that is passed to the db
+registry is actually a compilation
+of the schemas. It is intended for
+when the calling application runs
+for the first time.
+end note
+
+@enduml

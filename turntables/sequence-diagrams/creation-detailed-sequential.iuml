@@ -1,0 +1,15 @@
+' Author : Simon Symeonidis
+@startuml
+title Creation using the Sequential Method
+
+CreationMechanism   -> DbRegistry        : get_latest_db_version
+DbRegistry         --> CreationMechanism : latest_version : Positive Integer
+
+CreationMechanism   -> VersionClassifier : transactions_after(latest_version)
+VersionClassifier  --> CreationMechanism : Array<String> sql_array {ordered}
+
+loop sql_array.length
+  CreationMechanism -> DbRegistry        : execute(sql_array[i])
+  DbRegistry       --> CreationMechanism : ok : Constant
+end loop
+@enduml

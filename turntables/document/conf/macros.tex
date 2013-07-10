@@ -1,0 +1,15 @@
+% Author : Simon Symeonidis
+% A few reusable macros.
+
+% For quick insertion of code snippets
+\newcommand{\pcoded}[4]{\lstinputlisting[label=#1,caption=#2,language=#3]{#4}}
+\newcommand{\pcode}[3]{\lstinputlisting[label=#1,caption=#2,language=ruby]{#3}}
+
+% For printing output
+\newcommand{\poutput}[3]{\lstinputlisting[label=#1,caption=#2,language=]{#3}}
+
+\newcommand{\psybox}[1]{
+\fcolorbox{psyan}{lightpsyan}{
+  \parbox{0.93\textwidth}{
+    #1
+  }}}

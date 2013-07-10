@@ -1,0 +1,19 @@
+' Author : Simon Symeonidis
+@startuml
+
+title Overall Flow of the turntables Gem
+
+Caller      -> Turntables : db_check
+Turntables  -> DbRegistry : exists? 
+DbRegistry --> Turntables : ret : Boolean
+
+  alt ret = true
+    Turntables         -> CreationMechanism : monolithic_create
+    CreationMechanism --> Turntables        : ok : Constant
+  else ret = false
+    Turntables         -> CreationMechanism : sequential_create
+    CreationMechanism --> Turntables        : ok : Constant
+  end
+
+@enduml
+
