@@ -9,3 +9,9 @@ go right ahead and fork this repo, or send me a message even.
 __NOTE__ You'll need plantuml in order to generate the pictures for the
 documents. You can get plantuml [here](http://plantuml.sf.net).
 
+# Turtables
+
+This explains the rationale behind the Ruby Gem `turntables`. Turntables is 
+supposed to ease the development of applications that require their databases
+to be updated and maintained from one release to another. This is inspired from
+projects such as `rails`, and some `bukkit` plugins that I have observed.
