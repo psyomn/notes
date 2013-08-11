@@ -1,0 +1,12 @@
+output/
+*.pdf
+*.log 
+*.aux 
+*.pdf 
+*.toc 
+*.blg 
+*.lof 
+*.lol 
+*.lot 
+*.bbl
+*.png

@@ -1,0 +1,118 @@
+\section{Analysis}
+
+Ultimately we want two things. A game engine, and a game editor. The engine is 
+not to be modified - a standalone binary, or the like, must be provided, that 
+will look in predetermined locations for assets and tie the whole game
+together.
+
+Assets contain anything from text, graphics and sounds. Assets can be organized
+in subcategories as well, since for example, in games we would like to discern
+between background music, and sound effects. This organization is purely
+aesthetic, and to help the user navigate through many things. Assets should 
+contain the following:
+
+\begin{itemize}
+\item Graphics - Anything that has to do with things being drawn on screen.
+Tiles, Tilesets, portraits, backgrounds, etc.
+\item Sound - Anything that causes noise. Background music, sound effects, and
+anything else that falls into this category.
+\item Text - Anything that can be written down in a natural language.
+\item Maps - A composite that brings many of the aforementioned assets
+together, to make up the virtual world.
+\end{itemize}
+
+\subsection{Graphics}
+
+In the respect of graphics, we want Haze to be a retro game engine. So in this
+respect we will be interested mostly with the manipulation of 2d graphic files.
+However blending in 3d aspects to 2d environments is totally possible and could
+prove to be desirable by the userbase in the future.
+
+For the graphics we require a library that can handle image manipulation. The
+most important aspect being croping as we want to extract different tiles from
+the tilesets that will exist in the assets. Just a simple reminder on some
+jargon:
+
+\paragraph{Tileset}: is an image file that contains smaller images that can be
+used repeatedly as a pattern. 
+
+\paragraph{Tile}: is a smaller graphic that is a pattern, that can be used to 
+portray repeated graphics.
+
+\subsection{Text}
+
+Text is more important in role playing games as they traditionally are games
+with richer storylines. Therefore it is even greater motivation to detect this
+and prepare a proper mechanism.
+
+A mechanism that has worked in the past in several applications I had to work
+with and proved to be the right path to take in development, is
+\textit{internationalization} and \textit{localization} of the system. Those 
+are big words for simply meaning, storing the text of the application separately
+and telling the system to look for an \textit{id} that containts the wanted 
+text in that moment. 
+
+A simple example would involve a menu asking your name. There would be a label
+with the caption ``name''. For English speakers, that would be fine. But what
+if someone wishes to use the application who does not know how to communicate
+in that language? Should we make a copy of the project, and replace all the 
+string instances with ``name'' and others to that other language? Or should we
+factor out this functionality in some other way?
+
+That is exactly where the said mechanisms come in, and we can have multiple
+translations for the same application available, ready to update, and even add
+more languages without the need of reloading the application. In the future if
+let's say a game is made by this editor and engine, and it is accepted, we
+would like to provide a means for translators to have no trouble to go about
+their work.
+
+\subsection{Sound}
+
+Sound is pretty much anything that makes noise while the player is playing the
+game. If more recent technology is to be used in order to write the music, then
+I would suggest the use of Ogg Vorbis. The engine is open source and Ogg Vorbis
+is pretty awesome when it comes to application.
+
+For background music, we want to be able to loop the song. It would be also 
+quite adventageous to point exactly where we want it to loop, as a song might
+have an intro that is not repeated later on. I've seen this being omitted a few
+many times and it's something that I personally did not like when I found it 
+lacking.
+
+Sound effects should be possible to mess around with effects. For example 
+switching the pitch slightly for a repeating sound might make it sound less 
+monotonous and irritate the user as well. 
+
+Also, another thing to take into consideration is voice actors, and games that
+not only have the text of speech displayed, but actually can enabled it to have
+the speech spoken out. This is another aspect of internationalization and 
+localization that we need to take care off later on as well.
+
+\subsection{Maps}
+
+Maps are bits and pieces that build the world of the game. They are pretty
+essential, and the correct analysis, design and implementation of them, in my
+opinion, is critical. There's a lot of ways the maps can be expressed in a 
+system, but many of these ways can be considered wrong.
+
+When we boil it down to basics, there's two aspects we really need to look out
+for. One of them are moving entities, and the others stills. A quality one has 
+to deal with is also collisions, and appropriate actions to take on these 
+collisions. Role playing games are very simple in this aspect (but we should
+still provide a rich set of actions that may be performed for the sake of 
+expressiveness of our users).
+
+\subsection{Proposed Directory Structure for Assets}
+
+\begin{lstlisting}
+  /items.xml
+  /graphics/tilesets
+  /graphics/portraits
+  /sounds/music
+  /sounds/sfx
+  /sounds/speech/en
+  /sounds/speech/el - Example, a Hellenic voice translation
+  /lang/en
+  /lang/el - Example, a Hellenic translation
+\end{lstlisting}
+
