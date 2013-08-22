@@ -1,0 +1,36 @@
+' Component diagram to show the generic software stack that would be able to 
+' realize the idea of the haze editor 
+
+' This software setup is with C++11 in mind.
+
+@startuml
+
+node Haze {
+
+  node "SFML 2.0 <<Media Library>>" {
+    [Sound]
+    [Graphics]
+    [Font Rendering & Text]
+  }
+
+  node "Game Engine" {
+    [Thor]
+    [Haze Engine] ..> [Thor]
+  }
+
+  node Assets {
+  }
+
+  node "Mathematics" {
+    [Probability Engine]
+    [Trigonometric Helpers]
+  }
+
+  node "User Interface (Editor)" {
+    [Qt 4.0]
+  }
+
+}
+
+@enduml
+

@@ -13,3 +13,12 @@
   \parbox{0.93\textwidth}{
     #1
   }}}
+
+% Quick way for adding figures
+\newcommand{\psyfig}[4]{
+  \begin{figure}[hb]
+  \centering
+  \includegraphics[width=#4]{#1}
+  \caption{#2}
+  \label{#3}
+  \end{figure}}

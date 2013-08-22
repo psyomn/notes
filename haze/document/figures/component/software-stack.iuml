@@ -1,0 +1,33 @@
+' Component diagram to show the generic software stack that would be able to 
+' realize the idea of the haze editor 
+
+@startuml
+
+node Haze {
+
+  node "Media Library" {
+    [Sound]
+    [Graphics]
+    [Font Rendering & Text]
+  }
+
+  node "Game Engine" {
+  }
+
+  node Assets {
+  }
+
+  node "Mathematics" {
+    node "Probability Engine" {
+      [Gaussian Distribution]
+      [etc]
+    }
+  }
+
+  node "User Interface (Editor)" {
+  }
+
+}
+
+@enduml
+
