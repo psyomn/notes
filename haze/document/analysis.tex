@@ -12,7 +12,6 @@ aesthetic, and to help the user navigate through many things. Assets should
 contain the following:
 
 \begin{itemize}
-\item Methods of Interaction (Input for games)
 \item Graphics - Anything that has to do with things being drawn on screen.
 Tiles, Tilesets, portraits, backgrounds, etc.
 \item Sound - Anything that causes noise. Background music, sound effects, and
@@ -155,6 +154,52 @@ collisions. Role playing games are very simple in this aspect (but we should
 still provide a rich set of actions that may be performed for the sake of 
 expressiveness of our users).
 
+\subsubsection{Layers} 
+
+Layers are the bread and butter in RPG maps. We want to provide rich maps in 
+order for the user to explore. To provide these rich maps in the respect of 
+graphics, we rely on transparency for pictures, and a layering system. Each
+map can have a set of layers that describe the current location in pieces so
+that if a character were to be behind a tile with a hole, only the visible part
+of the player would be visible. The same technique can be used for other things
+such as graphics. For example if we were to have two maps with the same ``tree
+graphics'', but they had different backgrounds, we would not want to create two
+different trees for this. That would waste space, and create extra work. Hence
+in the tree graphics, we would make their background transparent in order to 
+make them reusable with any background. 
+
+\subsubsection{Portals} 
+
+Portals connect maps together and make it possible for the player to travel 
+between points. Portals could be placed as if they were NPCs in order to make 
+the player move between maps, but should be implemented more flexible. For 
+instance it should be a reusable function so that the player can either step 
+on a tile to transport, or activate in a conversation with a NPC which would
+teleport you instead. 
+
+\subsubsection{Tiling}
+
+The maps should be illustrated with tilesets. The tilesets should be on the 
+same dialog of the map editor, as should be the aforementioned layers. A map
+can be designed using many different tilesets. A good demonstration of the 
+required layout to provide a comprehensive and usable interfacr to the user
+is laid out in Figure \ref{ui:map-editor}
+
+
+\psyfig{figures/ui/map-editor.png}%
+       {Map Editor UI}%
+       {ui:map-editor}%
+       {5in}
+
+\subsubsection{Storage format} 
+
+We need to think about the following critical aspects: 
+
+\begin{itemize} 
+\item Storing paths to the tilesets
+\item Storing the used tiles of each respective tileset in the map
+\end{itemize} 
+
 \subsection{Proposed Directory Structure for Assets}
 
 We can outline a possible directory structure that should be standard for any
@@ -174,6 +219,66 @@ should also be taken into consideration.
   /lang/en
   /lang/el - Example, a Hellenic translation
 \end{lstlisting}
+
+\subsection{Battle Mechanics}
+
+RPGs are a little different to action games in respect to how the player is
+challenged. In action games, the player is challenged to the actual (physical)
+skills and reflexes the player learns to work with the game. For example, a
+player that is good with action games, could finish an simple action game in
+one shot, whereas in RPGs the skill is virtually accumulated in points for each
+character, and leans more to mathematical models rather than skill in order to
+challenge the player. Therefore some mechanism to support and supplement these
+mathematical calculations would be required - that is, we want to make it fully
+possible for the users to tweak or write their own functions, affected by 
+different parameters in the game. 
+
+Let us define two topics of interest for the following topics: 
+
+\paragraph{Entity} is something that can interact in the map. Something more
+than a wall for example. An NPC is an Entity. A treasure chest is an entity. A
+wall is not an entity. A hidden door that can open up for the player to pass
+through is an entity. Using this generalization makes for a stripped down,
+and simple, reusable design. 
+
+\paragraph{Attribute} an attribute is something that describes the abilities of
+the entity. For example if the entity was of a `Fighter' class, there would 
+exist an attribute that describes the Strength \textit{(STR)} of the character.
+
+\subsubsection{Entity Attributes} 
+
+Entity attributes describe the abilities of said entity. The mathematical model
+provided in order to give a generic attribute system. We need to take into
+consideration a short list of aspects for each attribute.
+
+\begin{itemize}
+  \item{Natural Amount} The natural amount of the entity (can not change)
+  \item{Equipment Modifier} When equipment is held by the entity, there are
+  modifications to the attributes. 
+  \item{Race Modifier} The race that affects attributes to the entity. For
+  example \textit{Elves} might have a \textit{(INT)} bonus, and a \textit{(STR)}
+  penalty.
+  \item{Buff Modifier} This is a temporary boost (or penalty) for the given
+  attribute. For example if a wizard casts a protection spell, then more armor
+  points migth be given to the entity. Same would be for a weaken spell.
+\end{itemize}
+
+Then the final use of the above attributes would be a simple summation.
+
+% TODO Need to write the formula here
+$$ \vec{Attributes} = [natural, equipment, race, buff] $$ 
+$$ CurrentAttribute = \sum{Attributes} $$
+
+\subsubsection{Entity Growth}
+
+Some games take care of leveling up by themselves. For example, an entity might
+be fixed in a ``Wizard'' class, so the statistics that would be accumulated for
+each attribute would be preset; in other words the game would focus on adding 
+many more points to the Intelligence \textit{(INT)} attribute on each level up.
+
+Other games let the user choose the way the character levels up. For example
+the entity is given the skilpoint and the player can then assign the
+skillpoints to the wanted Entity Attributes.
 
 \subsection{Component Diagrams}
 
