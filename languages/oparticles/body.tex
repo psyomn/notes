@@ -1,0 +1,118 @@
+\section{Summary}
+This is my coursework for SOEN6411, on the OCaml programming language. Inside
+this part we discus the different powers of the programming language, the
+flexibilities, and other shortcommings.  The application in question is a
+particle simulator. The particle simulator defines two aspects: the bodies that
+exist in the simulation, and possible obstructions. The obstructions are either
+the bodies themselves, or constraints in the form of walls. The bodies are
+programmed to have different velocities, acceleration, and gravitational
+attraction. Calculations are made to find the 3d angle to which they travel
+when they bounce off such surfaces.
+
+\section{Language Exploration}
+In this section we show some of the language features providede by OCaml.
+
+\subsection{Interface and Implementation}
+
+In OCaml, we are able to separate implementation from interfaces. For example,
+when implement- ing the Particle class, we need to define the module’s
+signatures in one file with *.mli extension, and the specify the implementation
+in the respective *.ml file. This is very similar to how you would define
+header files in C/C++ programs. You can refer to Listings
+\ref{lst:all:particle}, and \ref{lst:all:particlei} to see the implementations
+and specifications respectively, of the particle class.
+
+\subsection{Modules}
+
+Modules act as namespaces. Functions that are defined inside a module
+definition can be accessed from other parts of the OCaml application. If they
+are omitted from the module interface, then the methods are not visible and
+available for local use of the module. The module must have the same name as
+the file. To access another module, one needs to do this by adding \textit{open
+ModuleName} at the file of interest. Listing \ref{lst:all:coordinatehelperi}
+shows a module signature (interface), and \ref{lst:all:coordinatehelper} shows
+the implementation
+of the specification.
+
+\subsection{Types}
+There exists the basic types in OCaml such as integers, floats, booleans, strings, and lists. Here is
+a small list of possible operations on each type listed above:
+
+\begin{itemize}
+
+\item{Integers}
+\begin{itemize}
+\item 1 + 1 returns 2
+\item 1 - 1 returns 0
+\item 5 * 2 returns 10
+\item 10 / 3 returns 3 (of type integer)\end{itemize}
+
+\item{Floats} \textit{(notice that each operation requires a period after each symbol)}.
+\begin{itemize}
+\item 1.0 +. 2.0 returns 3.0
+\item 1.0 /. 3.0 returns 0.333333333333333315
+\item 1.0 *. 4.0 returns 4.0
+\item 1.0 -. 3.0 returns -2.0 \end{itemize}
+
+\item{Booleans}\begin{itemize}
+\item true \&\& true returns true
+\item true $\vert\vert$ false returns true \end{itemize}
+
+\item{Lists} \begin{itemize}
+\item 1 :: [2; 3; 4];; returns [1; 2; 3; 4]
+\item List.hd [1; 2; 3; 4];; returns 1
+\item List.tl [1; 2; 3; 4];; returns [2; 3; 4]
+\end{itemize}
+\end{itemize}
+
+\subsection{Tuples}
+
+Tuples are supported in Ocaml. In order to define a signature for a tuple, we
+chain the types we want the tuple to contain with the ‘*’ symbol. For example
+if we wanted a tuple with the first two types of integer and the last one of
+type float we would define it as such: \textit{int * int * float}. A practictal
+example where this has been used in specification is in Listing
+\ref{lst:all:coordinatei}, and its implementation in
+\ref{lst:all:coordinate}.
+
+\subsection{Object Orientation}
+
+We are able to define classes in OCaml. To do this, we need to define the
+interface (mli) file, and then implement it in the implementation file (ml).
+Let us take the class Particle for this example. We need it to have an
+interface that requires the implementation of features: mass, velocity,
+acceleration, group, label, angle-xy, angle-xz, and its coordinates. We also
+need mutators for these attributes. Listing \ref{lst:all:particlei} demonstrates
+the interface, and Listing \ref{lst:all:particle} demonstrates the
+implementation of the specification.
+
+It should be noted that if the class needs to call its own methods, then in the
+implementation file, we need to specify object(self) as opposed to simply
+object. By doing this, we publish a class pointer within the instance of the
+class, and can call methods through it (exactly like this). A quick example of
+how this is used can be viewed in Listing \ref{lst:all:particle}, in the
+\textit{method\_start()} where the instance calls its own method via the
+expression: \textit{self \# start\_backend()}.
+
+Something to observe is that when defining classes, we need to use the keyword
+\textit{method } in order to define class methods, as opposed to using \textit{let}.
+
+Another minor note is that method visibility is possible by the reserved word
+\textit{private}. The order of the keyword `private' is important, else we get a
+compilation error. An example of this can be see inside the room class, in 
+listing \ref{lst:all:room}, inside the \textit{start\_backend()} method.
+
+\subsection{Recursion}
+OCaml supports recursion. However we need to explicitly specify when this is
+the case, by adding a rec token after our let token. There’s two techniques to
+invoke recursion. In a module, recursion is achieved by simply writing the
+function in the form of: \textit{let rec funcname args = conditional $\langle
+true \rangle$ {base-case}$^{+}$$\langle$false$\rangle$
+\{recursive-case\}$^{+}$}. Listing \ref{lst:all:particlebuilder} shows us this,
+notably in function create list.  
+
+To define such behavior in a class instance, we need to define a function
+inside a function. The inner function is the recursive function - the outer one
+is simply the interfacing one. Class room (Listing \ref{lst:all:room}) shows
+such implementation details in the function \textit{start\_backend()}.
+
