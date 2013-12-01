@@ -217,3 +217,64 @@ Listing \ref{lst:beer}.
 
 \section{Problem Dissection}
 
+For this case study, I decided to write up a fractal generator. This required
+two steps. Writing a small library for outputing images, and writing the 
+fractal mathematical formulas. 
+
+\subsection{Writing the Image Library}
+
+I was looking for a specification of an image format that would not be too hard
+to implement due to the time constraint I had for this project. Therefore the
+ideal format for my application would be something that could be represented as
+text. Apart from being really easy to implement, it would be easy to debug as
+well, since the output would be text files. 
+
+Searching on the Internet I finally stumbled upon the \textit{PPM} format for 
+images. There are two versions of the format one may implement. This is read
+by the image viewer on the file headers. If you specify P6, then it expects to
+read the image data as raw bits. However if you specify P3, you can enter the
+image data by 3-tuples of pixels (where the tuple contains the luminoscity of
+the Red, Green, and Blue colors). More information on the file format can be
+read about here: \url{http://netpbm.sourceforge.net/doc/ppm.html}.
+
+The best approach for this was to define a data type \textit{Pixel} which 
+contained these three colors. Then we could define auxiliary functions to 
+modify the information, or read it. Such behavior is found in Listing
+\ref{lst:all:ppmpackage}. Notice first the two types: Pixel, and PPMImage. The
+pixel defines another 3 elements which will be placeholders for the RGB colors,
+and PPMImage, is the whole image - the header information, dimensions and image
+data included. Using these two types, we build the foundations for completing
+the rest of the application.
+
+We can notice some of the auxiliary functions \textit{redOf, blueOf, greenOf}. 
+Those are used in order to extract the luminoscity of the pixels. Notice how
+the anonymous variables are used in order to only get the data that we want for
+each. 
+
+The next important functions are \textit{makeRow, makeImage, and
+makeImageData}. These functions help us create the image in question. The
+\textit{makeRow} function creates a row of pixels. This function is used `n'
+times in the back-end of the \textit{makeImage} function in order to give
+height to the image. We have yet more auxiliary functions such as
+\textit{makeWhiteImage, makeGreenImage, makeBlackImage, etc} which provide us
+shorthands to create images of x, y dimensions. The \textit{makeBlackImage} 
+function is used later in order to provide a background to the fractal. 
+
+Last but not least are the string conversion functions that return the image
+as a string. This is important because as previously stated, we wish to export
+the image into a text format that is viewable as a picture by an image viewer.
+
+First we need to take care of the finely grained issue - converting a single 
+pixel into a tuple of three numbers as a string. This is observed in the
+\textit{pixelString} function in Listing \ref{lst:all:ppmpackage}. Then we 
+define a recursive function that goes through a whole row in an image, and 
+converts it into a string - namely \textit{outputRow}. Finally we define one
+last function to take care of output for a whole image, \textit{imageString, 
+imageStringBackend}. This concludes the requirements of having a library that
+is able to generate our images.
+
+\subsection{Julia Sets and Fractal Implementation}
+
+\subsection{Image Output}
+
+
