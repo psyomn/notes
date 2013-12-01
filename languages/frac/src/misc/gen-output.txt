@@ -1,0 +1,6 @@
+*MyModuleGeneric> genToStr [1,2,3,4]
+["1","2","3","4"]
+*MyModuleGeneric> genToStr [1.0, 2.0, 3.0]
+["1.0","2.0","3.0"]
+*MyModuleGeneric> genToStr[True, False, True, True]
+["True","False","True","True"]

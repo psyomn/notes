@@ -1,0 +1,8 @@
+*Factorial> myfactorial 3
+6
+*Factorial> myfactorial 10
+3628800
+*Factorial> myfactorial 14
+87178291200
+*Factorial> myfactorial (-3)
+*** Exception: Please supply positive integers

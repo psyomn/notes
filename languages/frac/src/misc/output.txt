@@ -1,0 +1,27 @@
+Prelude> [1,2,3,4]
+[1,2,3,4]
+Prelude> [1,2,3,"cat"]
+
+<interactive>:11:2:
+    No instance for (Num [Char]) arising from the literal `1'
+    Possible fix: add an instance declaration for (Num [Char])
+    In the expression: 1
+    In the expression: [1, 2, 3, "cat"]
+    In an equation for `it': it = [1, 2, 3, ....]
+
+Prelude> head [1,2,3,4]
+1
+Prelude> tail [1,2,3,4]
+[2,3,4]
+Prelude> take 2 [1,2,3,4]
+[1,2]
+Prelude> drop 1 [1,2,3,4]
+[2,3,4]
+Prelude> [1,2,3,4] !! 0
+1
+Prelude> [1,2,3,4] !! 2
+3
+Prelude> 12 : [1, 2, 3]
+[12,1,2,3]
+Prelude> "mommy cat" : ["kitten", "kitten", "kitten", "kitten"]
+["mommy cat","kitten","kitten","kitten","kitten"]

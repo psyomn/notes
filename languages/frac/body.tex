@@ -1,0 +1,219 @@
+\section{Introduction}
+
+This is my coursework for COMP6411, on the Haskell programming language. Inside
+this part we discus the different powers of the programming language, the
+flexibilities, and other shortcommings.  
+
+The application in question is a fractal generator. In order to provide a
+solution to this problem, we need to decide on two things:
+
+\begin{enumerate}
+\item Decide on what fractal algorithm we will choose
+\item Decide on how we will display the outcome
+\end{enumerate}
+
+This clearly separates this case study into two parts. One part is to define
+a library that we can call in order to generate images. The other part is to
+implement the actual fractal algorithm, and auxiliary functions.
+
+\section{Language Exploration}
+
+In this section we show aspects of the programming language. We show the typing
+system and signatures, functions, higher order functions, and recursive
+functions. We also show how some basic \textit{Haskell} applications or modules
+are written and used.
+
+\subsection{Types}
+We discus some basic \textit{Haskell} types in this section. The operations
+listed were what were deemed useful for the case study. There exists many
+other possible operations that a user of the language can use, and it is left
+for the user for exploration.
+
+\paragraph{Lists} are used by ensaring elements between square brackets. For
+example, [1, 10, 2, 4] is a valid list. Lists are required to contain elements
+of the same type however. For example [1, 2.0, "cat"] would raise compilation
+issues. We are provided with the \textit{head} and \textit{tail} operations in 
+order to manipulate lists. We are also given some very useful operations called
+\textit{take} and \textit{drop} which returns the first \textit{n} specified 
+elements, or returns the tail after \textit{n} elements respectively. Mapping
+functionality exists, so applying lambdas on lists is also possible. Another
+useful operator is the \textit{!!} infix operator, which returns us an element
+at a given index. Some sample output is provided in Listing \ref{lst:listout}.
+There exists a \textit{cons} operator, and in \textit{Haskell} it is the colon.
+
+\haskellcode{lst:listout}{Simple List Operations}{src/misc/output.txt}
+
+Another interesting feature in the lists of \textit{Haskell} is that we are
+able to define ranges, and evaluate them lazily. We use two periods between two
+numbers in order to achieve this. The following are valid ranges: [1..100],
+[0.5..0.9]. If we omitt the rightmost number, then we tell \textit{Haskell}
+that it is a list that goes on to infinity. This is legal due to the lazy
+nature.
+
+Another very useful aspect of the language is that we can use \textit{list 
+comprehensions}. List comprehensions and lazy evaluation add to the power of 
+the language dramatically.
+
+\paragraph{Strings} can be specified by using the quotation marks. For example
+``My kitten is cute" is a valid string. Strings however are lists of characters.
+They have been aliased as the type \textit{String}. So in fact, we can say $
+String = [Char]$. It follows that any operation that we can perform on a list
+as previously stated, is possible to be used in Strings as well. For example, 
+the head of the string ``hello" would return the character `h', and the tail
+would return ``ello''. In this respect, we can also map functions onto strings.
+Listing \ref{lst:strings-are-char-lsts}.
+
+\haskellcode{lst:strings-are-char-lsts}%
+            {Strings are Character Lists (Don't believe what they told you)}%
+            {src/misc/strings-lst-chars.txt}
+
+\paragraph{Others} We also have other primitives such as Booleans, 
+Integers, Doubles, and tuples in our disposal. Tuples are defined by using 
+parentheses, and separating its types with commas: (String, Int, Double) is a 
+valid tuple. 
+
+\subsection{Recursion}
+
+Recursion is possible in \textit{Haskell}. Similarly to \textit{Prolog} we are
+given to separate the base cases from the body of the function. The recursive
+cases remain in the body of said function. Therefore, the base cases are
+evaluated in the order they are appear in. For example consider the code in
+Listing \ref{lst:order-of-things}. 
+
+\haskellcode{lst:order-of-things}%
+            {Cases using argument values}{src/misc/mytest.hs}
+
+If we executed \textit{mycase 1} we would return the value `10'. If we executed
+\textit{mycase 2} we would return the value `20'. If we executed this function
+with the argument value `4', then we would get an error.
+
+Now provided the mechanism on how to define base cases, let us take a look how
+a factorial implementation would look like in \textit{Haskell}. Listing
+\ref{lst:factorial} shows us this.
+
+\haskellcode{lst:factorial}{Factorial in Haskell}{src/misc/Factorial.hs}
+
+Listing \ref{lst:factorial-out} shows us some example usage.
+
+\poutput{lst:factorial-out}{Factorial Output}{src/misc/factorial-out.txt}
+
+One might notice that there is no safeguard for giving negative integers. This
+is prevented actually on compile time.
+
+\subsection{Visibility \& Signatures} 
+
+In comparison to other languages such as \textit{C, C++, OCaml,} Haskell does
+not define its interfaces to its modules in a separate file - there is no
+separation between specification and implementation. In order to achieve
+visibility, we need to specify the function names which we want to expose
+between brackets after the module name. We can see such an example in Listing
+\ref{lst:mymodulesimple}.
+
+%% TODO check positioning
+Haskell is a strong typed language. This adds to the compiler's task at seeing
+if the user of the language is trying to do something erroneous. As such, 
+\textit{Haskell} does not support casting, or other features that might cause
+problems during runtime. The idea is to catch as many bugs as possible during
+compile time, using the type system.
+
+\haskellcode{lst:mymodulesimple}%
+            {Exposing Functions in a Module}%
+            {src/misc/MyModuleExposeName.hs}
+
+Signatures exist in Haskell. They can be thought of as prototype functions in
+\textit{C/C++}. A Haskell signature is similar to those of \textit{OCaml}. We
+need to specify a name, then add a double colon, and separate it with its
+type signature which contains the return type as the last type. Here is an 
+example:
+
+$$ functionName :: \langle signature \rangle $$
+
+We can see a more implemented example in Listing \ref{lst:mymodule}. We can
+observe the function name \textit{toStrList}, on its right the separator `::',
+and then the type signature \textit{[Int] -$\rangle$ [String]}. Recall that we
+said that the last type is the return type. Therefore this makes us understand
+that all the types right before the rightmost are the inputed parameters. So
+in the case of \textit{toStrList}, we understand that this function takes in
+a List of integers, and returns a list of strings.
+
+\haskellcode{lst:mymodule}%
+            {Example Module with Function}%
+            {src/misc/MyModule.hs}
+
+\subsubsection{Generics}
+Generics can be thought of like templates in \textit{C/C++ or Java}. This means
+that the possibility of reusing a function with many types is possible. Let us
+revisit the example where we were converting integers into lists (Listing
+\ref{lst:mymodule}). 
+This is a nice function, but it only works for \textit{Integer} input. What if
+we wanted to use it for various data types? This is where the use of generics
+are deemed useful. A generic is defined by a lowercase character. So if we want
+a list of `things', whatever they may be, we denote that this way: $[a]$.
+Extending on the previous example, we first need to change the type signature.
+Since we want any type and not only Integers, we need to replace the parameter.
+So the signature now becomes: $[a] \rightarrow [String]$.
+
+However there is one last thing that we need to take care about our generic
+type `a'. If we wish for the possibility of converting each element `a' into a
+string, we need to impose the type constraint \textit{Show}. This requires that
+any type we pass to this new function should have behavior defined for `show'
+(which is similar to toString functions in other programming languages). The
+signature now becomes: $(Show\ a) =\rangle [a] \rightarrow [String] $. 
+
+As you might have inferred, constraints are imposed by writing them at the
+left-most of the type signature. If more constraints were to be added, you
+would separate them by commas. So for example if we also wanted the generic
+type `a' to be constrained by `Ord' (if something is order-able), we would
+change the constraint to: $(Show\ a,\ Ord\ a)$. Listing \ref{lst:generic} shows
+the generic implementation of the list to string function, and
+\ref{lst:generic-out} shows the output when providing different lists of
+different element types.
+
+\haskellcode{lst:generic}{Generic toStr}{src/misc/MyModuleGeneric.hs}
+
+\poutput{lst:generic-out}{Generic Output}{src/misc/gen-output.txt}
+
+\subsubsection{Higher Order Functions}
+
+Higher order functions are supported in \textit{Haskell}. One thing to note is
+how to express them inside the function you are defining, that will use that
+function. The rest is not too hard to get working. For the sake of this example
+we will be implementing our own filter. (Recall that a filter tests the list's
+elements against a predicate, and are added to the new list if they satisfy
+said predicate).
+
+First we need to define the signature. We know there are two inputs: the
+predicate, and the list to test it against. We expect a list, empty or
+non-empty after the operation has completed. We can first piece together the
+following: $ function \rightarrow [a] \rightarrow [a] $. That is we expect
+after passing the function and a list of elements type `a', to return a list of
+type element `a'. 
+
+Next we need to define the function in more detail. To specify a higher order
+function we need to encase the signature in parentheses. Our predicate gets an
+element `a', and returns a `Boolean'. Therefore the predicate inside the function
+we are trying to define looks like $(a \rightarrow Bool)$.
+
+Putting the signature together we have the following: $myfilter :: (a
+\rightarrow Bool) \rightarrow [a] \rightarrow [a]$. The implementation uses
+recursion in order to build the list, depending on whether the predicate is
+satisfied or not. Listing \ref{lst:myfilter} shows the final implementation of
+the function.
+
+\haskellcode{lst:myfilter}{Our Own Filter}{src/misc/MyFilter.hs}
+
+You may notice the underscore in the base case of this function. That is an
+anonymous variable. Since we do not care about the predicate in the base case
+we are free to omitt it.
+
+\subsection{Defining your own Infix Operators}
+
+You can also define your own infix operators. This is a useful feature in the
+programming language. Here is an example where we used this in order to
+implement the `99 bottles of beer' problem. Notice the backtics on `bottles' in
+Listing \ref{lst:beer}.
+
+\haskellcode{lst:beer}{99 Bottles of Beer in Haskell}{src/misc/99bottles.hs}
+
+\section{Problem Dissection}
+

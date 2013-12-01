@@ -1,0 +1,18 @@
+Prelude> :t "hello"
+"hello" :: [Char]
+Prelude> ["hello", "there"]
+["hello","there"]
+Prelude> :t ["hello", "there"]
+["hello", "there"] :: [[Char]]
+Prelude> head "hello"
+'h'
+Prelude> tail "hello" 
+"ello"
+Prelude> Data.Char.toUpper 'a'
+'A'
+Prelude> map Data.Char.toUpper "hello there"
+"HELLO THERE"
+Prelude> take 4 "hello"
+"hell"
+Prelude> 's' : take 4 "hello"
+"shell"
