@@ -3,11 +3,18 @@ This is my coursework for SOEN6411, on the OCaml programming language. Inside
 this part we discus the different powers of the programming language, the
 flexibilities, and other shortcommings.  The application in question is a
 particle simulator. The particle simulator defines two aspects: the bodies that
-exist in the simulation, and possible obstructions. The obstructions are either
-the bodies themselves, or constraints in the form of walls. The bodies are
-programmed to have different velocities, acceleration, and gravitational
-attraction. Calculations are made to find the 3d angle to which they travel
-when they bounce off such surfaces.
+exist in the simulation, and possible obstructions. 
+
+The obstructions are either the bodies themselves, or constraints in the form
+of walls. The bodies are programmed to have different velocities, acceleration,
+and gravitational attraction. Calculations are made to find the 3d angle to
+which they travel when they bounce off such surfaces.
+
+The application was initially intended to bind to \textit{OpenGl} and show the
+particles bounce off walls. However locating libraries which were not out of
+date and that actually worked was extremely difficult. Therefore the graphical
+aspect was scoped out in this project, and simple text output was provided.
+Even so, the case study was not particularly easy.
 
 \section{Language Exploration}
 In this section we show some of the language features providede by OCaml.
@@ -115,4 +122,12 @@ To define such behavior in a class instance, we need to define a function
 inside a function. The inner function is the recursive function - the outer one
 is simply the interfacing one. Class room (Listing \ref{lst:all:room}) shows
 such implementation details in the function \textit{start\_backend()}.
+
+\section{Sample Output}
+
+Listing \ref{lst:output} gives us some sample output. These are the last few
+ticks inside the simulation. The values of mass, velocity, etc, are shown inside
+the square brackets. The coordinates x, y, z are shown inside the parentheses.
+
+\poutput{lst:output}{Output of Oparticles}{src/out.txt}
 
