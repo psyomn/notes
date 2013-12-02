@@ -13,3 +13,12 @@
   \parbox{0.93\textwidth}{
     #1
   }}}
+
+%% Note width as inches
+\newcommand{\psyfig}[4]{
+  \begin{figure}[hb]
+  \centering
+  \includegraphics[width=#4]{#3}
+  \caption{#2}
+  \label{#1}
+  \end{figure}}
