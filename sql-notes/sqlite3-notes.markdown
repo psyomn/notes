@@ -65,7 +65,52 @@ sqlite3> create table person (
 
 #### Inserting into a table
 
+Run the following provided you have created the required table. 
+
+~~~~{.sql}
+sqlite3> insert into person (name,surname,age) values ('jon', 'doe', 18);
+~~~~
+
+If you want to enter a list of people in a single command, you can do the 
+following:
+
+~~~~{.sql}
+sqlite3> insert into person (name,surname,age) values 
+    ...> ('jon', 'doe', 18), 
+    ...> ('jon' 'snow', 32), 
+    ...> ('marry', 'spanakopitakis', 21);
+~~~~
+
+#### Selecting from the Table
+
+Naturally, after inserting information to the table, we want to be able
+to retrieve it. The keyword to memorize for this aspect is _Select_. 
+We need to provide it what fields we are interested from the table, and
+finally the table name as well. For an example let us select all the 
+surnames and ages from the table _person_.
+
+~~~~{.sql}
+sqlite3> select surnamge, age from person;
+~~~~
+
+But what if we wanted to impose a constraint? For example, let us require
+that we select the fields _name_ and _age_ for the person named 'marry'.
+
+~~~~{.sql}
+sqlite3> select name, age from person where name='marry';
+~~~~
+
+That is good and all, but problem arises when we have more people being 
+recorded in the system called 'marry'. Then we won't be able to distinguish 
+who is who. This is where keys come into effect, and how specific find queries
+are usually implemented in _SQL_.
+
 #### Deleting a row from a table
+
+If we wish to remove an entry from the database table, we can do so by 
+using `delete`. In order to delete something in particular we need to 
+tell _sqlite3_ specifically that this is what we want. So here we add
+a WHERE clause.
 
 #### Updating a row in a table
 
