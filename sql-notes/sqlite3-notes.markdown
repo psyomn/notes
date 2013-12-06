@@ -192,12 +192,12 @@ Once we store the information in a row, there might be a situation where
 somewhere in the future, we wish to update the information. For example, let
 us consider the following table:
 
---- ------- ---------------- -------
-id  Name    Surname          Age
---- ------- ---------------- -------
-  1 Jon     Johnson          23
-  2 Frank   Frankson         25
---- ------- ---------------- -------
+---- ------- ---------------- -------
+id   Name    Surname          Age
+---- ------- ---------------- -------
+  1  Jon     Johnson          23
+  2  Frank   Frankson         25
+---- ------- ---------------- -------
 
 Jon came in a few weeks ago, and they entered his information. But the person
 entering his information did a mistake and instead of typing in '32', they
@@ -212,7 +212,7 @@ this.
 Here is the required query: 
 
 ~~~~{.sql}
-update person set age=32 where id = 1;
+sqlite3> update person set age=32 where id = 1;
 ~~~~
 
 Frank Frankson changed his name to Charlie Thawson. He came in in order to 
@@ -221,9 +221,43 @@ We just need to use `set` once, and then separate the columns by comma. And
 then we're done. 
 
 ~~~~{.sql}
-update person set name='charlie', surname='thawson' where id = 2;
+sqlite3> update person set name='charlie', surname='thawson' where id = 2;
 ~~~~
 
 ### Altering a table
 
+Table alterations are required when we want to change the table schema, while
+there is still data inside. For example if we did not care about contents in 
+the table, we could _drop_ it, and create the new table with the new schema. 
+
+
+Usually the most common alterations that you will have to consider are when 
+you want to add columns to the table. Consider the following schema: 
+
+~~~~{.sql}
+sqlite3> create table pet (name varchar(50));
+~~~~
+
+Now, we want to add a cuteness rank to the pet, so that we can persist how
+cute a cat is in comparison with a dog. 
+
+~~~~{.sql}
+sqlite> alter table pet add column cuteness_score int;
+~~~~
+
+We are now able to assign cute scores to pets!
+
+
+### Constraints
+
+It is possible to impose constraints on information that is to be added to the
+table. The three commonly used accross most SQL implementations are _unique_, 
+_not null_ and _foreign key_ constraints. We will talk about _foreign keys_ later, 
+as they are a little more involved. 
+
+The constraint _not null_ as it suggests, requires that added information to a 
+table column is _not null_ (eg: you explicitly pass _null_, or you don't provide a
+value for the column at all).
+
+## Table Relations
 
