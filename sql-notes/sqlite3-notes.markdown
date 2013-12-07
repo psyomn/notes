@@ -196,6 +196,7 @@ us consider the following table:
 id   Name    Surname          Age
 ---- ------- ---------------- -------
   1  Jon     Johnson          23
+
   2  Frank   Frankson         25
 ---- ------- ---------------- -------
 
@@ -247,17 +248,155 @@ sqlite> alter table pet add column cuteness_score int;
 
 We are now able to assign cute scores to pets!
 
-
 ### Constraints
 
 It is possible to impose constraints on information that is to be added to the
-table. The three commonly used accross most SQL implementations are _unique_, 
-_not null_ and _foreign key_ constraints. We will talk about _foreign keys_ later, 
-as they are a little more involved. 
+table. The three commonly used accross most SQL implementations are _unique_,
+_not null_ and _foreign key_ constraints. We will talk about _foreign keys_
+later, as they are a little more involved. 
 
-The constraint _not null_ as it suggests, requires that added information to a 
-table column is _not null_ (eg: you explicitly pass _null_, or you don't provide a
-value for the column at all).
+The constraint _not null_ as it suggests, requires that added information to a
+table column is _not null_ (eg: you explicitly pass _null_, or you don't
+provide a value for the column at all).
+
+#### Not Null
+
+Here is an example of using the constraint. We want a person record to require
+a name in order to be inserted: 
+
+~~~~{.sql}
+sqlite> create table person (name varchar(30) not null, age int);
+sqlite> insert into table person (name) values ('jon'), ('david');
+Error: near "table": syntax error
+sqlite> insert into person (name) values ('jon'), ('david');
+sqlite> insert into person (name,age) values ('jon',13), ('david', 12);
+sqlite> insert into person (age) values (12);
+Error: person.name may not be NULL
+~~~~
+
+#### Unique
+
+Unique just makes sure that all the values in the given column are _unique_. An
+example use case for this constraint would be a online forum (like phpbb, and
+other boards) where the user that is registering, is required to have a unique
+nickname.
+
+~~~~{.sql}
+sqlite> create table user (email varchar(30), 
+   ...> password varchar(30), nickname varchar(30) unique);
+sqlite> insert into user (email, password, 
+   ...> nickname) values ("someone@somewhere",
+   ...> "mypass", "nick123");
+sqlite> insert into user (email, password, 
+   ...> nickname) values ("someone@somewhere",
+   ...> "mypass", "nick123");
+Error: column nickname is not unique
+~~~~
 
 ## Table Relations
+
+We previously referenced the foreign key constraints. Before talking about
+those, we want to cover slightly the topic of table relations.
+
+Storing records of data is useful, but often it is not enough. For example we
+can have a class Person, that aggregates (has a list of) Books. We can store
+people as records, and Books as well. However we need a way to identify which
+user's in a table, books belong to. To demonstrate a simple example, think of
+the following issue: Bob and Joe are two users of the system. They both store
+books in the system. They forget about the books because it's the weekend, and
+reading can wait up until monday. When they come back they don't remember which
+books they own. Luckily they have both written their names inside them, and 
+can find them again, without accidentally taking a book that belongs to someone
+else. 
+
+Writing 'names' in the books is a high level example of what actually happens
+here: they have given their identity to the book, in order to claim it back
+later on. By labeling many books this way, they can own many books. In more 
+technical terms, they are _assigning their id_ to the _book record_.
+
+This way we can visualize the problem with the two following tables: one for
+the user base, and the second one for any book that they own.
+
+**User Table**
+
+--- --------- ----------
+id  Name      Age
+--- --------- ----------
+1   Joe       32
+
+2   Bob       42
+--- --------- ----------
+
+**Book Table**
+
+--- --------------------- -------- 
+id  Book Title            user_id
+--- --------------------- --------
+1   Neuromancer           1
+
+2   Wizard of Oz          2
+
+3   Logicomix             1
+
+4   Full Metal Alchemist  1
+
+7   Alice in Wonderland   2
+--- --------------------- --------
+
+Now for example, if we wanted to find out what books user 'Joe' had left during
+the weekend, we would first look at Joe's id. Once we have his id, we would use
+it to search on the 'book' table.
+
+Let us look at the actual code behind this. First we need to create and 
+poppulate the tables. 
+
+~~~~{.sql}
+sqlite> create table users (id integer primary key autoincrement, 
+   ...> name varchar(30),
+   ...> age int);
+
+sqlite> create table books (id integer primary key autoincrement,
+   ...> title varchar(60),
+   ...> user_id integer);
+
+sqlite> insert into users (name, age) values
+   ...> ('joe', 32),
+   ...> ('bob', 42);
+
+sqlite> insert into books (title, user_id) values 
+   ...> ('Neuromancer', 1), ('Wizard of Oz', 2), ('Logicomix', 1),
+   ...> ('Full Metal Alchemist', 1), ('Alice in Wonderland', 2);
+
+~~~~
+
+Now to find the id of the user Joe we would need to look into our
+users table.
+
+~~~~{.sql}
+sqlite> select id from users where name='joe';
+1
+~~~~
+
+So this id represents 'joe'. Now if we want to retrieve all the
+books that the user 'joe' has left behind we run the following: 
+
+~~~~{.sql}
+sqlite> select * from books where user_id=1;
+1|Neuromancer|1
+3|Logicomix|1
+4|Full Metal Alchemist|1
+~~~~
+
+It is also possible to nest the sql queries in this manner (the query in the 
+brackets finds the id of the user, and the result is used to find the
+books with the given _user\_id): 
+
+~~~~{.sql}
+sqlite> select * from books where user_id=(select id from users where name='joe');
+1|Neuromancer|1
+3|Logicomix|1
+4|Full Metal Alchemist|1
+~~~~
+
+This is how we are able to represent relationships in databases. 
 
