@@ -434,7 +434,6 @@ to that entity, an example would be that of a user posting on a forum. The
 User is the Entity. A Post is another entity. A User owns many Posts. A
 particular post belongs to a particular user. 
 
-On the other hand we have shared resources. For example, think of Entities
-A, B, C. A and B own other entities. C is owned by other entities. It happens
-that in this case A and B own C. In the former example we could realize this by
-assigning books with the user's identification numbers (ids). 
+On the other hand we have shared resources. For example, think of Entities A,
+B, C. A and B own other C entities. In the former example we could realize this
+by assigning books with the user's identification numbers (ids). 
