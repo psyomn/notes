@@ -1,0 +1,10 @@
+digraph hasMany {
+  node[shape=box];
+
+  FMA [label="Full Metal Alchemist"];
+
+  Jon -> Neuromancer; 
+  Jon -> Logicomix;
+  Jon -> FMA;
+}
+

@@ -1,0 +1,8 @@
+
+digraph hasOne {
+
+  node[shape=box];
+
+  Jon -> Mother [label="has one"];
+
+}
