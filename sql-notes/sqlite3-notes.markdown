@@ -73,7 +73,7 @@ Consider that we want to persist information in a database of people. The
 information we want to store for each person is their name, surname and their
 age. If we had a notebook, and we wanted to store this information, we would
 create a table by separating the page in three parts: name, surname and age.
-This is what we want to do as well with the table in this databse.
+This is what we want to do as well with the table in this database.
 
 ~~~~{.sql}
 sqlite3> create table person (
@@ -81,6 +81,24 @@ sqlite3> create table person (
     ...>   surname varchar(50),
     ...>   age int);
 ~~~~
+
+#### A Note on Types
+
+In tables, we need to specify the type that the columns must store on each
+row. For example, for a person's name, we would require that we have a string
+of maximum 50 characters, as shown above (_varchar(50)_). For a person's age
+we would need an interger type - that would be most appropriate. 
+
+In different SQL implementations, there exist different available types. So
+for example a type that exists in SQLite3 might not appear in the implementation
+of MySQL, or PostgreSQL. For the most part, primitive types such as integers, 
+floats, and strings are available. 
+
+If it is important for an SQL schema to be as cross platform as possible (in
+the sense of being able to migrate the schema from SQLite3, to MySQL, or
+PostgreSQL), it is usually best to stick to very basic queries or declarations.
+For example sticking to primitive types might give you less headaches in the
+future. Usually this is not something to worry about.
 
 ### Inserting into a table
 
@@ -304,10 +322,12 @@ people as records, and Books as well. However we need a way to identify which
 user's in a table, books belong to. To demonstrate a simple example, think of
 the following issue: Bob and Joe are two users of the system. They both store
 books in the system. They forget about the books because it's the weekend, and
-reading can wait up until monday. When they come back they don't remember which
+reading can wait up until Monday. When they come back they don't remember which
 books they own. Luckily they have both written their names inside them, and 
 can find them again, without accidentally taking a book that belongs to someone
-else. 
+else. Figure \ref{fig:hasmany} shows us how Jon owns different books.
+
+![Jon Has Many Books\label{fig:hasmany}](fig/dot/has-many.png)
 
 Writing 'names' in the books is a high level example of what actually happens
 here: they have given their identity to the book, in order to claim it back
@@ -400,3 +420,20 @@ sqlite> select * from books where user_id=(select id from users where name='joe'
 
 This is how we are able to represent relationships in databases. 
 
+
+### Relations: 2 Common Types
+
+In applications you'll usually encounter 2 common types of relationships. In
+one type of relationship, we're able to assign multiple records to one record
+(the example of Jon and his books). In another type of relationship, we can
+describe different records, that own other different records. 
+
+To make things clear, let us provide more concrete examples. For the former
+where one entity owns many other entities, and those entities only belong
+to that entity, an example would be that of a user posting on a forum. The
+User is the Entity. A Post is another entity. A User owns many Posts. A
+particular post belongs to a particular user. 
+
+On the other hand we have shared resources. For example, think of Entities A,
+B, C. A and B own other C entities. In the former example we could realize this
+by assigning books with the user's identification numbers (ids). 
