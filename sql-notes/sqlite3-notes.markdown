@@ -420,7 +420,6 @@ sqlite> select * from books where user_id=(select id from users where name='joe'
 
 This is how we are able to represent relationships in databases. 
 
-
 ### Relations: 2 Common Types
 
 In applications you'll usually encounter 2 common types of relationships. In
@@ -436,4 +435,162 @@ particular post belongs to a particular user.
 
 On the other hand we have shared resources. For example, think of Entities A,
 B, C. A and B own other C entities. In the former example we could realize this
-by assigning books with the user's identification numbers (ids). 
+by assigning books with the user's identification numbers (ids). A simple
+graphical representation can be seen in Figure \ref{fig:through} where two 
+different people with ids _1 and 2_ have the same shared item, identified by
+the key _2_.
+
+This relationship requires an auxiliary table to form this sort of
+relationship. The auxiliary table needs only to contain the keys of the
+_Person_ table, and the keys of the _SharedItem_ table.
+
+![Has Many _Through_ another table \label{fig:through}](fig/dot/has-many-through.png)
+
+## Constraints to Relationships
+
+We now covered how we can relate different data entities to each other using
+keys on tables. Adding to this, we can add constraints to the relationships.
+In order to make sure that we are inserting data that makes sense, we can check
+whether the relationship we're trying to build is possible or not by checking
+if the keys exist on either table. Take a look at the following example.
+
+--- --------
+id  CatName
+--- --------
+1   Fluffy
+
+2   Mittens
+--- --------
+
+--- ----------- --------
+id  Ball Color  OwnerID
+--- ----------- --------
+1   Red         1
+
+2   Green       2
+--- ----------- --------
+
+Looking at these tables, we can see that we have two cats, and two wool balls. 
+Fluffy owns the red ball, and Mittens owns the Green ball. For this
+relationship to have been made, we would need to make two inserts on the cats
+table, and another two in the wool balls table. The wool balls table would
+_reuse the ids of the cats_ in order to denote ownership of said balls. Now,
+what would happen if we tried assigning an owner id to a new ball, that no cat
+had? That would leave our _balls_ table in a very weird state. _We don't want
+that_.
+
+This is where foreign key constraints come in, and can help you detect such 
+issues. Different SQL implementations require you to activate them in different
+ways. In _MySQL_ you're required to use a specific engine (See _InnoDb_). In
+SQLite3, you're required to write this into the shell: 
+
+~~~~{.sql}
+[psyomn@aeolus tmp 0]$ sqlite3
+SQLite version 3.8.2 2013-12-06 14:53:30
+Enter ".help" for instructions
+Enter SQL statements terminated with a ";"
+sqlite> PRAGMA foreign_keys = ON;
+~~~~
+
+Now let's see the implementation of the above example with SQL code. Notice
+how we impose a foreign key constraint on the _balls_ table.
+
+~~~~{.sql}
+create table cats ( 
+  id integer primary key autoincrement, 
+  name varchar(40)
+);
+
+create table wool_balls (
+  id       integer primary key autoincrement,
+  owner_id integer, 
+  color varchar(40),
+  
+  -- foreign key constraint
+  foreign key(owner_id) references cats(id)
+);
+~~~~
+
+Now let us see what happens when we do legal inserts.
+
+~~~~{.sql}
+insert into cats (name) values ('fluffy'), ('mittens');
+
+-- ok 
+insert into wool_balls (owner_id, color) values
+  (1, "red"),
+  (1, "blue"),
+  (2, "green");
+~~~~
+
+Making sure the inserts were normal.
+
+~~~~{.sql}
+sqlite> select * from wool_balls;
+1|1|red
+2|1|blue
+3|2|green
+~~~~
+
+Trying to add an illegal row (no cat with id _3_).
+
+~~~~{.sql}
+-- boom
+insert into wool_balls (owner_id, color) values
+  (3, "magenta");
+Error: near line 10: FOREIGN KEY constraint failed
+~~~~
+
+Making sure that the illegal row was not added.
+
+~~~~{.sql}
+sqlite> select * from wool_balls;
+1|1|red
+2|1|blue
+3|2|green
+~~~~
+
+### A note on Constraints
+
+Databases provide the possibility of adding constraints to data that is to be
+added to a table. However, it should be noted that some frameworks or even
+applications choose to have this logic implemented in the application level -
+that is not using the constraint mechanisms of the database, and catching these
+violations on said application level. For example, the application using a
+database is able to detect if a field is empty - there is no need for this
+issue to go down through all the layers of the application (ie: presentation to
+domain logic, to technical services, and finally the database), if all of this
+can be prevented at the top. But on the other hand there might be situations
+where this is favorable. It is always best to have a wide range of choices. 
+
+## Polymorphic Relations
+
+_This section is currently being worked upon_
+
+# Exercise
+
+We want to implement a simple schema of a movie database. We want to be able to
+persist the information of the following aspects: who acted in a film, who
+directed the film, and who produce the film (note, there could be more than one
+company that produced a film). Something to be careful about is that any actor,
+director, or producer can have more than one role (for example a director can
+appear in the movie for a short while, and be credited as an actor). 
+
+The information we want to store about each person is their name, their surname, 
+their date of birth. 
+
+We want to store movies. Movies have a title, a year, and a budget. A movie can
+be a comedy, a horror movie, a romance movie, or any combination of the
+previously mentioned genres. A movie must also store a budget. (Note: many
+movies have similar genres... _this means they share a specification / resource
+hint hint!_).
+
+The final aspect is that we want a user to exist in the system. The user stores
+a username, and a password, as well as an email. A user assigns different
+movies, ratings depending on whether they liked the movie or not. A user also
+wishes to maintain a list of movies they wish to see, or would like to see in
+the future (note: the information for both wish to see, and seen movies should
+be maintained in _one_ table; don't create a separate table for wish to see and
+seen, in other words).
+
+
