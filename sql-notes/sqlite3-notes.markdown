@@ -565,7 +565,7 @@ where this is favorable. It is always best to have a wide range of choices.
 
 ## Polymorphic Relations
 
-_This section is currently being worked upon_
+This is a less commont sort of relation that one might see
 
 # Exercise
 
@@ -593,4 +593,6 @@ the future (note: the information for both wish to see, and seen movies should
 be maintained in _one_ table; don't create a separate table for wish to see and
 seen, in other words).
 
+
+# Other weird Databases
 
