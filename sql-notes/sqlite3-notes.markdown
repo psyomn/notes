@@ -550,6 +550,18 @@ sqlite> select * from wool_balls;
 3|2|green
 ~~~~
 
+One final note: if we delete a row from a table that has a relationship
+elsewhere, then the record it was referencing will remain there. So for
+example, if a cat with a name 'mittens' is in the cats table, and has a 'blue'
+ball in the wool balls table, and the cat is later removed from the table, the
+blue ball will remain in the other table. If we want to remove any other record
+that might be referenced, we can do it using a built-in mechanism
+
+This mechanism uses _on delete cascade_ in order to spot foreign key
+references, and invoke deletions on those tables; and the deletions continue
+to occur if those tables have cascading deletes as well. This ensures the data
+integrity store in databases.
+
 ### A note on Constraints
 
 Databases provide the possibility of adding constraints to data that is to be
@@ -565,7 +577,53 @@ where this is favorable. It is always best to have a wide range of choices.
 
 ## Polymorphic Relations
 
-This is a less commont sort of relation that one might see
+Polymorphic relationships are a little odd, but good to know. They might be
+considered slow at runtime due to different tables requesting access on one
+particular table, as it will soon be shown. (_Note: not sure about the
+efficiency, it's not something I've actually sat down and benchmarked_).
+
+The scenario usually goes as follows. You want to persist a trait that is
+common to many entities. For example, think about a site that posts songs, and
+news about bands. The site would also have member pages. To give it a social
+spin, we want to let users comment on any item.
+
+If we did not use polymorphic relations, we would use has-many relationships, 
+and create a table for each aspect. For example, song postings would have a
+song_comments table. News postings would have a news_comments table, and so on.
+This could be a tedious job to do, and provide a lot of redundant work for the
+coders. 
+
+A solution to this would be to identify these resources as _Commentable_.
+Therefore, songs, news, and user pages are all ... _commentable_.
+
+Polymorphic relations in essence are nothing too complicated. They are in fact
+the auxiliary table that exists in the second demonstrated type of has-many
+relation, with an extra field: the discriminator. 
+
+Recall that the has-many relationship required a table with two foreign keys.
+We can see this again in Figure \ref{fig:show}. That auxiliary table was to
+be specifically used by 'Person'. Therefore we know that one of the foreign
+keys stored in the table is of 'Person', and the other is of 'SharedItem'.
+
+However, when we wish to do the same with different tables, we can only assign
+one of the foreign keys to a known table: the shared item foreign key. The id
+of the table that is referencing the shared item is also stored. But it might
+appear more than what it is in reality because tables such as news, songs, and
+user pages might have the same comment ids. 
+
+So we add one more field, a discrimitator, to bind context to the leftmost id.
+The discrimitor can be any form. For the sake of clarity, let us use strings,
+which are the names of the tables.
+
+------------- ------------------- ---------------------
+Discriminator Discriminator's ID  Comment ID
+------------- ------------------- ---------------------
+News          1                   1
+
+Song          1                   2
+
+Song          2                   3
+------------- ------------------- ---------------------
 
 # Exercise
 
