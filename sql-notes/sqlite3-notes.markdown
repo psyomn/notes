@@ -550,6 +550,18 @@ sqlite> select * from wool_balls;
 3|2|green
 ~~~~
 
+One final note: if we delete a row from a table that has a relationship
+elsewhere, then the record it was referencing will remain there. So for
+example, if a cat with a name 'mittens' is in the cats table, and has a 'blue'
+ball in the wool balls table, and the cat is later removed from the table, the
+blue ball will remain in the other table. If we want to remove any other record
+that might be referenced, we can do it using a built-in mechanism
+
+This mechanism uses _on delete cascade_ in order to spot foreign key
+references, and invoke deletions on those tables; and the deletions continue
+to occur if those tables have cascading deletes as well. This ensures the data
+integrity store in databases.
+
 ### A note on Constraints
 
 Databases provide the possibility of adding constraints to data that is to be
@@ -565,7 +577,9 @@ where this is favorable. It is always best to have a wide range of choices.
 
 ## Polymorphic Relations
 
-_This section is currently being worked upon_
+Polymorphic relationships are a little odd, but good to know. They might be
+considered slow at runtime due to different tables requesting access on one
+particular table, as it will soon be shown. 
 
 # Exercise
 
