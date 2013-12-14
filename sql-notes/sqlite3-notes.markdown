@@ -625,6 +625,27 @@ Song          1                   2
 Song          2                   3
 ------------- ------------------- ---------------------
 
+--- -------------------------------------
+id  News Contents
+--- -------------------------------------
+1   We've had many nice submissions this
+    week!
+--- -------------------------------------
+
+--- -------------------------------------
+id  Song Name
+--- -------------------------------------
+1   My Love is Like a Pancake
+
+2   Inner Universe (Origa)
+--- -------------------------------------
+
+We can see with these examples that the discriminator would indeed be needed
+for the news item, and the song entry named 'My Love is like a Pancake'.
+For example if we were to join the song table to the comment, and we did not
+have the discriminator column, it might join wrongly on the first row, which
+is the relation of the _news_ entry.
+
 # Exercise
 
 We want to implement a simple schema of a movie database. We want to be able to
