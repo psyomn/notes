@@ -8,7 +8,8 @@ in databases:
 * Learn about relationships
 * Learn about views
 * Learn about polymorphic relationships
-* work with SQLite, MySQL, and PostgreSQL (their differences, and use cases)
+* Work with SQLite
+* MySQL, and PostgreSQL (their differences, and use cases)
 * slight talk about other data storage facilities such as Redis, and MongoDb
 
 # Approach
@@ -672,6 +673,19 @@ the future (note: the information for both wish to see, and seen movies should
 be maintained in _one_ table; don't create a separate table for wish to see and
 seen, in other words).
 
+# Industrial Strength Databases
 
-# Other weird Databases
+Please note that though SQLite3 is a very nice quick tool to use, and create
+small databases for few users, it should not be used for large, highly
+concurrent applications. For this sort of task, you are better off using a
+database implementation such as MySQL or PostgreSQL. What you have learned in
+this document so far is readily transferable to these two technologies, and
+the code is exactly similar in each case.
+
+One of the bigger differences is that MySQL and PostgreSQL require you to use
+database users for different databases that you will create. Appart from that
+there are no other big conceptual differences that you need to know - just the
+different syntax flavors that these implementations might have (for example
+PostgreSQL uses ILIKE for string patterns which ignores case, whereas this
+shorthand does not exist in MySQL).
 
