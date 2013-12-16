@@ -642,10 +642,10 @@ id  Song Name
 --- -------------------------------------
 
 We can see with these examples that the discriminator would indeed be needed
-for the news item, and the song entry named 'My Love is like a Pancake'.
-For example if we were to join the song table to the comment, and we did not
-have the discriminator column, it might join wrongly on the first row, which
-is the relation of the _news_ entry.
+for the news item, and the song entry named 'My Love is like a Pancake'.  For
+example if we were to join the song table to the comment, and we did not have
+the discriminator column, it might join wrongly on the first row, which is
+the relation of the _news_ entry.
 
 # Exercise
 
