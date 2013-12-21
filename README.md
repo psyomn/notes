@@ -23,3 +23,8 @@ thinking about how to tackle a game editor. The game editor in question (and
 hypothetical in nature) is very inspired by RPG Toolkit, and RPG Maker. Maybe
 one day when I actually have time, I would be able to develop something on that
 respect.
+
+#### Languages
+
+Some minor case studies of some programming languages. They should provide a
+nice reference point for anyone interrested in those programming languages.
