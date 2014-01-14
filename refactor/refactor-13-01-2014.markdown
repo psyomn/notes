@@ -1,0 +1,65 @@
+% Refactor: Replace Type Code with Subclasses
+% Simon Symeonidis \newline 5887887
+% Mon Jan 13 2014
+
+# Replace Type code with subclasses
+
+* Common Vocabulary: Type as a Discriminator. Inheritance/Subclassing.
+
+* Use of a discriminator variable in order to choose _specific_ behavior. The
+  discriminator variable is usually an _enumeration_. The enumeration is used
+  along with _switch_ or _if/elseif/else/_.
+
+* Usually seen with giggantic switch cases or a shallow leveled if statement
+  (but also long)
+
+# Summary
+
+* **Antipattern**:
+We have a class. Depending on the value of a variable / state, there exists
+some function call that exhibits different behavior depending on that 
+variable's value. More behavior of different cases is aggregated to this class
+over time. The discriminator values of the class also add up, and are hard to 
+track, and are more error prone. _Long Method_ smell should be common as well.
+
+* **Making things (al)right**: We understand that so much behavior crammed 
+inside a class should raise flags on the design. We also should notice that a
+method may start becoming too big at some point, which is another flag for 
+poor design. To fix this, we _break things down_. The discriminator becomes
+subclass declarations, which along them is the factored code inserted, which
+is removed from these logical branches.
+
+# Motivation
+
+* You should do this when
+  
+    * The code in question has behavior dependant to discriminator
+
+    * The logical branches are growing wide making the method in question very
+      long as well.
+
+* Don't do this when 
+
+    * The code in question
+
+# Mechanics
+
+1. Identify the switch/case && if/else/elseif large statements
+
+1. Investigate which part of each block in each logical branch can be factored
+   out into a subclass. Usually for each branch, you create a subclass.
+
+1. Create subclasses for each special case
+
+1. Remove the code from the main class with the logical branches, and put it
+   in the corresponding subclass.
+ 
+1. Find and fix the rippling changes in the application, replacing the dynamic
+   type of the class, to the corresponding subclass of that particular
+   discriminator.
+
+# Simple Example
+
+~~~{.}
+~~~~
+
