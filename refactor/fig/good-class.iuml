@@ -1,0 +1,24 @@
+' Example of good class
+@startuml
+class Shape {
+{abstract} + area() : float
+}
+
+class Triangle {
++ area() : float
+}
+
+class Circle {
++ area() : float
+}
+
+class Square {
++ area() : float
+}
+
+Shape <|-- Triangle
+Shape <|-- Circle
+Shape <|-- Square
+
+@enduml
+

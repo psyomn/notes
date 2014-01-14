@@ -40,7 +40,7 @@ is removed from these logical branches.
 
 * Don't do this when 
 
-    * The code in question
+    * The switch / logical operation has a valid check, not involving a 'type'.
 
 # Mechanics
 
@@ -58,8 +58,73 @@ is removed from these logical branches.
    type of the class, to the corresponding subclass of that particular
    discriminator.
 
-# Simple Example
+# Simple Example (Bad)
 
-~~~{.}
+![Good (left) Bad (right)](fig/merged-class.png)
+
+
+# Simple Example (Bad) Pt. 2
+
+\fontsize{5pt}{7.2}\selectfont
+
+~~~{.ruby}
+class Shape
+  def initialize(type, val)
+    @type = type 
+    @val  = val end
+  def area
+    case @type
+    when :triangle then @val[0] * @val[1] * 1/2.0
+    when :circle   then 3.142 * (@val ** 2)
+    when :square   then @val ** 2 
+    else raise "wrong discriminator" end
+  end
+end
+
+triangle = Shape.new(:triangle, [1.0, 2.0])
+circle   = Shape.new(:circle,   2.0)
+square   = Shape.new(:square,   2.0)
+
+[triangle, circle, square].each do |shape|
+  puts shape.area
+end
+# [psyomn@aeolus src 0]$ ruby silly.rb 
+# 1.0
+# 12.568
+# 4.0
 ~~~~
 
+# Simple Example (Good)
+
+\fontsize{5pt}{7.2}\selectfont
+
+~~~~{.ruby}
+class Shape
+  def area
+    raise NotImplementedError, "This needs implementation"
+  end
+end
+
+class Circle < Shape
+  def initialize(val); @radius = val end
+  def area; @radius ** 2 * 3.142 end
+end
+
+class Square < Shape
+  def initialize(val); @side = val end
+  def area; @side ** 2 end
+end
+
+class Triangle
+  def initialize(base, height); @b, @h = base, height end
+  def area; @b * @h * 0.5 end
+end
+
+[Circle.new(1.2), Square.new(2.1), Triangle.new(1.0, 3.2)].each do |shape|
+puts shape.area
+end
+
+# 4.52448
+# 4.41
+# 1.6
+~~~~

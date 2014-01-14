@@ -1,0 +1,32 @@
+' Example of good class
+@startuml
+package Good {
+class Good.Shape {
+{abstract} + area() : float
+}
+
+class Triangle {
++ area() : float
+}
+
+class Circle {
++ area() : float
+}
+
+class Square {
++ area() : float
+}
+
+Good.Shape <|-- Triangle
+Good.Shape <|-- Circle
+Good.Shape <|-- Square
+}
+
+package Bad {
+class Bad.Shape {
+- type : Symbol
++ area() : float
+}
+}
+@enduml
+

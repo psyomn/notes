@@ -1,0 +1,10 @@
+' Example of bad class
+@startuml
+
+class Shape {
+- type : Symbol
++ area() : float
+}
+
+@enduml
+
