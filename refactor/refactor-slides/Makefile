@@ -1,4 +1,4 @@
-SRC := refactor-13-01-2014.markdown
+SRC := refactor-13-01-2014.markdown refactor-21-01-2014.markdown
 PDF := $(SRC:.markdown=.pdf)
 
 all: fig $(PDF)
