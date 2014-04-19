@@ -98,15 +98,85 @@ what screens exist
 
 ### Naming Screens
 
+So far you have started `screen` by typing in the command. If you have many
+screens without a name, you're eventually going to have something like this to
+sort out:
+
+~~~~bash
+$ screen -ls
+There are screens on:
+
+2303.pts-3.aeolus (Detached)
+2196.pts-3.aeolus (Detached)
+2185.pts-3.aeolus (Detached)
+2172.pts-3.aeolus (Detached)
+2164.pts-3.aeolus (Detached)
+~~~~
+
+If you wanted to reattach to something, you would need to specify its id. The
+following command would attach to the first screen:
+
+~~~~bash
+$ screen -r 2303
+~~~~
+
+And this would attach you to the second screen...
+
+~~~~bash
+$ screen -r 2196
+~~~~
+
+... Rocket Science!
+
+If you can remember numbers, that's cool. But not everyone is like you for the
+better or worse. There is always the option (which I highly recommend, you
+monster) of using `session names`. You simply need to use the `-S` flag.
+
+~~~~bash 
+$ screen -S derpy-screen
+~~~~
 
 ### More than One Window
 
+Screens are useful. But the feature which will raise your life expectancy in a
+software environment is the fact that you can have multiple windows in a
+screen. You heard me right.
+
+You can either create these via the command line, or manually. Usually you'll
+be doing this manually, unless you want to automate something - we will talk
+about this later. 
+
+Enter a screen session:
+
+~~~~bash
+$ screen -S awesome
+~~~~
+
+Once you're inside the new screen, perform these keystrokes:
+
+>  C-a c
+
+This will create a new window. So now, you should actually have two windows
+inside a screen. To view your windows you will need to perform another set of
+keystrokes:
+
+>  C-a "
+
+(Yes, double inverted commas). You can use the arrow keys, or the 'j', 'k' keys
+in order to choose a particular window. Press 'enter' when you have made up 
+your mind.
 
 ### Naming Windows
 
+Eventually, you will need to name your windows. If you want to name a window
+you are currently in, you just need to enter the following keystrokes:
 
-### Schrodinger Screen
+> C-a A
 
+This will open a small edit box at the end of the terminal where you can enter
+the desired name (eg: bin, src, test, logging, windows 95 etc).
+
+### The Screen that _is_ and _is not_
 
 In some cases, the bad and ugly happens, and a screen session is disrupted from
 some chaos. For example your coworker tripping over the wires of your computer,
@@ -126,8 +196,31 @@ coworker's cries of anguish, to get back to work; much more important anyway:
 $ screen -r screen-name-or-id
 ~~~~
 
-## SPYING ON PEOPLE
+## Spying On People
 
+One of the nice features of screen is seen when using the `-x` flag (notice 
+small 'x'). If someone is working on a current screen, and you want to spy on
+then you can totally use this option.
+
+For example let's have Amy and Jon. Amy wants to find out what Jon's favorite
+linux command is so she can get him one for his birthday. Jon needs to first be
+in a screen session. Jon types in the following:
+
+~~~~bash
+$ screen -S jons-session
+~~~~
+
+Amy can now spy on Jon:
+
+~~~~bash
+$ screen -x jons-session
+~~~~
+
+And now, Amy can see everything.
+
+Jokes aside, a nice use for this is could be if you've got a bunch of people
+you want to show a few things on the command line; for example like a tutorial.
+Just be careful.
 
 ## Making Screens via Script
 
