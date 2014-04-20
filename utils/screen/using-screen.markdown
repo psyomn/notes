@@ -92,10 +92,6 @@ $ for (( ;; )) do sleep 3s; echo "ZzzzzZZZzzzz ..."; done
 We can enter the following sequence: `C-a, C-d`, and detach from the session.
 We're back at the terminal where we started from!
 
-Now, let's say we've completed the other jobs we wanted to take care of, and 
-need to reconnect to the screen session. The way to do this is to first query
-what screens exist
-
 ### Naming Screens
 
 So far you have started `screen` by typing in the command. If you have many
