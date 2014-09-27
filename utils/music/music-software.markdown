@@ -40,5 +40,5 @@
 
 * Sunvox: Minimal tracker that can be programmed with patterns, and use of
 modular synthesizers. Effects included! 
-    - code: [http://warmplace.ru](http://warmplace.ru)
+    - website: [http://warmplace.ru](http://warmplace.ru)
 
