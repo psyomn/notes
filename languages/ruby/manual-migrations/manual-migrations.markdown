@@ -137,11 +137,141 @@ names in order to choose which migrations will have to be run. (Note: since
 you're building a local application that the user is going to be running, your
 migrations will most probably be somewhere in the lib/ directory).
 
+First off, after establishing the connection we want to see if the
+`schema_migrations` table exists. 
+
+~~~~ruby
+# Migration for migration versioning.
+class MigrationVersionHelper < ActiveRecord::Migration
+  def change
+    create_table :schema_migrations do |t|
+      t.text :version
+    end
+  end
+end
+
+# AR model, of the schema migration
+class SchemaMigration < ActiveRecord::Base
+end
+
+# Note: you need to setup the conf, and connection before you run this
+unless SchemaMigration.table_exists?
+  ActiveRecord::Migration.run(MigrationVersionHelper)
+end
+~~~~
+
+And depending on that answer the `schema\_migrations` table is brought up (or we
+do nothing).
+
+Next, we need to find out at what revision our database is at. So we simply
+return these values with the following command. Notice we have an array of
+strings.
+
+~~~~ruby
+versions = SchemaMigration.all.collect &:version
+# Notice we pass the class constants
+to_execute = [M1, M2, M3]
+~~~~
+
+And now, the important part is performed with a simple __reject__:
+
+~~~~ruby
+to_execute.reject!{ |e| versions.include? e.to_s }
+~~~~
+
+And now, for each migration that has not been performed, we iterate and run it.
+
+~~~~ruby
+to_execute.each do |migration|
+  ActiveRecord::Migration.verbose = false
+  SchemaMigration.create(:version => migration.name)
+  ActiveRecord::Migration.run(migration)
+end
+~~~~
+
+Here is the full script:
+
+~~~~ruby
+require 'active_record'
+require 'sqlite3'
+
+require_relative 'm1'
+require_relative 'm2'
+require_relative 'm3'
+
+ActiveRecord::Base.configurations = YAML::load(<<DBSTUFF
+development:
+  adapter: sqlite3
+  database: db/data.sqlite3
+  pool: 5
+  timeout: 5000
+DBSTUFF
+)
+
+ActiveRecord::Base.establish_connection(:development)
+
+class MigrationVersionHelper < ActiveRecord::Migration
+  def change
+    create_table :schema_migrations do |t|
+      t.text :version
+    end
+  end
+end
+
+class SchemaMigration < ActiveRecord::Base
+end
+
+unless SchemaMigration.table_exists?
+  ActiveRecord::Migration.run(MigrationVersionHelper)
+end
+
+versions = SchemaMigration.all.collect &:version
+to_execute = [M1, M2, M3]
+
+to_execute.reject!{ |e| versions.include? e.to_s }
+
+puts "versions"
+p versions
+puts "to execute"
+p to_execute
+
+to_execute.each do |migration|
+   ActiveRecord::Migration.verbose = false
+   SchemaMigration.create(:version => migration.name)
+   ActiveRecord::Migration.run(migration)
+end
+
+~~~~
+
+So if we run the full script twice (versions are the versions in the
+`schema_migrations` table, and `to_execute` is an array that contains the
+migration constants we want to execute), we get the following:
+
+~~~~nocode
+psyomn@aeolus migration_test $ ruby main.rb 
+-- create_table(:schema_migrations)
+   -> 0.1351s
+versions
+[]
+to execute
+[M1, M2, M3]
+
+psyomn@aeolus migration_test $ ruby main.rb 
+versions
+["M1", "M2", "M3"]
+to execute
+[]
+psyomn@aeolus migration_test $ 
+
+~~~~
+
 # References / Thanks
 
 Massive thanks to:
-[http://snippets.aktagon.com/snippets/257-how-to-use-activerecord-without-rails](http://snippets.aktagon.com/snippets/257-how-to-use-activerecord-without-rails)
+
+> [http://snippets.aktagon.com/snippets/257-how-to-use-activerecord-without-rails](http://snippets.aktagon.com/snippets/257-how-to-use-activerecord-without-rails)
 
 Check out the Migration API:
-[http://api.rubyonrails.org/classes/ActiveRecord/Migration.html](http://api.rubyonrails.org/classes/ActiveRecord/Migration.html)
+
+> [http://api.rubyonrails.org/classes/ActiveRecord/Migration.html](http://api.rubyonrails.org/classes/ActiveRecord/Migration.html)
 
