@@ -8,6 +8,7 @@ THISDIR     =$(pwd)
 all: pdf
 
 pdf:
+	mkdir -p output
 	$(TEXER) $(OUTPUT_FLAG) core.tex 
 	cd $(OUTPUT_DIR); $(BIBC) core; cd ..
 	$(TEXER) $(OUTPUT_FLAG) core.tex
