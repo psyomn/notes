@@ -158,7 +158,7 @@ Here, we define a variant record.
 
 ~~~~
 
-And the output is the following: 
+And the output is the following (number of bits):
 
 ~~~~nocode
 Size of the Employee variant record:
@@ -173,7 +173,6 @@ Size of the variant record as politician object:
 
 We notice that the run time object of the `software guy` is smaller than the
 `politician` object, yet the structure of `Employee` yields the max.
-
 
 
 # Using Records
