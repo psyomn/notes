@@ -6,7 +6,9 @@ package body Mutable_Test is
   procedure p(S : String) renames Ada.Text_IO.Put_Line;
 
   procedure Test is 
+    -- To make the variant record mutable, we must not define a discriminant
     face_changer : faceless;
+
     -- below is an example of a immutable variant record
     -- face_changer : faceless (Current_Persona => Likeable);
   begin
