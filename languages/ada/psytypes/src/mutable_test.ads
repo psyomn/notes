@@ -2,7 +2,12 @@
 package Mutable_Test is 
   type Persona is (Likeable, Shady, Murderous);
 
-  type Faceless (Current_Persona : Persona) is 
+  String_Min : Integer := 1;
+  String_Max : Integer := 50;
+
+  -- NOTE: You *NEED* to have a default option for mutable Faceless types to
+  -- exist
+  type Faceless (Current_Persona : Persona := Likeable) is 
     record 
     case Current_Persona is 
     when Likeable => 
@@ -10,11 +15,11 @@ package Mutable_Test is
 
     when Shady => 
       Money : Natural := 10; 
-      Message : String;
+      Message : String(String_Min .. String_Max);
 
     when Murderous =>
-      Secret_Phrase : String;
-      Response : String;
+      Secret_Phrase : String(String_Min .. String_Max);
+      Response : String(String_Min .. String_Max);
 
     end case;
     end record;
