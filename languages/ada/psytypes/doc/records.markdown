@@ -19,14 +19,17 @@ supports the following records:
       `Positive` in order to regulate an array / string size.
 
 - Variant Record (Mutable / Immutable)
-    - Think of it as a union. Depending on how we want to use it, this structure
-      adapts to the parameters we pass through. See more in the example.
+    - Think of it as a _selective union_. Depending on how we want to use it,
+      this structure adapts to the parameters we pass through. See more in the
+      example.
 
 - Union (2005)
-    - 
+    - Very similar to unions in C. From what the docs say in [wiki], this takes
+      compatibility with C code in mind (ie: binding ada programs to c, or vice
+      versa).
 
 - Tagged Record (Class)
-    -
+    - Is a record that later on can be used as a class.
 
 ## Basic Record
 
@@ -107,7 +110,9 @@ The declaration inside the union, which requires the maximum amount of bytes is
 what is going to determine the size of the union. Then, the smaller variable
 declarations will just use what they need.
 
-Here, we define a variant record. 
+Here, we define a variant record. Please notice that after employee, we specify
+that we expect a _discriminator_. We do not set a default _discriminator_, and
+because of this, Employee is an _immutable variant record_.
 
 ~~~~ada
     with Ada.Text_IO; use Ada.text_io;
@@ -158,7 +163,8 @@ Here, we define a variant record.
 
 ~~~~
 
-And the output is the following (number of bits):
+And the output is the following (number of bits) when testing against different
+instantiations of the variant record:
 
 ~~~~nocode
 Size of the Employee variant record:
@@ -174,6 +180,164 @@ Size of the variant record as politician object:
 We notice that the run time object of the `software guy` is smaller than the
 `politician` object, yet the structure of `Employee` yields the max.
 
+# Mutable and Immutable Variant Records 
+
+For immutable variant records, you may take a look at the above example. In
+order to define a variant record that is mutable, then you need to do the same
+as in the `type Employee` part, but add a default value to the option. We will
+demonstrate that using a new type 'Faceless' for the example.
+
+Essentially this is what the mutable test would look like, as a specification:
+
+~~~~ada
+    package Mutable_Test is 
+      type Persona is (Likeable, Shady, Murderous);
+    
+      String_Min : Integer := 1;
+      String_Max : Integer := 50;
+    
+      -- NOTE: You *NEED* to have a default option for mutable Faceless types to
+      -- exist
+      type Faceless (Current_Persona : Persona := Likeable) is 
+        record 
+        case Current_Persona is 
+        when Likeable => 
+          Mood_Is_Happy : Boolean := True;
+    
+        when Shady => 
+          Money : Natural := 10; 
+          Message : String(String_Min .. String_Max);
+    
+        when Murderous =>
+          Secret_Phrase : String(String_Min .. String_Max);
+          Response : String(String_Min .. String_Max);
+    
+        end case;
+        end record;
+    
+      procedure Test;
+    
+      procedure Print
+        (Face : Faceless);
+    
+      -- This will alternate from likeable, to shady to muderous, and back to
+      -- likable
+      procedure Mutate
+        (Face : in out Faceless);
+    
+    end Mutable_Test;
+~~~~
+
+The second gotcha is that when you declare a type 'Faceless' and you want it to
+be _mutable_, then you do not give a default option in the declare block. We see
+this in the Test procedure inside the package body of Mutable\_Test.
+
+~~~~ada
+    procedure Test is 
+      -- To make the variant record mutable, we must not define a discriminant
+      face_changer : faceless;
+
+      -- below is an example of a immutable variant record
+      -- face_changer : faceless (Current_Persona => Likeable);
+    begin
+      for I in Integer range 1..10 loop
+        Mutate(face_changer);
+        Print(face_changer);
+        Ada.Text_IO.New_Line;
+      end loop;
+    end Test;
+~~~~
+
+Finally for a full fledged example using the mutable variant records, we have
+the following body:
+
+~~~~ada
+    with Ada.Text_IO;
+    with ada.strings.fixed;
+    
+    package body Mutable_Test is 
+    
+      procedure p(S : String) renames Ada.Text_IO.Put_Line;
+    
+      procedure Test is 
+        -- To make the variant record mutable, we must not define a discriminant
+        face_changer : faceless;
+    
+        -- below is an example of a immutable variant record
+        -- face_changer : faceless (Current_Persona => Likeable);
+      begin
+        for I in Integer range 1..10 loop
+          Mutate(face_changer);
+          Print(face_changer);
+          Ada.Text_IO.New_Line;
+        end loop;
+      end Test;
+    
+      procedure Print
+        (Face : Faceless) is 
+      begin
+        p(Persona'Image(face.current_persona));
+        case face.current_persona is 
+        when likeable => 
+          p("Is happy?");
+          p(Boolean'Image(face.Mood_Is_Happy));
+    
+        when shady => 
+          p("Money: ");
+          p(Natural'Image(face.money));
+          p(face.message);
+    
+        when murderous =>
+          p("You notice a very odd fellow. You hear two things: ");
+          p(face.secret_phrase);
+          p(face.response); 
+    
+        end case;
+      end Print;
+    
+      procedure Mutate 
+        (Face : in out Faceless) is 
+    
+        package ST renames Ada.Strings;
+    
+        -- Things someone says, depending on persona
+        likeable_str  : String := "hello there stranger, wacha buyin?";
+        shady_say_str : String := "valar morghulis";
+        shady_res_str : String := "valar doaheris";
+    
+        fixed_message : String(String_Min .. String_Max) := (others => ' ');
+        fixed_secret  : String(String_Min .. String_Max) := (others => ' ');
+        fixed_response: String(String_Min .. String_Max) := (others => ' ');
+      begin 
+        case face.current_persona is
+        when likeable => 
+          fixed_message(likeable_str'range) := likeable_str;
+    
+          face := (
+            current_persona => shady,
+            money           => 20,
+            message         => fixed_message);
+    
+        when shady =>
+          fixed_secret(shady_say_str'range)   := shady_say_str;
+          fixed_response(shady_res_str'range) := shady_res_str;
+    
+          face := (
+            current_persona => murderous,
+            secret_phrase   => fixed_secret,
+            response        => fixed_response);
+    
+        when murderous =>
+          face := (
+            current_persona => likeable, 
+            Mood_is_happy => True);
+    
+        when others => null;
+        end case;
+      end Mutate;
+    
+    end Mutable_Test;
+~~~~
 
 # Using Records
 
