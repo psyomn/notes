@@ -2,15 +2,25 @@
 % Simon Symeonidis
 % Fri Dec  6 00:03:29 EST 2013
 
+### Document Versions
+
+| Version | Date        | Comment                                      |
+|---------|-------------|----------------------------------------------|
+| 1       | Dec  6 2013 | Initial version.                             |
+| 1.1     | Nov 18 2014 | Fixed some mistakes, and formatting          |
+
+# Goals
+
 This document aims to give you beginner level knowledge of the following points
 in databases:
 
 * Learn about relationships
-* Learn about views
+* Learn about views (TODO)
 * Learn about polymorphic relationships
 * Work with SQLite
 * MySQL, and PostgreSQL (their differences, and use cases)
 * slight talk about other data storage facilities such as Redis, and MongoDb
+  (TODO)
 
 # Approach
 
@@ -40,7 +50,7 @@ allocation and references to objects. When persisting such relationships, we
 need to identify the type of relationship (has-one, has-many), and represent
 them using unique keys, and proper schemas (table structures).
 
-## SQLite3
+# SQLite3
 
 First you'll need to install the database system. Please follow the
 installation instructions here:
@@ -373,7 +383,11 @@ poppulate the tables.
 sqlite> create table users (id integer primary key autoincrement,
    ...> name varchar(30),
    ...> age int);
+~~~~
 
+\newpage
+
+~~~~sql
 sqlite> create table books (id integer primary key autoincrement,
    ...> title varchar(60),
    ...> user_id integer);
@@ -385,7 +399,6 @@ sqlite> insert into users (name, age) values
 sqlite> insert into books (title, user_id) values
    ...> ('Neuromancer', 1), ('Wizard of Oz', 2), ('Logicomix', 1),
    ...> ('Full Metal Alchemist', 1), ('Alice in Wonderland', 2);
-
 ~~~~
 
 Now to find the id of the user Joe we would need to look into our
