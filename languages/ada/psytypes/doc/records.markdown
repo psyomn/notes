@@ -389,11 +389,258 @@ There is an interesting writeup on the rules on how to use the above here [unio]
 
 # Tagged Records
 
+Tagged records are what other programming languages call classes [wiki]. We
+demonstrate a very simple tagged record, that holds information about a person.
 
+~~~~ada
+  type Person is tagged
+    record 
+      Name    : String(1..50);
+      Surname : String(1..50); 
+      Age     : Positive;
+      Sex     : Character;
+    end record;
+~~~~
+
+The whole package would contain a few classes that would be related closely, if
+inheritance were to come into play. This way we get the whole package in the
+following manner, bundled along with its primitive [prim] operations
+
+~~~~ada
+    package People is 
+    
+      type Person is tagged private;
+    
+      -- Print the person information on the terminal
+      procedure Put_Person
+        (This : Person);
+    
+      procedure Increase_Age
+        (This : in out Person);
+    
+      function Get_Age
+        (This : Person)
+        return Positive;
+    
+      procedure OOP_Test;
+    
+    private
+      type Person is tagged
+        record 
+          Name    : String(1..50);
+          Surname : String(1..50); 
+          Age     : Positive;
+          Sex     : Character;
+        end record;
+    end People;
+~~~~
+
+At the above, you will notice private. This is to make sure that attributes of
+the `Person` type are inaccessible in order to not break encapsulation [extn].
+
+And the package body: 
+
+~~~~ada
+    with Ada.Text_IO; use Ada.Text_IO;
+    
+    package body People is 
+      procedure p(S : String) renames Ada.Text_IO.Put_Line;
+    
+      procedure Indent is 
+      begin
+        put("  ");
+      end Indent;
+    
+      procedure Put_Person
+        (This : Person) is 
+      begin
+        p("------");
+        p(This.Name);
+        p(This.Surname);
+        indent; p(Positive'Image(This.Age));
+        indent; p(Character'Image(This.Sex));
+      end Put_Person;
+    
+      procedure Increase_Age
+        (This : in out Person) is
+      begin
+        This.Age := This.Age + 1;
+      end Increase_Age;
+    
+      function Get_Age
+        (This : Person)
+        return Positive
+      is 
+      begin
+        return This.Age;
+      end Get_Age;
+    
+      procedure OOP_Test is 
+        P : Person;
+        name          : String                  := "Jon";
+        surname       : String                  := "Doeson";
+        fixed_name    : String(P.Name'Range)    := (others => ' ');
+        fixed_surname : String(P.Surname'Range) := (others => ' ');
+      begin
+        fixed_name    (name'range)    := name;
+        fixed_surname (surname'range) := surname;
+    
+        P := (
+          Name    => fixed_name, 
+          Surname => fixed_surname, 
+          age     => 32, 
+          sex => 'm');
+    
+        Put_Person(P);
+      end OOP_Test;
+    
+    end People;
+~~~~
+
+## Extending Tagged Records
+
+Now for a simple example of inheritance, we will be extending the tagged record.
+We create an employee. The employee shall have an extra attribute `Salary`.
+First we declare the type as a private type, and then declare the full type
+inside the private section of the package:
+
+~~~~ada
+    package People is 
+      -- ...
+      type Employee is new Person with private;
+      -- ...
+    private
+      type Employee is new Person with 
+        record
+          Salary : Float;
+        end record;
+    end People;
+~~~~
+
+### Overriding
+
+To override, we just redefine the function for the subclass / extended type. For
+this example, we will be adding a `Put` procedure that will print all the
+information of the `Employee`:
+
+~~~~ada
+    procedure Put
+      (This : Employee);
+~~~~
+
+The above is sufficient to override a method. Optionally you may add the
+`overriding` keyword to the method to be overriden (think in terms of `virtual`
+with inherited C++ classes).
+
+~~~~ada
+    overriding
+    procedure Put
+      (This : Person);
+~~~~
+
+Again, the keyword is optional. The proper method will run either way. Next let
+us look into the implementation of `Put`:
+
+~~~~ada
+    procedure Put
+      (This : Employee) is
+      -- Case to Person, to call parent put
+      P : Person := Person(This);
+    begin
+      P.Put;
+      put_line(Float'Image(This.Salary));
+    end Put;
+~~~~
+
+I can cast the `Employee` object into a `Person` type, and invoke the
+`Person.Put` procedure. This way I am able to print whatever the attributes of
+the person are, and then print the actual salary of the person. This is for a
+mental note on how to cast types - you might not want to do things this way on
+the long run.
+
+Finally the `OOP_Test` method is changed in the following manner: 
+
+~~~~ada
+    procedure OOP_Test is 
+      P : Person;
+      E : Employee;
+  
+      name          : String                  := "Jon";
+      surname       : String                  := "Doeson";
+      fixed_name    : String(P.Name'Range)    := (others => ' ');
+      fixed_surname : String(P.Surname'Range) := (others => ' ');
+  
+      e_name          : String                  := "Mary";
+      e_surname       : String                  := "Maryson";
+      e_fixed_name    : String(E.Name'Range)    := (others => ' ');
+      e_fixed_surname : String(E.Surname'Range) := (others => ' ');
+    begin
+      fixed_name      (name'range)            := name;
+      fixed_surname   (surname'range)         := surname;
+  
+      e_fixed_name    (e_name'range)          := e_name;
+      e_fixed_surname (e_surname'range) := e_surname;
+  
+      P := (
+        Name    => fixed_name,
+        Surname => fixed_surname,
+        age     => 32,
+        sex     => 'm');
+  
+      E := (
+        Name    => e_fixed_name,
+        Surname => e_fixed_surname,
+        age     => 92,
+        Sex     => 'f',
+        Salary  => 92.3);
+  
+      P.Put;
+      put_line("Increment age ..."); 
+      P.Increase_Age;
+      P.Put;
+  
+      E.Put;
+      for I in Integer range 1 .. 4 loop
+        E.Increase_Age;
+      end loop;
+  
+      E.Put;
+    end OOP_Test;
+~~~~
+
+And some sample output of this particular procedure
+
+~~~~nocode
+    -- Employee
+    Jon                                               
+    Doeson                                            
+       32
+      'm'
+    Increment age ...
+    -- Employee
+    Jon                                               
+    Doeson                                            
+       33
+      'm'
+    -- Employee
+    Mary                                              
+    Maryson                                           
+       92
+      'f'
+     9.23000E+01
+    -- Employee
+    Mary                                              
+    Maryson                                           
+       96
+      'f'
+     9.23000E+01
+~~~~
 
 # References
 
-- [wiki] http://en.wikibooks.org/wiki/Ada\_Programming/Types/record
-- [disc] http://archive.adaic.com/standards/83rat/html/ratl-04-07.html#4.7.2
-  (Good writeup on records, etc).
-- [unio] https://gcc.gnu.org/onlinedocs/gcc-3.4.5/gnat\_rm/Pragma-Unchecked\_005fUnion.html
+- \[wiki\] [http://en.wikibooks.org/wiki/Ada\_Programming/Types/record](http://en.wikibooks.org/wiki/Ada_Programming/Types/record)
+- \[disc\] [http://archive.adaic.com/standards/83rat/html/ratl-04-07.html#4.7.2](http://archive.adaic.com/standards/83rat/html/ratl-04-07.html#4.7.2)
+- \[unio\] [https://gcc.gnu.org/onlinedocs/gcc-3.4.5/gnat\_rm/Pragma-Unchecked\_005fUnion.html](https://gcc.gnu.org/onlinedocs/gcc-3.4.5/gnat\_rm/Pragma-Unchecked\_005fUnion.html)
+- \[prim\] [http://www.adaic.org/resources/add\_content/docs/95style/html/sec\_9/9-3-1.html](http://www.adaic.org/resources/add\_content/docs/95style/html/sec\_9/9-3-1.html)
+- \[extn\] [http://en.wikibooks.org/wiki/Ada\_Programming/Object\_Orientation#Type\_extensions](http://en.wikibooks.org/wiki/Ada\_Programming/Object\_Orientation#Type\_extensions)
+
