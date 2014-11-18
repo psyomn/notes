@@ -1,7 +1,14 @@
 % Minor notes on records in Ada (up to 2014)
 % Simon Symeonidis
 
-# Simple Record example 
+# Introduction
+
+These are my notes for when I was looking into different records that you can
+use in Ada. I found it a little confusing, and decided to write everything down
+the way it would be easiest for me to personally understand. These notes mirror
+the online book found on [wiki].
+
+# Overall
 
 Records are like structs in C. Exactly like C they do not contain behavior.  Ada
 supports the following records:
@@ -339,9 +346,54 @@ the following body:
     end Mutable_Test;
 ~~~~
 
-# Using Records
+# Unions
+
+Unions are defined the same way as mutable variant records. The difference is
+that you add a `pragma` at the end of the definition, with the unions name.
+
+~~~~ada
+    type Faceless (P : Persona := Persona'First) is 
+      record
+        -- ...
+      end record;
+
+    pragma Unchecked_Union (Faceless);
+~~~~
+
+You're not able to check the discriminant if you have a case block like the
+following: 
+
+~~~~ada
+    -- Checking discriminator will raise compilation error
+    -- Note that this will not compile
+    procedure Illegal(U : United) is
+    begin 
+      case U.Discriminator is
+    
+      when One =>
+        p("Union type one");
+        p(Integer'Image(U.Basic));
+        p(Float'Image(U.Potato));
+    
+      when Two =>
+        p("Union type two");
+        p(Integer'Image(U.Basic));
+        p(Positive'Image(U.Yotato));
+        p(Positive'Image(U.Motato));
+    
+      end case;
+    end Put_United;
+~~~~
+
+There is an interesting writeup on the rules on how to use the above here [unio].
+
+# Tagged Records
+
+
 
 # References
 
 - [wiki] http://en.wikibooks.org/wiki/Ada\_Programming/Types/record
-
+- [disc] http://archive.adaic.com/standards/83rat/html/ratl-04-07.html#4.7.2
+  (Good writeup on records, etc).
+- [unio] https://gcc.gnu.org/onlinedocs/gcc-3.4.5/gnat\_rm/Pragma-Unchecked\_005fUnion.html
