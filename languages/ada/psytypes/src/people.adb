@@ -1,15 +1,16 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body People is 
+package body People is
+
   procedure p(S : String) renames Ada.Text_IO.Put_Line;
 
-  procedure Indent is 
+  procedure Indent is
   begin
     put("  ");
   end Indent;
 
   procedure Put
-    (This : Person) is 
+    (This : Object) is
   begin
     p("-- Employee");
     p(This.Name);
@@ -19,80 +20,66 @@ package body People is
   end Put;
 
   procedure Increase_Age
-    (This : in out Person) is
+    (This : in out Object) is
   begin
     This.Age := This.Age + 1;
   end Increase_Age;
 
+  -- Copy a string to a target. If the source is bigger than target, it will be
+  -- cut off at target's max size.
+  -- @param Source is what we want to copy
+  -- @param Target is where we want to copy the string into
+  procedure Copy_String
+    (Source : String;
+     Target : in out String) is
+    Min_Max_Size : Integer;
+  begin
+    Target (Target'Range) := (others => ' ');
+
+    -- We want to use the object's max string size, if source exceeds it. If
+    -- source is smaller, then we copy up to that.
+    Min_Max_Size := (if Source'Last >= Target'Last then Target'Last else Source'Last);
+    Target (Target'First .. Min_Max_Size) := Source (Source'First .. Min_Max_Size);
+  end Copy_String;
+
+  procedure Set_Age
+    (This : in out Object;
+     Age  : Positive) is
+  begin
+    This.Age := Age;
+  end Set_Age;
+
+  procedure Set_Name
+    (This : in out Object;
+     Name : String) is
+  begin
+    Copy_String(Name, This.Name);
+  end Set_Name;
+
+  procedure Set_Surname
+    (This    : in out Object;
+     Surname : String) is
+  begin
+    Copy_String(Surname, This.Surname);
+  end Set_Surname;
+
+  procedure Set_Male
+    (This : in out Object) is
+  begin
+    This.Sex := 'm';
+  end Set_Male;
+
+  procedure Set_Female
+    (This : in out Object) is
+  begin
+    This.Sex := 'f';
+  end Set_Female;
+
   function Get_Age
-    (This : Person)
-    return Positive
-  is 
+    (This : Object)
+    return Positive is
   begin
     return This.Age;
   end Get_Age;
-
-  function Get_Salary
-    (This : Employee)
-     return Float
-  is
-  begin 
-    return This.Salary;
-  end Get_Salary;
-
-  procedure Put
-    (This : Employee) is
-    -- Case to Person, to call parent put
-    P : Person := Person(This);
-  begin
-    P.Put;
-    put_line(Float'Image(This.Salary));
-  end Put;
-
-  procedure OOP_Test is 
-    P : Person;
-    E : Employee;
-
-    name          : String                  := "Jon";
-    surname       : String                  := "Doeson";
-    fixed_name    : String(P.Name'Range)    := (others => ' ');
-    fixed_surname : String(P.Surname'Range) := (others => ' ');
-
-    e_name          : String                  := "Mary";
-    e_surname       : String                  := "Maryson";
-    e_fixed_name    : String(E.Name'Range)    := (others => ' ');
-    e_fixed_surname : String(E.Surname'Range) := (others => ' ');
-  begin
-    fixed_name      (name'range)            := name;
-    fixed_surname   (surname'range)         := surname;
-
-    e_fixed_name    (e_name'range)          := e_name;
-    e_fixed_surname (e_surname'range) := e_surname;
-
-    P := (
-      Name    => fixed_name,
-      Surname => fixed_surname,
-      age     => 32,
-      sex     => 'm');
-
-    E := (
-      Name    => e_fixed_name,
-      Surname => e_fixed_surname,
-      age     => 92,
-      Sex     => 'f',
-      Salary  => 92.3);
-
-    P.Put;
-    put_line("Increment age ..."); 
-    P.Increase_Age;
-    P.Put;
-
-    E.Put;
-    for I in Integer range 1 .. 4 loop
-      E.Increase_Age;
-    end loop;
-
-    E.Put;
-  end OOP_Test;
 
 end People;
