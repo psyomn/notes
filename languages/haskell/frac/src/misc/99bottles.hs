@@ -16,7 +16,7 @@ x `bottles` str = (show x) ++ " " ++ (bottlesPlurals x) ++ str
 
 makeSong :: Int -> String
 makeSong 0 = ""
-makeSong x = 
+makeSong x =
   x `bottles` " of beer on the wall, " ++
   x `bottles` "  of beer. " ++ "Take one down and pass it around, " ++
   (x - 1) `bottles` " of beer on the wall. " ++ makeSong (x - 1)

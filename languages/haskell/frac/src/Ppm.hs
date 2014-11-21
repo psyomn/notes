@@ -1,6 +1,6 @@
-{- 
+{-
 -- Small library that produce P3 ppm images.
--- @author Simon Symeonidis 
+-- @author Simon Symeonidis
 -}
 module Ppm(
 PPMImage
@@ -26,8 +26,8 @@ maxColor = 255
 minColor = 0
 
 boundsCheck :: Int -> Int
-boundsCheck x = 
-  case x >= minColor && x <= maxColor of 
+boundsCheck x =
+  case x >= minColor && x <= maxColor of
     True  -> x
     False -> error $ "Pixel values range from 0 to 255, value: " ++ show x
 
@@ -68,7 +68,7 @@ makeRow 0  _  = []
 makeRow it px = px : makeRow (it - 1) px
 
 makeImage :: Pixel Int -> Int -> Int -> PPMImage
-makeImage px dimx dimy = 
+makeImage px dimx dimy =
   PPMImage ppmMagicNumber dimx dimy (makeImageData px dimx dimy)
 
 makeImageData :: Pixel Int -> Int -> Int -> [[Pixel Int]]
@@ -83,7 +83,7 @@ makeRedImage   x y = makeImage redPixel   x y
 
 -- | Pixel 0 1 2 -> "0 1 2"
 pixelString :: Pixel Int -> String
-pixelString pixel = 
+pixelString pixel =
      (show $ redOf pixel) ++ " "
   ++ (show $ greenOf pixel) ++ " "
   ++ (show $ blueOf pixel)
@@ -100,13 +100,13 @@ imageString (PPMImage _ _ _ dat) = imageStringBackend dat
 
 imageStringBackend :: [[Pixel Int]] -> String
 imageStringBackend [] = ""
-imageStringBackend (row:rows) = 
+imageStringBackend (row:rows) =
   (outputRow row) ++ "\n" ++ imageStringBackend rows
 
 outputImage :: PPMImage -> String
-outputImage img = 
-  ppmMagicNumber ++ "\n" 
-  ++ show (getWidth  img) ++ " " 
+outputImage img =
+  ppmMagicNumber ++ "\n"
+  ++ show (getWidth  img) ++ " "
   ++ show (getHeight img) ++ "\n"
   ++ show (maxColor) ++ "\n"
   ++ (imageString img)

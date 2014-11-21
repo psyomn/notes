@@ -1,4 +1,4 @@
-{- Fun, trivial filters to manipulate the ppm files. 
+{- Fun, trivial filters to manipulate the ppm files.
    @author Simon Symeonidis -}
 module Ppm.Filters (
 Direction
@@ -25,13 +25,13 @@ safeDecrease :: Int -> Int
 safeDecrease x = safeDecreaseAmt x 1
 
 safeDecreaseAmt :: Int -> Int -> Int
-safeDecreaseAmt x y = case x - y <= 0 of 
+safeDecreaseAmt x y = case x - y <= 0 of
                    True  -> 0
                    False -> x - y
 
 safeDecreasePixel :: Int -> Pixel Int -> Pixel Int
 safeDecreasePixel 0  pix = pix
-safeDecreasePixel ix pix = 
+safeDecreasePixel ix pix =
   makePixel (safeDecreaseAmt (redOf   pix) ix)
             (safeDecreaseAmt (blueOf  pix) ix)
             (safeDecreaseAmt (greenOf pix) ix)
@@ -41,7 +41,7 @@ revRow imgdat = revRowBack imgdat 0
 
 revRowBack :: [[Pixel Int]] -> Int -> [[Pixel Int]]
 revRowBack []         _ = []
-revRowBack (row:rows) x = 
+revRowBack (row:rows) x =
   case x `mod` 2 == 0 of
     True  -> reverse row : revRowBack rows (x + 1)
     False -> row : revRowBack rows (x + 1)

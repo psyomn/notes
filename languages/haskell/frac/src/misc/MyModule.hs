@@ -1,4 +1,4 @@
--- @author Simon Symeonidis 
+-- @author Simon Symeonidis
 module MyModule(toStrList) where
 
 -- | Example where we convert an integer list to a string list. The signature
@@ -9,7 +9,7 @@ toStrList :: [Int] -> [String]
 toStrList lst = map show lst
 
 -- Example usage:
--- [psyomn@aeolus misc 0]$ ghci MyModule.hs 
+-- [psyomn@aeolus misc 0]$ ghci MyModule.hs
 -- GHCi, version 7.6.3: http://www.haskell.org/ghc/  :? for help
 -- Loading package ghc-prim ... linking ... done.
 -- Loading package integer-gmp ... linking ... done.
