@@ -13,3 +13,7 @@ documents. You can get plantuml [here](http://plantuml.sf.net).
 
 Some minor case studies of some programming languages. They should provide a
 nice reference point for anyone interrested in those programming languages.
+
+#### Specifications
+
+Some notes on things I like to analyse and maybe implement one day.
