@@ -10,11 +10,14 @@ the online book found on [wiki].
 
 All the actual code is available here:
 
-> [http://github.com/psyomn/architecture-notes/languages/ada/psytypes/](http://github.com/psyomn/architecture-notes/languages/ada/psytypes/)
+> [http://github.com/psyomn/architecture-notes/languages/ada/psytypes/][ln-psytypes]
 
 The documentation is in the doc subdir:
 
-> [http://github.com/psyomn/architecture-notes/languages/ada/psytypes/doc/](http://github.com/psyomn/architecture-notes/languages/ada/psytypes/doc/)
+> [http://github.com/psyomn/architecture-notes/languages/ada/psytypes/doc/][ln-psytypes-doc]
+
+[ln-psytypes]: http://github.com/psyomn/architecture-notes/languages/ada/psytypes/doc/
+[ln-psytypes-doc]: http://github.com/psyomn/architecture-notes/languages/ada/psytypes/
 
 # Overall
 
@@ -45,6 +48,11 @@ supports the following records:
 
 - Tagged Record (Class)
     - Is a record that later on can be used as a class.
+
+# Records
+
+Records in Ada are what structs are in C - but with some differences as we will
+see. We describe the different types of records we can use in Ada.
 
 ## Basic Record
 
@@ -87,7 +95,7 @@ convention is to define null records the following way:
     type Person is null record;
 ~~~~
 
-# Variant record
+## Variant record
 
 In `C` we are able to define unions like the following:
 
@@ -195,7 +203,7 @@ Size of the variant record as politician object:
 We notice that the run time object of the `software guy` is smaller than the
 `politician` object, yet the structure of `Employee` yields the max.
 
-# Mutable and Immutable Variant Records
+## Mutable and Immutable Variant Records
 
 For immutable variant records, you may take a look at the above example. In
 order to define a variant record that is mutable, then you need to do the same
@@ -354,7 +362,7 @@ the following body:
     end Mutable_Test;
 ~~~~
 
-# Unions
+## Unions
 
 Unions are defined the same way as mutable variant records. The difference is
 that you add a `pragma` at the end of the definition, with the unions name.
@@ -395,7 +403,7 @@ following:
 
 There is an interesting writeup on the rules on how to use the above here [unio].
 
-# Tagged Records
+## Tagged Records
 
 Tagged records are what other programming languages call classes [wiki]. We
 demonstrate a very simple tagged record, that holds information about a person.
@@ -505,7 +513,7 @@ And the package body:
     end People;
 ~~~~
 
-## Extending Tagged Records
+### Extending Tagged Records
 
 Now for a simple example of inheritance, we will be extending the tagged record.
 We create an employee. The employee shall have an extra attribute `Salary`.
@@ -538,16 +546,23 @@ information of the `Employee`:
 
 The above is sufficient to override a method. Optionally you may add the
 `overriding` keyword to the method to be overriden (think in terms of `virtual`
-with inherited C++ classes).
+with inherited C++ classes). _The keyword can only be used if the type of `This`
+is set to a type with a common name._
+
+So the following:
 
 ~~~~ada
+    -- Erroneous
     overriding
     procedure Put
       (This : Person);
 ~~~~
 
-Again, the keyword is optional. The proper method will run either way. Next let
-us look into the implementation of `Put`:
+Would raise a compilation error if we try to compile. Overriding in runtime
+works anyway. For a more proper example of OOP in Ada, you may look into the
+upcoming section below: 'OOP the proper way'.
+
+Next let us look into the implementation of `Employee.Put`:
 
 ~~~~ada
     procedure Put
@@ -802,64 +817,64 @@ __people.ads__
 __employee.adb__
 
 ~~~~ada
-  with
-    Ada.Text_IO
-  , People;
+    with
+      Ada.Text_IO
+    , People;
 
-  use
-    People
-  , Ada.Text_IO;
+    use
+      People
+    , Ada.Text_IO;
 
-  package body Employee is
+    package body Employee is
 
-    function Get_Salary
-      (This : Employee.Object)
-       return Float is
-    begin
-      return This.Salary;
-    end Get_Salary;
+      function Get_Salary
+        (This : Employee.Object)
+         return Float is
+      begin
+        return This.Salary;
+      end Get_Salary;
 
-    procedure Set_Salary
-      (This   : in out Employee.Object;
-       Salary : Float ) is
-    begin
-      This.Salary := Salary;
-    end Set_Salary;
+      procedure Set_Salary
+        (This   : in out Employee.Object;
+         Salary : Float ) is
+      begin
+        This.Salary := Salary;
+      end Set_Salary;
 
-    procedure Put
-      (This : Object) is
-      -- Case to Person, to call parent put
-      P : People.Object := People.Object (This);
-    begin
-      P.Put;
-      put_line(Float'Image(This.Salary));
-    end Put;
+      procedure Put
+        (This : Object) is
+        -- Case to Person, to call parent put
+        P : People.Object := People.Object (This);
+      begin
+        P.Put;
+        put_line(Float'Image(This.Salary));
+      end Put;
 
-    procedure OOP_Test is
-      P : People.Object;
-      E : Employee.Object;
-    begin
-      P.Set_Name("Jon");
-      P.Set_Surname("Doeson");
-      P.Set_Age(32);
-      P.Set_Male;
-      P.Put;
+      procedure OOP_Test is
+        P : People.Object;
+        E : Employee.Object;
+      begin
+        P.Set_Name("Jon");
+        P.Set_Surname("Doeson");
+        P.Set_Age(32);
+        P.Set_Male;
+        P.Put;
 
-      E.Set_Name("Mary");
-      E.Set_Surname("Maryson");
-      E.Set_Age(23);
-      E.Set_Female;
-      E.Set_Salary(9000.12);
-      E.Put;
+        E.Set_Name("Mary");
+        E.Set_Surname("Maryson");
+        E.Set_Age(23);
+        E.Set_Female;
+        E.Set_Salary(9000.12);
+        E.Put;
 
-      for I in Integer range 1 .. 4 loop
-        E.Increase_Age;
-      end loop;
+        for I in Integer range 1 .. 4 loop
+          E.Increase_Age;
+        end loop;
 
-      E.Put;
-    end OOP_Test;
+        E.Put;
+      end OOP_Test;
 
-  end Employee;
+    end Employee;
 ~~~~
 
 __people.adb__
@@ -954,9 +969,15 @@ __people.adb__
 
 # References
 
-- \[wiki\] [http://en.wikibooks.org/wiki/Ada\_Programming/Types/record](http://en.wikibooks.org/wiki/Ada_Programming/Types/record)
-- \[disc\] [http://archive.adaic.com/standards/83rat/html/ratl-04-07.html#4.7.2](http://archive.adaic.com/standards/83rat/html/ratl-04-07.html#4.7.2)
-- \[unio\] [https://gcc.gnu.org/onlinedocs/gcc-3.4.5/gnat\_rm/Pragma-Unchecked\_005fUnion.html](https://gcc.gnu.org/onlinedocs/gcc-3.4.5/gnat\_rm/Pragma-Unchecked\_005fUnion.html)
-- \[prim\] [http://www.adaic.org/resources/add\_content/docs/95style/html/sec\_9/9-3-1.html](http://www.adaic.org/resources/add\_content/docs/95style/html/sec\_9/9-3-1.html)
-- \[extn\] [http://en.wikibooks.org/wiki/Ada\_Programming/Object\_Orientation#Type\_extensions](http://en.wikibooks.org/wiki/Ada\_Programming/Object\_Orientation#Type\_extensions)
+- \[wiki\] [http://en.wikibooks.org/wiki/Ada\_Programming/Types/record][ln-wiki]
+- \[disc\] [http://archive.adaic.com/standards/83rat/html/ratl-04-07.html#4.7.2][ln-disc]
+- \[unio\] [https://gcc.gnu.org/onlinedocs/gcc-3.4.5/gnat\_rm/Pragma-Unchecked\_005fUnion.html][ln-unio]
+- \[prim\] [http://www.adaic.org/resources/add\_content/docs/95style/html/sec\_9/9-3-1.html][ln-prim]
+- \[extn\] [http://en.wikibooks.org/wiki/Ada\_Programming/Object\_Orientation#Type\_extensions][ln-extn]
+
+[ln-wiki]: http://en.wikibooks.org/wiki/Ada_Programming/Types/record
+[ln-disc]: http://archive.adaic.com/standards/83rat/html/ratl-04-07.html#4.7.2
+[ln-unio]: https://gcc.gnu.org/onlinedocs/gcc-3.4.5/gnat\_rm/Pragma-Unchecked\_005fUnion.html
+[ln-prim]: http://www.adaic.org/resources/add\_content/docs/95style/html/sec\_9/9-3-1.html
+[ln-extn]: http://en.wikibooks.org/wiki/Ada\_Programming/Object\_Orientation#Type\_extensions
 
