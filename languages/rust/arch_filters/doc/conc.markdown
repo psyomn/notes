@@ -1,11 +1,12 @@
 % Rust, Spawn, Sender-Receiver, And You!
 % Simon Symeonidis
-# Minor Notes on Concurrency
+
+# Minor Notes on Concurrency (Rust 0.13)
 
 We can spawn concurrently running things with the following line.
 
 ~~~~rust
-    spawn(proc(){ println!("potato') });
+    spawn(proc(){ println!("potato") });
 ~~~~
 
 Similarly we can spawn functions in the background:
@@ -240,6 +241,6 @@ I got to say, this is some pretty fun stuff!
 
 # References
 
-- \[pipes\] [http://en.wikipedia.org/wiki/Pipeline_%28software%29][pipes]
+- \[pipes\] [http://en.wikipedia.org/wiki/Pipeline_%28software%29][pipes-ref]
 
-[pipes]: http://en.wikipedia.org/wiki/Pipeline_%28software%29
+[pipes-ref]: http://en.wikipedia.org/wiki/Pipeline_%28software%29
