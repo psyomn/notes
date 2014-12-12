@@ -405,6 +405,9 @@ There is an interesting writeup on the rules on how to use the above here [unio]
 
 ## Tagged Records
 
+_FORENOTE: a better example of OOP in Ada in this document is given in the
+later section "OOP the proper way"_
+
 Tagged records are what other programming languages call classes [wiki]. We
 demonstrate a very simple tagged record, that holds information about a person.
 
