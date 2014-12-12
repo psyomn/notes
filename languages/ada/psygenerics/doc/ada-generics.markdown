@@ -4,7 +4,12 @@
 
 # Introduction
 
-Minor notes on generics in Ada.
+Minor notes on generics in Ada. The full source code for this project may be
+found here:
+
+> [https://github.com/psyomn/architecture-notes/tree/master/languages/ada/psygenerics][ada-psygenerics]
+
+[ada-psygenerics]: https://github.com/psyomn/architecture-notes/tree/master/languages/ada/psygenerics
 
 ### Defining Generic Operations
 
