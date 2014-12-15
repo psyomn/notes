@@ -78,7 +78,8 @@ found here.
 You may notice that there exists a conceptual package within compiler called
 "Compiler Testing". That contains the packages which perform some sort of
 testing for the compiler (ie, were functional tests, and regression tests and
-more are found).
+more are found). Some of the files will have github issue ids linking back to
+bugs found in the compiler.
 
 #### Util
 
@@ -89,11 +90,23 @@ package "libterm" is a wrapper for the "terminfo" library, which provides a
 bunch of useful things to the compiler, such as colored output of error
 messages. The package "librbml" is an acronym for "really bad markup language",
 and from what I could understand from the source aims to be either replaced or
-improved.
+improved in the future.
 
 #### LLVM Components / 3rd party utils
 
-Conceptually contains three packages: llvm, rt, compiler-rt
+Conceptually contains three packages: llvm, rt, compiler-rt. Compiler-rt and
+llvm are the packages provided from [llvm.org](http://llvm.org). The package
+'rt' contains some includes of other headers to interface to other projects such
+as miniz (a compression library), hoedown which was previously mentioned, and
+valgrind. There exists some LLVM ASM code as well. These are packages probably
+required in the runtime of Rust.
+
+<!---
+TODO: I need to ask:
+  - what is the point of the asm code in rt?
+  - and does rt simply contain the libraries we need to compile and link against
+    to provide a standard library for rust?
+-->
 
 #### Memory
 
@@ -101,7 +114,10 @@ Conceptually contains the packages: jemalloc, liballoc, and libarena. The two
 libraries liballoc, and libarena are written in Rust; jemalloc is a submodule,
 written in C.
 
-####
+#### Lib Wrappers
+
+This contains a simple wrapper around a C library. The library libflate is a
+wrapper around `miniz` (zlib compression).
 
 # References
 
