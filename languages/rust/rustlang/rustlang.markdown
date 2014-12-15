@@ -1,4 +1,4 @@
-% Notes about the Rust Compiler, Packages and Files
+% Notes about the Rust 0.13 Compiler, Packages and Files (Draft)
 % Simon Symeonidis
 % Fri Dec 12 17:09:46 EST 2014
 
@@ -66,12 +66,75 @@ libraries are either what is included in the runtime of the core language, and
 other parts that the user of the language may use such as implementations of
 hash maps, vectors, and more.
 
+* libcollections: is a collection of data structures. Currently in this crate,
+  there exists set, and map implemented with a tweaked btree [^btreenote], as
+  well as alternate implementations with tries and regular trees. Other
+  components such as `str`, `String`, and `vec` may be found here.
+
+* libcore: contains some core macros, cell, iterators, option (the monad), and
+  more. This crate is stressed not to be included and is not meant to be
+  included by users manually. The standard library exposes the functionalities
+  required for programs instead.
+
+* liblog: exists for simple logging, provided by the macros `debug`, `info`,
+  `warning`, and `error`.
+
+* librand: is a random number generator implementation that provides different
+  models to be used by the user of this library. Different algorithms are
+  provided such as the `chacha20`, and `isaac` algorithms.
+
+* libserialize: provides a serialize methods to export to different formats such
+  as JSON, base64 (vector of u8 bytes to base64 string).
+
+* liblibc: bindings for the C standard library. This is platform specific, so on
+  linux this is targeted to glibc.
+
+* libregex: a implementation of Regular Expressions in Rust. Heavilly based on
+  RE2 [^RE2].
+
+* libtime: currently (0.13) deprecated, and use of an alternate time crate is
+  suggested: [http://github.com/rust-lang/time](http://github.com/rust-lang/time).
+
+* libunicode: unicode supporting functions for unicode strings.
+
+[^btreenote]: the b-tree is made to use arrays for a bunch of elements per
+memory allocation in order to improve performance. More info could be found
+here: [https://github.com/rust-lang/rust/blob/master/src/libcollections/btree/map.rs#L36](https://github.com/rust-lang/rust/blob/master/src/libcollections/btree/map.rs#L36)
+
+[^RE2]: https://code.google.com/p/re2/
+
 #### Compiler
 
 Packages and files which contain specific structures and behavior that is
 required in order to get a working compiler. For example ASTs, parsers, and type
 checkers are grouped here. A rust interface with bindings to `LLVM` is also
 found here.
+
+* librustc\_driver
+
+* librustc
+
+* librustc\_trans
+
+* librustc\_back
+
+* librustc\_llvm
+
+* librustc\_tycheck: type checking?
+
+* librustc\_borrowck: sem check for refs
+
+* libbacktrace
+
+* grammar
+
+* rustllvm
+
+* librustrt
+
+
+* libsyntax
+
 
 #### Compiler.Testing
 
@@ -113,6 +176,12 @@ TODO: I need to ask:
 Conceptually contains the packages: jemalloc, liballoc, and libarena. The two
 libraries liballoc, and libarena are written in Rust; jemalloc is a submodule,
 written in C.
+
+<!---
+  Have not confirmed, but from what I understand rust uses jemalloc by default
+  Also what is up with the arena implementation in rust vs the existing
+  implementation in C, in jemalloc?
+--!>
 
 #### Lib Wrappers
 
