@@ -110,9 +110,17 @@ required in order to get a working compiler. For example ASTs, parsers, and type
 checkers are grouped here. A rust interface with bindings to `LLVM` is also
 found here.
 
-* librustc\_driver
+* librustc: 
 
-* librustc
+* librustc\_driver: this contains basic implementation of a driver for the rust
+  compiler. In other words it includes the components it needs from `librustc`
+  and acts as a mediator. I'm guessing this was done to hide things from the
+  user of the compiler. According to \[rust-tom-lee\] where rust was still
+  version 0.10, it looks like the driver was included in the librustc library at
+  first, and later on moved out to its own module. Any information that one may
+  want to extrat about the way passes are done in rust, for compilation may be
+  found here on the highest level - a good starting point to understand the way
+  they have organized the compilation procedure.
 
 * librustc\_trans
 
@@ -192,4 +200,7 @@ wrapper around `miniz` (zlib compression).
 
 * \[jemalloc\]: [http://people.freebsd.org/~jasone/jemalloc/bsdcan2006/jemalloc.pdf][jemalloc-paper]
 
+* \[rust-tom-lee\]: [http://tomlee.co/2014/04/03/a-more-detailed-tour-of-the-rust-compiler/][rust-tom-lee-link]
+
 [jemalloc-paper]: http://people.freebsd.org/~jasone/jemalloc/bsdcan2006/jemalloc.pdf
+[rust-tom-lee-link]: http://tomlee.co/2014/04/03/a-more-detailed-tour-of-the-rust-compiler/
