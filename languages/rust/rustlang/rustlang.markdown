@@ -201,7 +201,10 @@ written in C.
 #### Lib Wrappers
 
 This contains a simple wrapper around a C library. The library libflate is a
-wrapper around `miniz` (zlib compression).
+wrapper around `miniz` (zlib compression). libgraphiz is not a wrapper, but a
+simple implementation that helps exporting dot graphs programmatically - ie
+provide a bunch of nodes with data, connect them, and the program you coded will
+export the textual representation.
 
 # References
 
