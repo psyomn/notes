@@ -110,7 +110,8 @@ required in order to get a working compiler. For example ASTs, parsers, and type
 checkers are grouped here. A rust interface with bindings to `LLVM` is also
 found here.
 
-* librustc: 
+* librustc: Contains all the compiler specific implementations and definitions.
+  This is also where the implementation of each phase may be found.
 
 * librustc\_driver: this contains basic implementation of a driver for the rust
   compiler. In other words it includes the components it needs from `librustc`
