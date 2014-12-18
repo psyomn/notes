@@ -15,6 +15,12 @@ ASTs from rust source code. The best lead to do this is to look into rustdoc and
 see how it identifies different definitions in source code, and manipulates them
 for API generation.
 
+## Glossary
+
+Crates are libraries. And just like libraries, we can have executable crates, or
+crates which were created to provide redundant functionalities, just like
+libraries.
+
 # Before Looking in the Source
 
 It would be a good time to list the git submodules (separate projects) that this
@@ -111,7 +117,9 @@ checkers are grouped here. A rust interface with bindings to `LLVM` is also
 found here.
 
 * librustc: Contains all the compiler specific implementations and definitions.
-  This is also where the implementation of each phase may be found.
+  This is also where the implementation of each phase may be found. This crate
+  depends on four crates: libsyntax, librustc\_back, and librustc\_trans. This
+  crate (librustc) seems to bring everything together in a higher level context.
 
 * librustc\_driver: this contains basic implementation of a driver for the rust
   compiler. In other words it includes the components it needs from `librustc`
@@ -123,27 +131,38 @@ found here.
   found here on the highest level - a good starting point to understand the way
   they have organized the compilation procedure.
 
-* librustc\_trans
+* libsyntax: things that have to do purely with syntax and some semantics to an
+  extent. If you want to extract ASTs from source code and write tools to
+  generate metrics for example, this crate is what you should look at.
 
-* librustc\_back
+* librustc\_trans: last phase of compilation process. This is what converts the
+  rust code to the LLVM assembly intermediate representation (IR).
 
-* librustc\_llvm
+* librustc\_back: aiming for specific llvm exports. For example you could find
+  support files for different platforms in here (Android, MIPs, and other
+  architectures).
 
-* librustc\_tycheck: type checking?
+* librustc\_tycheck: type checker for each expression, resolving methods and
+  traits, and checks that most type rules are met.
 
-* librustc\_borrowck: sem check for refs
+* librustc\_llvm: rust bindings to the llvm library.
 
-* libbacktrace
+* librustc\_borrowck: the borrow checker has been separated from some of the
+  source of the compiler, to a separate crate.
 
-* grammar
+* libbacktrace: a backtrace library, whose source is in C. This is _probably_
+  used in order to produce backtraces in Rust programs.
 
-* rustllvm
+* grammar: looks like a testing utility, to check against a specification of
+  Rust grammar written in ANTLR grammar syntax (see \[antlr\]), and the actual
+  Rust implementation. One may invoke the grammar tests with the make target
+  `check-syntax` in the Rust root folder.
 
-* librustrt
+* rustllvm: support code for LLVM, written by the Rust developers to help in
+  development.
 
-
-* libsyntax
-
+* librustrt: various platform specific things for the Rust runtime (eg: stack
+  management, threads, etc go here).
 
 #### Compiler.Testing
 
@@ -173,24 +192,11 @@ as miniz (a compression library), hoedown which was previously mentioned, and
 valgrind. There exists some LLVM ASM code as well. These are packages probably
 required in the runtime of Rust.
 
-<!---
-TODO: I need to ask:
-  - what is the point of the asm code in rt?
-  - and does rt simply contain the libraries we need to compile and link against
-    to provide a standard library for rust?
--->
-
 #### Memory
 
 Conceptually contains the packages: jemalloc, liballoc, and libarena. The two
 libraries liballoc, and libarena are written in Rust; jemalloc is a submodule,
 written in C.
-
-<!---
-  Have not confirmed, but from what I understand rust uses jemalloc by default
-  Also what is up with the arena implementation in rust vs the existing
-  implementation in C, in jemalloc?
---!>
 
 #### Lib Wrappers
 
@@ -203,5 +209,9 @@ wrapper around `miniz` (zlib compression).
 
 * \[rust-tom-lee\]: [http://tomlee.co/2014/04/03/a-more-detailed-tour-of-the-rust-compiler/][rust-tom-lee-link]
 
+* \[antlr\]: [http://antlr.org][antlr-link]
+
 [jemalloc-paper]: http://people.freebsd.org/~jasone/jemalloc/bsdcan2006/jemalloc.pdf
 [rust-tom-lee-link]: http://tomlee.co/2014/04/03/a-more-detailed-tour-of-the-rust-compiler/
+[antlr-link]: http://antlr.org
+
