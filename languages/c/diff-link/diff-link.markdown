@@ -25,7 +25,9 @@ together, and give you a fully working binary.
 
 All notes, and source code is here:
 
-> TODO
+> [https://github.com/psyomn/architecture-notes/blob/master/languages/c/diff-link/diff-link.markdown][ghlink]
+
+[ghlink]: https://github.com/psyomn/architecture-notes/blob/master/languages/c/diff-link/diff-link.markdown
 
 # Experiment
 
