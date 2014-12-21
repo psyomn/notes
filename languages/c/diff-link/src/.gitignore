@@ -1,2 +1,4 @@
 *.swp
 *.o
+main_with_lib1
+main_with_lib2
