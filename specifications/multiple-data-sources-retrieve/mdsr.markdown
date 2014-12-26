@@ -35,4 +35,11 @@ design, we might want some sort of front end to all of these 'back ends'.
 
 # Unified API
 
-The front end to all the
+The front end to all the plugins, or scattered implementations that may retrieve
+data from the given sources. It would be nice to have the indirection happen
+here - make the user deal with the interface, but hide what is actually
+happening in the background (ie: heuristics to choose a particular source or any
+other back end dealing goes here). It would be worthwhile to note that we want
+the ability to choose a particular source in case things are not working
+properly - ie override automatic behavior if need be.
+
