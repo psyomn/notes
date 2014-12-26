@@ -22,3 +22,17 @@ data on each respective end? What if they provide the same data, with small
 differences? Which one would be preferred? Should there be some sort of logging
 to keep track of where some data was retrieved in case of conflicts in the
 future?
+
+Another consideration is whether to have the implementation in a polyglot
+setting: if the services provided by different sources, and their services are
+published, there's a good chance different implementation in different languages
+may have already been written.
+
+Finally one should also consider how all this distributed information may be
+unified into a single point. For example, if we're writing a tool that wants to
+query different sources seemlessly for particular data, and have a nice overall
+design, we might want some sort of front end to all of these 'back ends'.
+
+# Unified API
+
+The front end to all the
