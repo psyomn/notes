@@ -1,0 +1,43 @@
+digraph G {
+
+  node [shape="rectangle"];
+  subgraph cluster_sources {
+    label = "Foreign Data Sources";
+    node [label="datasource 1"] ds1;
+    node [label="datasource 2"] ds2;
+    node [label="datasource 3"] ds3;
+
+    node [label="retriever impl 1"] impl1;
+    node [label="retriever impl 2"] impl2;
+    node [label="retriever impl 3"] impl3;
+
+    ds1 -> impl1 [dir="both"];
+    ds2 -> impl2 [dir="both"];
+    ds3 -> impl3 [dir="both"];
+  }
+
+  subgraph cluster_mediator {
+    label="mediator layer";
+    node [label="merged API"] mergedAPI;
+    node [label="heuristics, organizing\nalgorithms"] heur;
+
+    mergedAPI -> heur;
+  }
+
+  impl1 -> mergedAPI [dir="both"];
+  impl2 -> mergedAPI [dir="both"];
+  impl3 -> mergedAPI [dir="both"];
+
+  node [label="CLI App"] cliapp;
+  node [label="Library DB"] libdb;
+  node [label="Filesystem\nStore"] fs;
+
+  mergedAPI -> cliapp [dir="both"];
+
+  subgraph cluster_frontend {
+    label = "frontend";
+    cliapp -> libdb;
+    cliapp -> fs;
+  }
+
+}
