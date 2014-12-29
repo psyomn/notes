@@ -82,7 +82,15 @@ take advantage - are we caching all the restored data for future use?
 
 ![Overall Organization\label{fig:org}](fig/mainfig.png)
 
+# Practical Example
+
+Let's write a simple example demonstrating the above. Let's say we have a two
+simple servers that store books. There exists two ways to retrieve information
+from these two servers. One way is to perform a JSON request over HTTP, and the
+other is to perform an XML request over HTTP.
+
 # References
+
 - \[adapter\] Design Patterns: Elements of Reusable Object-Oriented Software,
   Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides,
   [http://goo.gl/xsxTh5][oop-link]
