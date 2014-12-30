@@ -1,4 +1,4 @@
-% Multiple Interfaces to non standardized data sources
+% Standardizing Multiple Data Sources via Indirect API
 % Simon Symeonidis
 % Sat Dec 27 23:06:32 EST 2014
 
