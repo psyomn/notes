@@ -89,6 +89,103 @@ simple servers that store books. There exists two ways to retrieve information
 from these two servers. One way is to perform a JSON request over HTTP, and the
 other is to perform an XML request over HTTP.
 
+There is a problem: the JSON version of the server is programmed well, and we
+can retrieve all the books with a simple request. However on the other hand the
+XML server has a two step process to get all the books. The first request
+retrieves all the _ids_ of the books, and then we request all the details of the
+books by providing the required _ids_.
+
+I have programmed two simple applications that may be used for this example:
+
+- [https://github.com/psyomn/rails-notes/tree/master/book-servers/books-json][books-json-ln]
+- [https://github.com/psyomn/rails-notes/tree/master/book-servers/books-xml][books-xml-ln]
+
+[books-json-ln]: https://github.com/psyomn/rails-notes/tree/master/book-servers/books-json
+[books-xml-ln]: https://github.com/psyomn/rails-notes/tree/master/book-servers/books-xml
+
+So in the JSON implementation, we only have one URI we need in order to retrieve
+all the information. When we visit:
+[http://localhost:3000/books/all](http://localhost:3000/books/all), we get all
+the books in json format:
+
+~~~~json
+    [
+    {"id":1,
+      "name":"The amazing story of Potato",
+      "author":"Potatotron",
+      "isbn":"11831POTATO1231",
+      "price":121.12,
+      "created_at":"2015-01-02T03:40:22.698Z",
+      "updated_at":"2015-01-02T03:40:22.698Z"},
+
+    {"id":2,
+     "name":"The not so amazing adventures of superdull",
+     "author":"Boring Dude",
+     "isbn":"123112BORE12",
+     "price":55.5,
+     "created_at":"2015-01-02T03:40:22.845Z",
+     "updated_at":"2015-01-02T03:40:22.845Z"},
+
+    {"id":3,"name":"Bookface the Bookeater",
+     "author":"My face is a book",
+     "isbn":"111BOOK!111",
+     "price":null,
+     "created_at":"2015-01-02T03:40:22.978Z",
+     "updated_at":"2015-01-02T03:40:22.978Z"}
+    ]
+~~~~
+
+Now on the second server, we would have a two phase fetch. First we ask for the
+available _ids_:
+
+~~~~xml
+    <fixnums type="array">
+        <fixnum type="integer">1</fixnum>
+        <fixnum type="integer">2</fixnum>
+        <fixnum type="integer">3</fixnum>
+    </fixnums>
+~~~~
+We get the above by requesting the URI: [http://localhost:3000/books/current](http://localhost:3000/books/current).
+We know that we have the following as ids: [1,2,3]. The other piece of
+information is that we have a URI for each individual book. The URI is
+[http://localhost:3000/books/of/1](http://localhost:3000/books/of/1). The last
+part in the URI is the _id_ of the book. We would request this URI with all the
+given _ids_ from the first URI.
+
+~~~~xml
+    <book>
+        <id type="integer">1</id>
+        <name>The biography of someone we do not care about</name>
+        <author>Someone Potato</author>
+        <isbn>123103283IIA1298</isbn>
+        <is-recommended type="boolean">true</is-recommended>
+        <price type="integer">123</price>
+        <short-desc>
+          This is a book that is recommended by many gentlemen and scholars
+        </short-desc>
+        <created-at type="dateTime">2015-01-02T04:22:17Z</created-at>
+        <updated-at type="dateTime">2015-01-02T04:22:17Z</updated-at>
+    </book>
+~~~~
+
+And another request for the next _id_ (2):
+
+~~~~xml
+     <book>
+         <id type="integer">2</id>
+         <name>The answers to all problems volume 13</name>
+         <author>Martin Ni</author>
+         <isbn>1231MARTINNI12312</isbn>
+         <is-recommended type="boolean">false</is-recommended>
+         <price type="integer">55</price>
+         <short-desc>
+           Any questions you have ever had about the universe are answered here
+         </short-desc>
+         <created-at type="dateTime">2015-01-02T04:22:17Z</created-at>
+         <updated-at type="dateTime">2015-01-02T04:22:17Z</updated-at>
+     </book>
+~~~~
+
 # References
 
 - \[adapter\] Design Patterns: Elements of Reusable Object-Oriented Software,
