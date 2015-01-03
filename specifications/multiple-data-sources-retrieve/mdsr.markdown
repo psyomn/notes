@@ -186,6 +186,25 @@ And another request for the next _id_ (2):
      </book>
 ~~~~
 
+## Defining the Retrievers as Modules
+
+Since we want obliviousness from all the different components in this software,
+it would be easier, and best to have each retriever as a smaller sub-project,
+which has its own environment. For example, if we were developing on `Ruby`,
+then it would be convenient to implement each retriever as a `Gem`. If we were
+working with `Python`, then we would use python packages to separate each
+implementation. For other languages such as C, then it would be wise to compile
+to a library that would be linked against in the future.
+
+Having everything as a separate module can help everythign work in its own way
+without having the programmer care for side effects. For example if a module is
+caching retrieved data, and hiding that this is happening with different calls
+to different methods, we wouldn't be actively dealing with this (hopefully, if a
+good interface to the module is given).
+
+For this particular example however we will be using simple files which should
+be thought of as modules - though not really complex ones in our case.
+
 # References
 
 - \[adapter\] Design Patterns: Elements of Reusable Object-Oriented Software,
