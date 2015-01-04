@@ -205,6 +205,219 @@ good interface to the module is given).
 For this particular example however we will be using simple files which should
 be thought of as modules - though not really complex ones in our case.
 
+First the implementation of the JSON retriever:
+
+~~~~ruby
+    require 'net/http'
+    require 'json'
+
+    module JSONRetriever
+      class Book
+        attr_accessor :name, :author, :isbn, :price, :id
+      end
+
+      def get_books
+        uri      = URI('http://localhost:3000/books/all')
+        response = Net::HTTP.get_response(uri)
+        books    = Array.new
+        JSON[response.body].each do |book_js|
+          b = Book.new
+          b.author = book_js["author"]
+          b.name = book_js["name"]
+          b.isbn = book_js["isbn"]
+          b.price = book_js["price"]
+          b.id = book_js["id"]
+          books.push b
+        end
+        books
+      end
+    end
+~~~~
+
+Next, we implement the XML retriever:
+
+~~~~ruby
+    require 'net/http'
+    require 'nokogiri' # You need to have this gem
+
+    module XMLRetriever
+      class Book
+        attr_accessor :name, :author, :isbn, :price, :id, :is_recommended, :short_desc
+      end
+
+      def get_ids
+        uri = URI('http://localhost:3001/books/current')
+        response = Net::HTTP.get_response(uri)
+        doc = Nokogiri::XML(response.body)
+        fixnums = doc.at_xpath("//fixnums")
+        ids = Array.new
+        fixnums.children.each do |fn|
+          if fn.name == 'fixnum'
+            ids.push fn.text.to_i
+          end
+        end
+      ids end
+
+      def get_book(id)
+        uri = URI("http://localhost:3001/books/of/#{id}")
+        response = Net::HTTP.get_response(uri)
+        doc = Nokogiri::XML(response.body)
+        book_xml = doc.at_xpath("//book")
+        make_book(book_xml) # return this value
+      end
+
+      def make_book(xml)
+        b = Book.new
+        xml.children.each do |el|
+          case el.name
+          when 'id'
+            el.children.first.text
+          when 'isbn'
+            el.children.first.text
+          when 'name'
+            b.name = el.children.first.text
+          when 'price'
+            b.price = el.children.first.text.to_f
+          when 'is-recommended'
+            b.is_recommended = el.children.first.text == 'true'
+          when 'author'
+            b.author = el.children.first.text
+          when 'short-desc'
+            b.short_desc = el.children.first.text
+          end
+        end
+        b
+      end
+
+      def get_books
+        ids = get_ids
+        books = Array.new
+        ids.each do |id|
+          books.push get_book(id)
+        end
+        books
+      end
+    end
+~~~~
+
+Both show quite a difference in the way the implementation is required to be
+done. But in the end, both retrieve a book object, but with differing amount of
+member variables. This difference can be sorted out later in the mediator layer.
+
+Finally, the part that remains is defining the mediator layer. The mediator will
+interface to both retrievers and standardize whatever domain object we need, or
+other logic. You can see this being done within the mediator module declaration,
+when defining `Mediator::Book`. This could also be implemented as an adapter
+\[adapter\].
+
+~~~~ruby
+    require_relative 'json-retriever'
+    require_relative 'xml-retriever'
+
+    module Mediator
+      class Book
+        # This is the fields from the XML retriever. However the JSON implementation
+        # does not have all this information. For other implementations you might
+        # want a compromise. For example you might want to keep short_desc, and null
+        # it for whatever is found from the json implementation.
+        #
+        # attr_accessor :name, :author, :isbn, :price, :id, :is_recommended, :short_desc
+
+        attr_accessor :name, :author, :isbn, :price, :id
+
+        def to_s
+          "Id     : #{@id}#{$/}"\
+          "Name   : #{@name}#{$/}"\
+          "Author : #{@author}#{$/}"\
+          "ISBN   : #{@isbn}#{$/}"\
+          "Price  : #{@price}#{$/}"
+        end
+      end
+
+      def get_books_from_all_sources
+        include XMLRetriever
+        include JSONRetriever
+        xml_books  = XMLRetriever.get_books
+        json_books = JSONRetriever.get_books
+        final_books = Array.new
+
+        xml_books.each do |book|
+          b = Mediator::Book.new
+          b.name = book.name
+          b.author = book.author
+          b.isbn = book.isbn
+          b.price = book.price
+          b.id = book.id
+          final_books.push b
+        end
+
+        json_books.each do |book|
+          b = Mediator::Book.new
+          b.name = book.name
+          b.author = book.author
+          b.isbn = book.isbn
+          b.price = book.price
+          b.id = book.id
+          final_books.push b
+        end
+        final_books
+      end
+    end
+
+    include Mediator
+
+    get_books_from_all_sources.each do |book|
+      puts book
+      puts
+    end
+~~~~
+
+The last part one should note in the above source code is the function calling
+to get all the books, and where it prints them. This is basically a very simple
+UI part that is merged with the mediator layer. In much more complex systems you
+would include the mediator in the UI layer, and go on from there, implementing
+anything else that might be required in the presentation layer.
+
+Here is some sample output. This is information retrieved by both servers:
+
+~~~~nocode
+    Id     : 1
+    Name   : The amazing story of Potato
+    Author : Potatotron
+    ISBN   : 11831POTATO1231
+    Price  : 121.12
+
+    Id     : 2
+    Name   : The not so amazing adventures of superdull
+    Author : Boring Dude
+    ISBN   : 123112BORE12
+    Price  : 55.5
+
+    Id     : 3
+    Name   : Bookface the Bookeater
+    Author : My face is a book
+    ISBN   : 111BOOK!111
+    Price  :
+
+    Id     : 1
+    Name   : The amazing story of Potato
+    Author : Potatotron
+    ISBN   : 11831POTATO1231
+    Price  : 121.12
+
+    Id     : 2
+    Name   : The not so amazing adventures of superdull
+    Author : Boring Dude
+    ISBN   : 123112BORE12
+    Price  : 55.5
+
+    Id     : 3
+    Name   : Bookface the Bookeater
+    Author : My face is a book
+    ISBN   : 111BOOK!111
+    Price  :
+~~~~
+
 # References
 
 - \[adapter\] Design Patterns: Elements of Reusable Object-Oriented Software,
