@@ -22,10 +22,8 @@ module Mediator
   end
 
   def get_books_from_all_sources
-    include XMLRetriever
-    include JSONRetriever
-    xml_books  = XMLRetriever.get_books
-    json_books = JSONRetriever.get_books
+    xml_books  = XMLRetriever::get_books
+    json_books = JSONRetriever::get_books
     final_books = Array.new
 
     xml_books.each do |book|

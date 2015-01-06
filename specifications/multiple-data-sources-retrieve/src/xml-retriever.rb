@@ -6,7 +6,7 @@ module XMLRetriever
     attr_accessor :name, :author, :isbn, :price, :id, :is_recommended, :short_desc
   end
 
-  def get_ids
+  def self.get_ids
     uri = URI('http://localhost:3001/books/current')
     response = Net::HTTP.get_response(uri)
     doc = Nokogiri::XML(response.body)
@@ -19,7 +19,7 @@ module XMLRetriever
     end
   ids end
 
-  def get_book(id)
+  def self.get_book(id)
     uri = URI("http://localhost:3001/books/of/#{id}")
     response = Net::HTTP.get_response(uri)
     doc = Nokogiri::XML(response.body)
@@ -27,8 +27,8 @@ module XMLRetriever
     make_book(book_xml) # return this value
   end
 
-  def make_book(xml)
-    b = Book.new
+  def self.make_book(xml)
+    b = XMLRetriever::Book.new
     xml.children.each do |el|
       case el.name
       when 'id'
@@ -50,8 +50,8 @@ module XMLRetriever
     b
   end
 
-  def get_books
-    ids = get_ids
+  def self.get_books
+    ids = self.get_ids
     books = Array.new
     ids.each do |id|
       books.push get_book(id)
