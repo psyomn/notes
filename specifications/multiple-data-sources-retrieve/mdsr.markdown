@@ -216,12 +216,12 @@ First the implementation of the JSON retriever:
         attr_accessor :name, :author, :isbn, :price, :id
       end
 
-      def get_books
+      def self.get_books
         uri      = URI('http://localhost:3000/books/all')
         response = Net::HTTP.get_response(uri)
         books    = Array.new
         JSON[response.body].each do |book_js|
-          b = Book.new
+          b = JSONRetriever::Book.new
           b.author = book_js["author"]
           b.name = book_js["name"]
           b.isbn = book_js["isbn"]
@@ -245,7 +245,7 @@ Next, we implement the XML retriever:
         attr_accessor :name, :author, :isbn, :price, :id, :is_recommended, :short_desc
       end
 
-      def get_ids
+      def self.get_ids
         uri = URI('http://localhost:3001/books/current')
         response = Net::HTTP.get_response(uri)
         doc = Nokogiri::XML(response.body)
@@ -258,7 +258,7 @@ Next, we implement the XML retriever:
         end
       ids end
 
-      def get_book(id)
+      def self.get_book(id)
         uri = URI("http://localhost:3001/books/of/#{id}")
         response = Net::HTTP.get_response(uri)
         doc = Nokogiri::XML(response.body)
@@ -266,14 +266,14 @@ Next, we implement the XML retriever:
         make_book(book_xml) # return this value
       end
 
-      def make_book(xml)
-        b = Book.new
+      def self.make_book(xml)
+        b = XMLRetriever::Book.new
         xml.children.each do |el|
           case el.name
           when 'id'
-            el.children.first.text
+            b.id = el.children.first.text
           when 'isbn'
-            el.children.first.text
+            b.isbn = el.children.first.text
           when 'name'
             b.name = el.children.first.text
           when 'price'
@@ -289,8 +289,8 @@ Next, we implement the XML retriever:
         b
       end
 
-      def get_books
-        ids = get_ids
+      def self.get_books
+        ids = self.get_ids
         books = Array.new
         ids.each do |id|
           books.push get_book(id)
@@ -335,10 +335,8 @@ when defining `Mediator::Book`. This could also be implemented as an adapter
       end
 
       def get_books_from_all_sources
-        include XMLRetriever
-        include JSONRetriever
-        xml_books  = XMLRetriever.get_books
-        json_books = JSONRetriever.get_books
+        xml_books  = XMLRetriever::get_books
+        json_books = JSONRetriever::get_books
         final_books = Array.new
 
         xml_books.each do |book|
