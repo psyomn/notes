@@ -32,9 +32,9 @@ module XMLRetriever
     xml.children.each do |el|
       case el.name
       when 'id'
-        el.children.first.text
+        b.id = el.children.first.text
       when 'isbn'
-        el.children.first.text
+        b.isbn = el.children.first.text
       when 'name'
         b.name = el.children.first.text
       when 'price'
