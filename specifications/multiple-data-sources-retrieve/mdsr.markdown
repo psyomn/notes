@@ -186,6 +186,10 @@ And another request for the next _id_ (2):
      </book>
 ~~~~
 
+Note: each server was started and stopped on its own (notice that both use
+3000). Later on we set the json server on port 3000, and the xml server on port
+3001.
+
 ## Defining the Retrievers as Modules
 
 Since we want obliviousness from all the different components in this software,
@@ -205,7 +209,7 @@ good interface to the module is given).
 For this particular example however we will be using simple files which should
 be thought of as modules - though not really complex ones in our case.
 
-First the implementation of the JSON retriever:
+First the implementation of the JSON retriever (NB: port 3000):
 
 ~~~~ruby
     require 'net/http'
@@ -234,7 +238,7 @@ First the implementation of the JSON retriever:
     end
 ~~~~
 
-Next, we implement the XML retriever:
+Next, we implement the XML retriever (NB: port 3001):
 
 ~~~~ruby
     require 'net/http'
