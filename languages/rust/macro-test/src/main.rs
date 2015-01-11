@@ -17,6 +17,7 @@ fn bench_with_macro() {
 #[bench]
 fn benc_without_macro() {
 }
+
 fn main() {
     println!("Hello world");
     my_expr!();
