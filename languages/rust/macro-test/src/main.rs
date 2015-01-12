@@ -1,14 +1,10 @@
 #![feature(macro_rules)]
 
-macro_rules! my_expr(
-    ($inp:ty $sp:path) => (
-        match $inp {
-            $sp(x) => { x + x + x * x }
-            _ => {}
-        }
-    );
-
-)
+macro_rules! myassign {
+    ($inp:ident -> (($e:expr))) => (
+        $inp = $e;
+        );
+}
 
 #[bench]
 fn bench_with_macro() {
@@ -19,6 +15,7 @@ fn benc_without_macro() {
 }
 
 fn main() {
-    println!("Hello world");
-    my_expr!();
+    let mut a : int = 0;
+    myassign!(a -> ((2 + 2)));
+    println!("{}", a);
 }
