@@ -12,6 +12,17 @@ macro_rules! myassign2 {
         );
 }
 
+macro_rules! myassign3 {
+    ($inp:ident $e1:expr) => (
+        $inp += $e1;
+        );
+}
+
+macro_rules! longmac {
+    ($inp:ident) => (
+        $inp = $inp * 2 / 3 * 100 - 2 / 2;
+        );
+}
 #[bench]
 fn bench_with_macro() {
 }
@@ -22,6 +33,7 @@ fn benc_without_macro() {
 
 fn main() {
     let mut a : int = 0;
+    let mut b : int = 0;
     let mut x : int = 0;
 
     myassign!(a -> ((2 + 2)));
@@ -29,7 +41,10 @@ fn main() {
     myassign2!(x); myassign2!(x);
     myassign2!(x); myassign2!(x);
 
+    myassign3!(b 9+1);
+
     println!("{}", a);
     println!("{}", x);
+    println!("{}", b);
 }
 
