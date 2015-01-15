@@ -23,6 +23,11 @@ macro_rules! longmac {
         $inp = $inp * 2 / 3 * 100 - 2 / 2;
         );
 }
+
+macro_rules! noinput {
+    () => ( println!("noinput!") );
+}
+
 #[bench]
 fn bench_with_macro() {
 }
