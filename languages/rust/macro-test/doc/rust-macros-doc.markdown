@@ -17,3 +17,14 @@ sense. For example, you must declare an identity if you want to pass in an
 identifier (eg: int x) using 'ident', or for another example, denote that you
 want to pass in an expression, if you want to pass in a language construct - you
 can do that with 'expr'.
+
+# Things Passable in macros
+
+Here is a simple list of things supported in macros. In parenthesis is what you
+need to pass in the macro arguments:
+
+- identities (ident)
+- expressions (expr)
+- a type (ty)
+- a pattern (pat)
+- a code block (block)
