@@ -28,6 +28,20 @@ macro_rules! noinput {
     () => ( println!("noinput!") );
 }
 
+macro_rules! pass_block {
+    ($bl:block) => (
+        fn madefunc() $bl
+    )
+}
+
+macro_rules! pass_expr {
+    ($inp:expr) => ({
+        println!("Before passed expression");
+        $inp;
+        println!("After passed expression");
+    })
+}
+
 #[bench]
 fn bench_with_macro() {
 }
@@ -51,5 +65,8 @@ fn main() {
     println!("{}", a);
     println!("{}", x);
     println!("{}", b);
+
+    pass_block!({println!("potato")});
+    pass_expr!(println!("potato"));
 }
 
