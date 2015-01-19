@@ -28,6 +28,7 @@ macro_rules! noinput {
     () => ( println!("noinput!") );
 }
 
+// maybe this defines a function
 macro_rules! pass_block {
     ($bl:block) => (
         fn madefunc() $bl
@@ -42,6 +43,7 @@ macro_rules! pass_expr {
     })
 }
 
+
 #[bench]
 fn bench_with_macro() {
 }
@@ -51,9 +53,10 @@ fn benc_without_macro() {
 }
 
 fn main() {
-    let mut a : int = 0;
-    let mut b : int = 0;
-    let mut x : int = 0;
+    let my_l = |&:| { ; ; ; };
+    let mut a : i32 = 0;
+    let mut b : i32 = 0;
+    let mut x : i32 = 0;
 
     myassign!(a -> ((2 + 2)));
 
