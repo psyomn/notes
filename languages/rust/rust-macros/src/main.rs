@@ -35,11 +35,19 @@ macro_rules! pass_block {
     )
 }
 
+macro_rules! macro_in_macro1 {
+    ($inp:expr) => ({ $inp; })
+}
+
+macro_rules! macro_in_macro2 {
+    ($inp:expr) => ({ $inp; })
+}
+
 macro_rules! pass_expr {
     ($inp:expr) => ({
-        println!("Before passed expression");
+        macro_in_macro1!(println!("Before passed expression"));
         $inp;
-        println!("After passed expression");
+        macro_in_macro2!(println!("After passed expression"));
     })
 }
 
