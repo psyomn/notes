@@ -51,7 +51,6 @@ macro_rules! pass_expr {
     })
 }
 
-
 #[bench]
 fn bench_with_macro() {
 }
