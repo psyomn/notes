@@ -9,6 +9,11 @@ go right ahead and fork this repo, or send me a message even.
 __NOTE__ You'll need plantuml in order to generate the pictures for the
 documents. You can get plantuml [here](http://plantuml.sf.net).
 
+I've provided a `config.sh` script that you can run. This will automatically
+download plantuml for you. In turn directories that need to build docs will look
+for this package in that location (so it's a good idea to run `config.h` if you
+plan to build the docs).
+
 #### Languages
 
 Some minor case studies of some programming languages. They should provide a
