@@ -58,7 +58,21 @@ rid of curly braces in your `C` code you could do something like this:
     }
 ~~~~
 
-The above is legal. But it is not recommended to use.
+The above is legal. But it is not recommended to use for obvious reasons. If you
+start defining too many things, maybe some definitions will start clashing with
+other definitions you import.
+
+# Using Macros for Values
+
+Many times you will see macros being used to replace values in code. This is
+done simply as previously stated:
+
+~~~~c
+    #define MY_VAL_MAC 12
+    int main(void) {
+        printf("%d\n", MY_VAL_MAC);
+    }
+~~~~
 
 # References
 
