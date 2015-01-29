@@ -62,6 +62,19 @@ The above is legal. But it is not recommended to use for obvious reasons. If you
 start defining too many things, maybe some definitions will start clashing with
 other definitions you import.
 
+# Before we dive into Macros
+
+If you are the practical kind of person and want to check the expansions for
+yourself and are using `gcc`, you can do the following in order to check the
+results from your macros:
+
+~~~~
+    gcc -E source.c
+~~~~
+
+That should print out the results of what happens when the preprocessor goes
+over your code (and in turn expand macros).
+
 ## Using Macros for Values
 
 Many times you will see macros being used to replace values in code. This is
@@ -72,6 +85,27 @@ done simply as previously stated:
     int main(void) {
         printf("%d\n", MY_VAL_MAC);
     }
+~~~~
+
+## Using Macros to replace with Code
+
+There might be cases where you want to inject source code using a macro. The use
+case for such a feature is to provide better performance by reducing jumps to
+functions. The classical example is the `MIN` or `MAX` macro.
+
+~~~~C
+    #define MIN(X, Y) X < Y ? X : Y
+    int main(void) {
+      int a = 1, b = 3;
+      printf("%s%d\n", "Smallest number is : ", MIN(a,b));
+    }
+~~~~
+
+Which essentially, when the preprocessor goes over it, `MIN` will be expanded
+to:
+
+~~~~C
+      printf("%s%d\n", "Smallest number is : ", a < b ? a : b));
 ~~~~
 
 ## Using Macros for Function Defs
