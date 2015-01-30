@@ -108,6 +108,16 @@ to:
       printf("%s%d\n", "Smallest number is : ", a < b ? a : b));
 ~~~~
 
+## Using Macros to Define Functions
+
+Another use case to using macros would be to construct redundant functions.
+Maybe you won't see it in the exact same notion as the one bellow, but a good
+chance you'll see something similar.
+
+~~~~C
+
+~~~~
+
 ## Using Macros for Function Defs
 
 You can also use macros to redefine functions that would otherwise waste time to
