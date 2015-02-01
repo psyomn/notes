@@ -1,12 +1,17 @@
 % Macros in the C Programming Language
 % Simon Symeonidis
+% Sat Jan 31 19:30:56 EST 2015
 
 # Introduction
 
 I aim to cover some basic things about macros, uses, and gotchas in this simple
 writeup. I may give a good general advice about macros, but I am not a
 professional in C. Some other resources might give better information and
-you're encouraged to take a look [cxxfaq].
+you're encouraged to take a look [cxxfaq]. These notes may be located here:
+
+> [https://github.com/psyomn/architecture-notes/blob/master/languages/c/macros/doc.markdown][doc-gh-link]
+
+[doc-gh-link]: https://github.com/psyomn/architecture-notes/blob/master/languages/c/macros/doc.markdown
 
 # Using macros
 
@@ -42,25 +47,26 @@ the source, it will be expanded to whatever. So for example, if you want to get
 rid of curly braces in your `C` code you could do something like this:
 
 ~~~~C
+    /* examples/scriptlike_c.c */
     #define begin {
     #define end }
     #define mod %
     #define eq ==
 
     int main() {
-
+        int x;
         for(x = 0; x < 10; ++x) begin
             if (x mod 2 eq 0) begin
             // ...
             end
         end
-
     }
 ~~~~
 
 The above is legal. But it is not recommended to use for obvious reasons. If you
 start defining too many things, maybe some definitions will start clashing with
-other definitions you import.
+other definitions you import. I should stress that this is not recommended
+practice.
 
 # Before we dive into Macros
 
@@ -115,16 +121,69 @@ Maybe you won't see it in the exact same notion as the one bellow, but a good
 chance you'll see something similar.
 
 ~~~~C
+    #include <stdio.h>
 
+    #define GENERIC_SUM(T) \
+      T sum_ ## T (T A, T B) { \
+        return A + B;   \
+      }
+
+    GENERIC_SUM(int);
+    GENERIC_SUM(float);
+    GENERIC_SUM(double);
+
+    int main(void) {
+      int    x = sum_int(1, 2);
+      float  y = sum_float(12.32f, 32.11f);
+      double z = sum_double(99.0123f, 312.123123f);
+      return 0;
+    }
 ~~~~
 
-## Using Macros for Function Defs
+You could also do the same to define various classes in C++, but that should be
+considered in special cases only - and if there are any.
 
-You can also use macros to redefine functions that would otherwise waste time to
-reimplement all the time.
+## Hygiene Problems
+
+In C, macros are a simple search and expand mechanism. Because of that we can do
+interesting, almost hackish things as creating functions. But this is also a
+disadvantage, as replaces might interfere with existing, sane, behavior. For
+example the code below gives an example where things might go wrong:
+
+~~~~C
+    #include <stdio.h>
+
+    #define BADMAC a += a;
+    int main(void) {
+      int a = 1, b = 2, c = 0;
+
+      BADMAC;
+
+      c = a + b;
+
+      printf("I expected a + b = %d\n", 3);
+      printf("But I actually got a + b = %d\n", c);
+      return 0;
+    }
+~~~~
+
+Output:
+
+~~~~nocode
+      I expected a + b = 3
+      But I actually got a + b = 4
+~~~~
+
+This is a very simplified version of things going wrong with macros and hygiene
+in C, from the following example [c-hyg-mac].
+
+Some other languages take care of this issue with mechanisms totally transparent
+to the progammer.
 
 # References
 
 - \[cxxfaq\] [http://www.parashift.com/c++-faq/][cxx-faq-link]
+- \[c-hyg-mac\] [http://en.wikipedia.org/wiki/Hygienic\_macro#The\_hygiene\_problem][hyg-wiki-link]
 
 [cxx-faq-link]: http://www.parashift.com/c++-faq/
+[hyg-wiki-link]: http://en.wikipedia.org/wiki/Hygienic_macro#The_hygiene_problem
