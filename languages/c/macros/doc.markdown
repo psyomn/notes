@@ -20,7 +20,7 @@ blocks. A `#define` basically will replace one part with the other when the
 preprocessor of the C compiler scans over the code. A `#define` has the
 following format:
 
-> \#define \<blob-to-replace\> \<replace-with-this\>
+> \#define \<keyword-to-replace\> \<replace-with-blob\>
 
 So the following statement will replace any occurrence of 'MY\_MACRO\_DEF' with
 10.
