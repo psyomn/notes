@@ -66,7 +66,7 @@ rid of curly braces in your `C` code you could do something like this:
 The above is legal. But it is not recommended to use for obvious reasons. If you
 start defining too many things, maybe some definitions will start clashing with
 other definitions you import. I should stress that this is not recommended
-practice.
+practice. To see an example, consult `examples/scriptlike_c.c`.
 
 # Before we dive into Macros
 
@@ -79,7 +79,9 @@ results from your macros:
 ~~~~
 
 That should print out the results of what happens when the preprocessor goes
-over your code (and in turn expand macros).
+over your code (and in turn expand macros). You might get some other stuff
+before the actual code you expect if you included header files (because their
+contents essentially get copied into the processed file).
 
 ## Using Macros for Values
 
