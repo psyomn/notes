@@ -43,6 +43,14 @@ macro_rules! macro_in_macro2 {
     ($inp:expr) => ({ $inp; })
 }
 
+macro_rules! somecode {
+    () => ({
+        println!("First expression");
+        println!("Second expression");
+        println!("Third expression");
+    })
+}
+
 macro_rules! pass_expr {
     ($inp:expr) => ({
         macro_in_macro1!(println!("Before passed expression"));
@@ -78,5 +86,7 @@ fn main() {
 
     pass_block!({println!("potato")});
     pass_expr!(println!("potato"));
+
+    somecode!();
 }
 
