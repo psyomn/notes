@@ -151,7 +151,7 @@ finally the table name as well. For an example let us select all the
 surnames and ages from the table _person_.
 
 ~~~~{.sql}
-sqlite3> select surnamge, age from person;
+sqlite3> select surname, age from person;
 ~~~~
 
 But what if we wanted to impose a constraint? For example, let us require
