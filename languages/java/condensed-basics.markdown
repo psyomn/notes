@@ -18,7 +18,16 @@ classes. Inheritance, and use of polymorphism.
 A program is a set of operations that need to be executed at some order.
 Ultimately you must supply the computer with two things: what needs to be
 executed, and where to start. Many programming languages have the _main_
-construct to account for this.
+construct to account for this. Java has this convention too. You need to
+remember 2 rules for your Java programs, which might be different if you're much
+more used to writing C/C++ programs:
+
+1. The file must have the same name as the class you will be writing. For
+   example if you are writing `class Person { ... }`, then your file should be
+   named `Person.java`.
+
+2. The file must only contain one class definition. You can however define inner
+   classes within the main class of the file.
 
 ## Hello World
 
