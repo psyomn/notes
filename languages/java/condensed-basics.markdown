@@ -108,6 +108,27 @@ Please don't confuse these primitive arrays with the Java implementation of the
 basic data structures such as _ArrayList_ and _LinkedList_. We will see these in
 the next section.
 
+
+## Classes vs Objects
+
+A good thing to do at this point is to differentiate between what classes and
+objects are. Classes are the definition. Objects are the result.
+
+Another analogy would be the following: imagine spheres of different sizes and
+color. They all belong to a same family. But each one of them, with the same
+questions, will yield different results. For example, any two elements `A` and
+`B` are spheres. However they may be of different color. A better example would
+be to classify them with respect to behavior: all of them will respect the
+formula, that gives us the volume of a sphere. The only information required, is
+the size of their radius: in other words given some differing information of a
+radius `r`, we may apply the same function for any `r`, and get the required
+behavior.
+
+So, in other words, a class may contain information crucial for behavior,
+whereas objects contain the differing information. More abstract, classes are
+specifications, whereas objects are instantiations of those specifications,
+possibly given differing state.
+
 ## Templates
 
 Think about stencil art. If you're unfamiliar with this, you can [take a look
