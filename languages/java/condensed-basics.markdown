@@ -129,6 +129,17 @@ whereas objects contain the differing information. More abstract, classes are
 specifications, whereas objects are instantiations of those specifications,
 possibly given differing state.
 
+The user has control over both. Here is a simple class:
+
+~~~~java
+class Dog {
+    public Dog() {}
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    private String name;
+}
+~~~~
+
 ## Templates
 
 Think about stencil art. If you're unfamiliar with this, you can [take a look
@@ -147,4 +158,5 @@ ArrayList<String> listOfStrings = new ArrayList<String>();
 And of course, replacing _String_ with any other type (including user defined
 types as well) is perfectly legal. We will not discus about implementing our own
 templates.
+
 
