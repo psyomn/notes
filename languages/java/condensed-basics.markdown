@@ -132,11 +132,26 @@ possibly given differing state.
 The user has control over both. Here is a simple class:
 
 ~~~~java
-class Dog {
-    public Dog() {}
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    private String name;
+class Sphere {
+  public Sphere(float iRadius) { mRadius = iRadius; }
+  public String color() { return mColor; }
+  public float area() { return 4 * Math.PI * Math.power(mRadius, 3); }
+  private String mColor;
+  private float mRadius;
+}
+~~~~
+
+You can see what was previously described in code form. We have set behavior
+for the Sphere we modeled. Now it will behave according to what `radius` we
+supply to the object, instantiated from the class. To instantiate an object,
+we may do the following:
+
+~~~~java
+public class Main {
+  public static void main(String[] args) {
+    Sphere s = new Sphere(3.2);
+    s.area();
+  }
 }
 ~~~~
 
