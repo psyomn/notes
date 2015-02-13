@@ -150,7 +150,9 @@ we may do the following:
 public class Main {
   public static void main(String[] args) {
     Sphere s = new Sphere(3.2);
-    s.area();
+    Sphere r = new Sphere(4.8);
+    System.out.println(s.area());
+    System.out.println(r.area());
   }
 }
 ~~~~
