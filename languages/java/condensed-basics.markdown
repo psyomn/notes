@@ -119,7 +119,7 @@ color. They all belong to a same family. But each one of them, with the same
 questions, will yield different results. For example, any two elements `A` and
 `B` are spheres. However they may be of different color. A better example would
 be to classify them with respect to behavior: all of them will respect the
-formula, that gives us the volume of a sphere. The only information required, is
+formula, that gives us the area of a sphere. The only information required, is
 the size of their radius: in other words given some differing information of a
 radius `r`, we may apply the same function for any `r`, and get the required
 behavior.
@@ -133,7 +133,10 @@ The user has control over both. Here is a simple class:
 
 ~~~~java
 class Sphere {
-  public Sphere(float iRadius) { mRadius = iRadius; }
+  public Sphere(float iRadius, String iColor) {
+    mRadius = iRadius;
+    mColor  = iColor;
+  }
   public String color() { return mColor; }
   public float area() { return 4 * Math.PI * Math.power(mRadius, 3); }
   private String mColor;
@@ -149,13 +152,34 @@ we may do the following:
 ~~~~java
 public class Main {
   public static void main(String[] args) {
-    Sphere s = new Sphere(3.2);
-    Sphere r = new Sphere(4.8);
+    Sphere s = new Sphere(3.2, "red");
+    Sphere r = new Sphere(4.8, "blue");
     System.out.println(s.area());
     System.out.println(r.area());
   }
 }
 ~~~~
+
+If we were to visualize this in the memory space, we could see these two objects
+as the following:
+
+~~~~nocode
+    +--------+   +--------+
+    | Sphere |   | Sphere |
+    +--------+   +--------+
+    | 3.2    |   | 4.8    |
+    | "red"  |   | "blue" |
+    +--------+   +--------+
+~~~~
+
+And using the declared method `area`, we would be able to 'send a message' to
+these objects in memory. Both of them know about the method `area`, and what
+actions to take (see the implementation of `area()` in the code listing). What
+these objects need to do is 'plug in' the variables they hold to their
+respective `instance variable` declarations. So when calculating the area of the
+red sphere, we would want the radius of `3.1` to be plugged in the formula.
+However, when calling area for the "blue" sphere, we wish to 'plug in' `4.8` as
+the value of the radius.
 
 ## Templates
 
