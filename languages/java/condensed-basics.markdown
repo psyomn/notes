@@ -181,6 +181,11 @@ red sphere, we would want the radius of `3.1` to be plugged in the formula.
 However, when calling area for the "blue" sphere, we wish to 'plug in' `4.8` as
 the value of the radius.
 
+Essentially you should think of objects as entities, that know about what their
+structure is like (what data fields they have, and what behavior), and which
+behave differently whenever given different data. There can be many 'entities'
+expressing this behavior at any given time.
+
 ## Templates
 
 Think about stencil art. If you're unfamiliar with this, you can [take a look
