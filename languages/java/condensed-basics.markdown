@@ -69,7 +69,7 @@ int z = x + y;
 double one = 2.3;
 double two = one + 4.21;
 
-bool isOk = false;
+boolean isOk = false;
 
 char a = 'c';
 ~~~~
@@ -124,12 +124,12 @@ the size of their radius: in other words given some differing information of a
 radius `r`, we may apply the same function for any `r`, and get the required
 behavior.
 
-So, in other words, a class may contain information crucial for behavior,
-whereas objects contain the differing information. More abstract, classes are
-specifications, whereas objects are instantiations of those specifications,
-possibly given differing state.
+So, in other words, a class may contain crucial behavioral definitions, whereas
+objects contain the differing information that the behavior requires. More
+abstract, classes are specifications, whereas objects are instantiations of
+those specifications, possibly given differing data.
 
-The user has control over both. Here is a simple class:
+The user has control over both classes and objects. Here is a simple class:
 
 ~~~~java
 class Sphere {
@@ -185,6 +185,37 @@ Essentially you should think of objects as entities, that know about what their
 structure is like (what data fields they have, and what behavior), and which
 behave differently whenever given different data. There can be many 'entities'
 expressing this behavior at any given time.
+
+Now let us look at the more practical side of things. It is assumed that the
+reader is familiar with procedural programming. We will write the following in
+`C` code to demonstrate our point. Recall that in C we do not have classes, but
+structures which are strictly used to hold data. The functionality comes from
+providing many free functions with knowledge on how to manipulate the data. So
+the equivalent to the above example with the spheres would be something like the
+following:
+
+~~~~C
+    typedef struct {
+      float    radius;
+      uint32_t color_code;
+    } sphere_t;
+
+    void
+    sphere_set_radius(sphere_t* _s, float _r) {
+      _s->radius = _r;
+    }
+
+    float
+    sphere_calculate_area(sphere_t* _s) {
+      return _s->radius * _s->radius * 3.142 * 4;
+    }
+~~~~
+
+You can notice that on the above, both functions would require a reference to
+the structure we are dealing with. That particular structure is omitted from the
+type signatures in most object oriented languages, and a keyword called `this`
+is provided, if the particular behavior of a class needs to refer to that
+particular object in the runtime.
 
 ## Templates
 
