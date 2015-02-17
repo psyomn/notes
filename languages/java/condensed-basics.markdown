@@ -217,6 +217,12 @@ type signatures in most object oriented languages, and a keyword called `this`
 is provided, if the particular behavior of a class needs to refer to that
 particular object in the runtime.
 
+## Creating a Small Application
+
+## Interfaces
+
+## Polymorphism
+
 ## Templates
 
 Think about stencil art. If you're unfamiliar with this, you can [take a look
