@@ -10,3 +10,11 @@ and especially how we can spawn processes in order to perform different tasks.
 Finally we will look over the possibility of supervising different Erlang nodes,
 and the strategy we may employ to save applications from total failure using
 said supervisors.
+
+# Data Structures
+
+# Spawning Processes
+
+# Communicating Processes
+
+# Supervisor
