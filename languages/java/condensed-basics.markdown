@@ -237,10 +237,10 @@ If we had the following function, accessing members of the struct would be
 legal:
 
 ~~~~C
-    void my_func(my_struct_t* _ms) {
+    void my_func(person_t* _person) {
       /* Given that _ms is non-null */
-      _ms->myint = 1;
-      _ms->fval  = 2.32f;
+      _person->myint = 1;
+      _person->fval  = 2.32f;
     }
 ~~~~
 
