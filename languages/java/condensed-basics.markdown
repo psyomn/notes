@@ -248,8 +248,8 @@ In object oriented languages we are able to restrict this visibility. The
 motivation is to provide an agnostic way of handling data 'behind the scenes',
 whilst providing a _standard interface_ to the application programmer, using
 this unit. In Java, one is required to use the `private` keyword for restricting
-this visibility. If this restriction is not required, and some feature (either
-a method, or a variable) is to be called directly, then we can use the `public`
+this visibility. If this restriction is not required, and some feature (either a
+method, or a variable) is to be called directly, then we can use the `public`
 keyword. The above could be translated to the following Java code, if we wished
 to restrict the visibility to the two variables:
 
