@@ -304,7 +304,17 @@ Writing this down we first get the following:
 
 ## Interfaces
 
+What are the difference between interfaces and classes?
+
 ## Polymorphism
+
+Must talk about extension, and overriding.
+
+## Abstract classes
+
+Incomplete implementation
+
+Comparison with interfaces and classes to complete this section.
 
 ## Templates
 
