@@ -244,6 +244,8 @@ legal:
     }
 ~~~~
 
+### Private Visibility
+
 In object oriented languages we are able to restrict this visibility. The
 motivation is to provide an agnostic way of handling data 'behind the scenes',
 whilst providing a _standard interface_ to the application programmer, using
@@ -267,6 +269,50 @@ attributes directly, there would be a compilation error:
     Person p = new Person();
     System.out.println(p.age); /* Does not compile */
 ~~~~
+
+### Public Visibility
+
+As we previously saw, we can declare different parts of a class as public. For
+example the following class has a few of it's attributes as public:
+
+~~~~java
+    class Person {
+      public String name;
+      public String surname;
+    }
+~~~~
+
+This means that we can directly access the data from some other part in the
+program in such a fashion:
+
+~~~~java
+    public class Main {
+      public static void main(String[] args) {
+        Person p = new Person();
+        p.name = "jonny";
+        p.surname = "overload";
+
+        System.out.println(p.name);
+        System.out.println(p.surname);
+      }
+    }
+~~~~
+
+One might notice and pose the following question: _if I can simply access the
+data that I require using public visibility, why not use public everywhere?_
+
+You could technically use public everywhere. But you would sacrifice one
+mechanism that you might not want to otherwise: you treat objects as black boxes
+which you do not care how things are implemented on the other side - but you
+know what the output is.
+
+So for example think of a random number generator. The random number generator
+could use a very common technique to generate random numbers. Some techniques
+might purely be algorithmic. Other approaches may include outside resources such
+as hard disks, mouse input, microphone input, and anything that can aid you with
+providing 'real' random numbers.
+
+### Why Private Visibility
 
 ## Creating a Small Application
 
