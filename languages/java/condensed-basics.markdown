@@ -306,11 +306,6 @@ mechanism that you might not want to otherwise: you treat objects as black boxes
 which you do not care how things are implemented on the other side - but you
 know what the output is.
 
-So for example think of a random number generator. The random number generator
-could use a very common technique to generate random numbers. Some techniques
-might purely be algorithmic. Other approaches may include outside resources such
-as hard disks, mouse input, microphone input, and anything that can aid you with
-providing 'real' random numbers.
 
 ### Why Private Visibility
 
@@ -349,6 +344,17 @@ Writing this down we first get the following:
 ~~~~
 
 ## Interfaces
+
+So for example think of a random number generator. The random number generator
+could use a very common technique to generate random numbers. Some techniques
+might purely be algorithmic. Other approaches may include outside resources such
+as hard disks, mouse input, microphone input, and anything that can aid you with
+providing 'real' random numbers.
+
+In the context of OOP, you'd want a functionality that returns a random number
+without caring too much what kind of things had to happen in the background in
+order to get these numbers. So you'd want a method called `getRandom()`, which
+returns a random number. Let's say that this random number is of type `integer`.
 
 ## Polymorphism
 
