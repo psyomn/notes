@@ -371,6 +371,14 @@ that implements the `RandomGenerator` interface will have the guarantee that the
 
 ## Polymorphism
 
+Must talk about extension, and overriding.
+
+## Abstract classes
+
+Incomplete implementation
+
+Comparison with interfaces and classes to complete this section.
+
 ## Templates
 
 Think about stencil art. If you're unfamiliar with this, you can [take a look
