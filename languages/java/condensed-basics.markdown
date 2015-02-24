@@ -356,6 +356,19 @@ without caring too much what kind of things had to happen in the background in
 order to get these numbers. So you'd want a method called `getRandom()`, which
 returns a random number. Let's say that this random number is of type `integer`.
 
+We can define the following specification of operations:
+
+~~~~java
+    interface RandomGenerator {
+      int getRandom();
+    }
+~~~~
+
+Now, any class, who's responsibility is to generate a random number, can
+implement this interface. By implementing this interface, the user of any class
+that implements the `RandomGenerator` interface will have the guarantee that the
+`getRandom()` method exists, and will be callable.
+
 ## Polymorphism
 
 ## Templates
