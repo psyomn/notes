@@ -2,6 +2,8 @@
 % Simon Symeonidis
 % Wed May 21 2014
 
+\tableofcontents
+
 # Introduction
 
 The purpose of this document is to highlight the basics, and introduce core
@@ -351,14 +353,13 @@ good granularity on how much you break these functionalities down, the easier
 your life will be on the development side of things.
 
 Let's look into creating a small application, where we implement an address
-book. The address book will hold names, surnames, phone numbers, and emails. The
-user will be prompted to enter different information for different situations.
-We would like to:
+book. The address book will hold names, surnames, and emails. The user will be
+prompted to enter different information for different situations.  We would like
+to:
 
 - Have a menu to choose whether to:
-    - Create an entry of a person
-    - Update the information of a person
-    - Delete a person from the address book
+    - Create an entry of a person.
+    - Lookup the information of a person.
 
 We should worry about two things: separating the structures which may hold this
 information, to the user interface that interacts with these structures.
@@ -376,6 +377,54 @@ Writing this down we first get the following:
       private String email;
     }
 ~~~~
+
+We notice that the above attributes are private. How is the user of the class
+supposed to set these values now? We use getters and setters. The getters return
+the values of the attributes, and the setters overwrites or sets them. These
+operations are defined with public visibility instead. In code we can simply
+show this as such:
+
+~~~~java
+    class Person {
+      private String name;
+      private String surname;
+      private String email;
+
+      public String getName() {
+        return name;
+      }
+
+      public String getSurname() {
+        return surname;
+      }
+
+      public String getEmail() {
+        return email;
+      }
+
+      public void setName(String name) {
+        this.name = name;
+      }
+
+      public void setSurname(String surname) {
+        this.surname = surname;
+      }
+
+      public void setEmail(String email) {
+        this.email = email;
+      }
+    }
+~~~~
+
+We pretty much have a structure to hold the information we want for a person.
+
+# Advanced Topics
+
+In this section, we will talk about 'tricks' we can do with Object Oriented
+programming. The 'tricks' we will use is to achieve grouping certain objects
+together for common behavior, or extending an object in order to add more
+functionality or specialize the object. We will go through various examples and
+expand on these topics.
 
 ## Interfaces
 
