@@ -306,8 +306,42 @@ mechanism that you might not want to otherwise: you treat objects as black boxes
 which you do not care how things are implemented on the other side - but you
 know what the output is.
 
-
 ### Why Private Visibility
+
+To the users of some component in your software, expressed as a class, you want
+to publicize methods which are relevant to the problem that user of the class
+wants to solve. For instance, take the example of our previous example of the
+`Sphere`. Our user would only care about the particular function that returns
+the _color_ of the `Sphere`, or the _area_. In the inside of the class, we might
+split into different functions different procedures we need to do until we reach
+our final answer. For example the `getColor()` method might call other functions
+to finally return the color to the user, and these functions could be of no
+particular interest to the user.
+
+For a more concrete example, let us consider the case that `getColor()` should
+return the color label as a string, but all the letters should be in capitals.
+Inside the Sphere class we would have a function called `capitalize`, which
+would capitalize strings. The user would not care about such a thing, but the
+functionality in the class, would require such an operation. Using `private`
+visibility we are able to hide this information such that the user of the
+`Sphere` class would not know of such functionality.
+
+A more realistic example would be if the `getArea()` functionality required more
+complex calculations which could be split up into smaller units, allowing for
+different optimizations to be made. The user of the class is interested in
+knowing about the `getArea()` operation, regardless of the implementation.
+
+### Protected Visibility
+
+Protected visibility is something we will cover once we cover an advanced topic
+later on. For now it is sufficient to know that the visibilities which exist
+are:
+
+* Public visibility
+
+* Private visibility
+
+* Protected visibility
 
 ## Creating a Small Application
 
