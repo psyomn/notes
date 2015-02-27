@@ -421,7 +421,8 @@ Now we want an `AddressBook`, which will store this information. Essentially, we
 want to have a method to add people, and remove people. Let's call these methods
 `addPerson()` and `removePerson()` respectively. We will have an extra method
 that looks up a person by name, and if found, it will print all that information
-of that person. Else, there will be an error message printed.
+of that person. Else, there will be an error message printed. We call such
+method `findPerson()`.
 
 To store each person, we will need a data structure. The data structure we will
 choose for this particular example will be an `ArrayList`. An `ArrayList` may
@@ -435,9 +436,40 @@ objects, we show this by adding it between angled brackets.
 ~~~~java
     class AddressBook {
       public void addPerson(Person person) {
+        people.add(person);
       }
 
-      private ArrayList<Person>
+      public void removePerson(Person person) {
+        people.remove(person);
+      }
+
+      public void findPerson(String name) {
+        for (Person t : people) {
+          if (t.getName().equalsIgnoreCase(name)) {
+            System.out.println("Found: ");
+            System.out.println(t.getName());
+            System.out.println(t.getSurname());
+            System.out.println(t.getEmail());
+            return;
+          }
+        }
+        System.out.println("Nothing found.");
+      }
+
+      private ArrayList<Person> people = new ArrayList<Person>();
+    }
+~~~~
+
+With this code, we're able to store all of our wanted information somewhere,
+add, and remove as needed, and search. Finally we want a final class that will
+handle the input and output interactions with the user.  Essentially this is the
+interface of our application. Since we're not providing anything graphical, this
+is a command line interface. We will name this class `AddressBookController`.
+
+~~~~java
+    class AddressBookController {
+      public void run() {
+      }
     }
 ~~~~
 
