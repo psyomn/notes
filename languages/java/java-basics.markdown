@@ -417,6 +417,29 @@ show this as such:
 ~~~~
 
 We pretty much have a structure to hold the information we want for a person.
+Now we want an `AddressBook`, which will store this information. Essentially, we
+want to have a method to add people, and remove people. Let's call these methods
+`addPerson()` and `removePerson()` respectively. We will have an extra method
+that looks up a person by name, and if found, it will print all that information
+of that person. Else, there will be an error message printed.
+
+To store each person, we will need a data structure. The data structure we will
+choose for this particular example will be an `ArrayList`. An `ArrayList` may
+expand or shrink depending on the information given. To add objects to the data
+structure, we call `add()`. To remove objects from the list we call `remove()`.
+There is one final thing that we need to do: tell the structure that we will be
+storing `Person` objects. The reason to this, we will see later in the
+`Templates` section. To tell the structure `ArrayList` we are storing `Person`
+objects, we show this by adding it between angled brackets.
+
+~~~~java
+    class AddressBook {
+      public void addPerson(Person person) {
+      }
+
+      private ArrayList<Person>
+    }
+~~~~
 
 # Advanced Topics
 
