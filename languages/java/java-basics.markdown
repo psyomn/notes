@@ -434,29 +434,26 @@ storing `Person` objects. The reason to this, we will see later in the
 objects, we show this by adding it between angled brackets.
 
 ~~~~java
-    class AddressBook {
-      public void addPerson(Person person) {
-        people.add(person);
-      }
+    public class AddressBook {
 
-      public void removePerson(Person person) {
-        people.remove(person);
-      }
-
-      public void findPerson(String name) {
-        for (Person t : people) {
-          if (t.getName().equalsIgnoreCase(name)) {
-            System.out.println("Found: ");
-            System.out.println(t.getName());
-            System.out.println(t.getSurname());
-            System.out.println(t.getEmail());
-            return;
-          }
+        public void addPerson(Person person) {
+            people.add(person);
         }
-        System.out.println("Nothing found.");
-      }
 
-      private ArrayList<Person> people = new ArrayList<Person>();
+        public void findPersonByName(String name) {
+            for (Person p : people) {
+                if (p.getName().equalsIgnoreCase(name)) {
+                    System.out.println("Found:");
+                    System.out.println("Name:    " + p.getName());
+                    System.out.println("Surname: " + p.getSurname());
+                    System.out.println("Email:   " + p.getEmail());
+                    return; /* Stop searching in list */
+                }
+            }
+            System.out.println("Nothing found!");
+        }
+
+        private ArrayList<Person> people = new ArrayList<Person>();
     }
 ~~~~
 
@@ -466,11 +463,99 @@ handle the input and output interactions with the user.  Essentially this is the
 interface of our application. Since we're not providing anything graphical, this
 is a command line interface. We will name this class `AddressBookController`.
 
+We provide a command line interface by using `Scanner`. Scanner provides
+different methods to receive input. We specify what we expect by using the right
+operation. For example if we want an integer, we would call `nextInteger()`, if
+we wanted a double floating point number, we would call `nextDouble()`. Since
+we're scanning in Strings, we use `nextLine()`. This will make sure that
+anything typed in, until the user hits the return key, will be scanned in. On
+the other hand, if a simple `next()` was used, then it would parse in just the
+first word which would be delimited by a space.
+
+The code below shows what our controller would look like.
+
 ~~~~java
-    class AddressBookController {
-      public void run() {
-      }
+    public class AddressBookController {
+        public void run() {
+            String cmd = "default";
+            Scanner scan = new Scanner(System.in);
+
+            while (!cmd.equalsIgnoreCase("end")) {
+                System.out.print("> ");
+                cmd = scan.nextLine();
+                cmd = cmd.trim();
+
+                if (cmd.equalsIgnoreCase("insert")) {
+                    Person p = new Person();
+                    System.out.print("Person name: ");
+                    p.setName(scan.nextLine());
+
+                    System.out.print("Person surname: ");
+                    p.setSurname(scan.nextLine());
+
+                    System.out.print("Person email: ");
+                    p.setEmail(scan.nextLine());
+
+                    addressBook.addPerson(p);
+                }
+                else if (cmd.equalsIgnoreCase("find")) {
+                    System.out.print("Name of person: ");
+                    String name = scan.nextLine();
+                    name = name.trim();
+                    addressBook.findPersonByName(name);
+                }
+                else if (cmd.equalsIgnoreCase("help")) {
+                    System.out.println(
+                            "insert - insert a person's details into the address book\n" +
+                            "find   - find a person by name\n" +
+                            "end    - quit this application\n");
+                }
+                else if (cmd.equalsIgnoreCase("end")) {
+                    continue;
+                }
+                else {
+                    System.out.println("No such command");
+                }
+            }
+        }
+
+        private AddressBook addressBook = new AddressBook();
     }
+~~~~
+
+Finally we just need an entry point for our application:
+
+~~~~java
+    public class Main {
+        public static void main(String[] args) {
+            AddressBookController abc = new AddressBookController();
+            abc.run();
+        }
+    }
+~~~~
+
+If we run it an try some input, we get the following:
+
+~~~~nocode
+    > help
+    insert - insert a person's details into the address book
+    find   - find a person by name
+    end    - quit this application
+
+    > insert
+    Person name: jon
+    Person surname: jonson
+    Person email: jon@son.com
+    > find
+    Name of person: jon
+    Found:
+    Name:    jon
+    Surname: jonson
+    Email:   jon@son.com
+    > find
+    Name of person: potato
+    Nothing found!
+    > end
 ~~~~
 
 # Advanced Topics
