@@ -506,9 +506,9 @@ The code below shows what our controller would look like.
                 }
                 else if (cmd.equalsIgnoreCase("help")) {
                     System.out.println(
-                            "insert - insert a person's details into the address book\n" +
-                            "find   - find a person by name\n" +
-                            "end    - quit this application\n");
+                      "insert - insert a person's details into the address book\n" +
+                      "find   - find a person by name\n" +
+                      "end    - quit this application\n");
                 }
                 else if (cmd.equalsIgnoreCase("end")) {
                     continue;
