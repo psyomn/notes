@@ -694,7 +694,87 @@ of interfaces, we are extending a class. In abstract terms, we have some `class
 A`, that exhibits features `{k, l, m, n}`. If we were to extend `class A` via
 `class B`, and `class B` exhibited features `{o, p}`, then the features that
 `class B` would have in total would be `{k, l, m, n, o, p}`. This is called
-'inheritance' and happens when we extend one class via another.
+'inheritance' and happens when we extend one class via another. Let's take a
+look at the following code snippet:
+
+~~~~java
+    public class Animal {
+        public float getBodyTemperature() {
+            return 37.5f;
+        }
+        public void talk() {
+            System.out.println("I am an awesome animal");
+        }
+    }
+~~~~
+
+Now, to extend this class, we need to use the keyword `extends`. We will do this
+with a class called `Cat`. This is how you inherit from a parent class.
+
+~~~~java
+    public class Cat extends Animal {
+    }
+~~~~
+
+In the above class we're not really adding anything. This is purely for
+demonstration purposes. We can observe then, that if we do the following, the
+program would compile, and nothing out of the ordinary happens, since `Cat` has
+all the features of `Animal`.
+
+~~~~java
+    public class Main {
+        public static void main(String[] args) {
+            Animal a = new Animal();
+            Cat c = new Cat();
+
+            System.out.println(a.getBodyTemperature());
+            System.out.println(c.getBodyTemperature());
+            a.talk();
+            c.talk();
+        }
+    }
+~~~~
+
+### Adding New Functionality
+
+Of course, we could add more functionalities to the `Cat` class. This would mean
+that apart from all the features obtained from the parent class `Animal`, `Cat`
+would have extra functionalities as well.
+
+~~~~java
+    public class Cat extends Animal {
+        public void scratchFurniture() {
+            System.out.println("HA HA HA HUMAN");
+        }
+    }
+~~~~
+
+Again the following would be legal:
+
+~~~~java
+    public class Main {
+        public static void main(String[] args) {
+            Animal a = new Animal();
+            Cat c = new Cat();
+
+            System.out.println(a.getBodyTemperature());
+            System.out.println(c.getBodyTemperature());
+
+            a.talk();
+            c.talk();
+            c.scratchFurniture();
+        }
+    }
+~~~~
+
+However, the following line would not be legal, since `Animal` does not
+implement the method `scratchFurniture()`. Only `Cat`s in this context scratch
+furniture:
+
+~~~~java
+    Animal a = new Animal();
+    a.scratchFurniture(); /* Does not compile */
+~~~~
 
 ### Overloading
 
