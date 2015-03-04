@@ -676,9 +676,54 @@ gives us these values in the output prompt:
     -68
 ~~~~
 
+This means that you can have a dependency on some component in your software,
+that could be changed at any time, which would not require you to go to all the
+source to add these changes, since it respects that common interface. On top of
+that, we could change the behavior during runtime, by alternating between
+objects, which implement this common interface.
+
+Would it be possible however, to add some sort of implementation details and
+behavior to interfaces, but retain this 'dynamic switching' between objects? The
+answer is yes. You achieve this through polymorphism, though the rules are
+slightly different in this case.
+
 ## Polymorphism
 
-Must talk about extension, and overriding.
+Polymorphism follows very similar steps to that of interfaces, only that instead
+of interfaces, we are extending a class. In abstract terms, we have some `class
+A`, that exhibits features `{k, l, m, n}`. If we were to extend `class A` via
+`class B`, and `class B` exhibited features `{o, p}`, then the features that
+`class B` would have in total would be `{k, l, m, n, o, p}`. This is called
+'inheritance' and happens when we extend one class via another.
+
+### Overloading
+
+A brief reminder of Overloading: overloading is when we have two functions that
+return the same type, and have the same name, but differ in the parameters they
+actually take in, be it type of parameters, and number of parameters. So for
+example, these two functions are overloaded:
+
+~~~~java
+    class MyClass {
+      public int myMethod() {
+        return 42;
+      }
+
+      public int myMethod(int i, int j) {
+        return i + j;
+      }
+    }
+~~~~
+
+### Overriding
+
+Overriding exists as a result of Polymorphic types. Recall the previous
+discussion about having a `class A` with features `{k, l, m, n}`, and extending
+it via `class B` with features `{o, p}`, resulting in all the features `{k, l,
+m, n, o, p}` available to `class B`. So now the question is, if we have a `class
+C`, with features `{a, b}`, and `class D` with similar feature `{b}`, then which
+`b` is the `b` that will be used? The short answer, is the `b` of `class D`
+will be used. It can get more complicated however.
 
 ## Abstract classes
 
