@@ -534,7 +534,7 @@ Finally we just need an entry point for our application:
     }
 ~~~~
 
-If we run it an try some input, we get the following:
+If we run it and try some input, we get the following:
 
 ~~~~nocode
     > help
