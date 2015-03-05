@@ -768,8 +768,8 @@ Again the following would be legal:
 ~~~~
 
 However, the following line would not be legal, since `Animal` does not
-implement the method `scratchFurniture()`. Only `Cat`s in this context scratch
-furniture:
+implement the method `scratchFurniture()`. Only the class `Cat` in this context
+can scratch furniture:
 
 ~~~~java
     Animal a = new Animal();
