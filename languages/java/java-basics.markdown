@@ -805,6 +805,45 @@ C`, with features `{a, b}`, and `class D` with similar feature `{b}`, then which
 `b` is the `b` that will be used? The short answer, is the `b` of `class D`
 will be used. It can get more complicated however.
 
+In less abstract terms, consider a `class A` which has method `void talk()`. We
+extend `class A` via `class B`. In `class B` we add again, the method `void
+talk()`. What happens now? When we instantiate this class, which method actually
+runs? Below is the code represented in Java:
+
+~~~~java
+    public class A {
+        public void talk() { System.out.println("Hello from A"); }
+    }
+
+    /* ... */
+
+    public class B {
+        @Override
+        public void talk() { System.out.println("B B B B B"); }
+    }
+~~~~
+
+If we perform the following:
+
+~~~~
+    public class Main {
+        public static void main(String[] args) {
+            A ab = new B();
+            ab.talk();
+        }
+    }
+~~~~
+
+The result is going to be:
+
+~~~~nocode
+    B B B B B
+~~~~
+
+So, extending the parent class `A`, and in the subclass `B` adding the same
+method with the same method parameters and return time, we can get `rid` of the
+parent's behavior. Getting `rid` - Over*rid*ing.
+
 ## Abstract classes
 
 Incomplete implementation
