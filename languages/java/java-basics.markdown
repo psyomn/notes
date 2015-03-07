@@ -802,8 +802,8 @@ discussion about having a `class A` with features `{k, l, m, n}`, and extending
 it via `class B` with features `{o, p}`, resulting in all the features `{k, l,
 m, n, o, p}` available to `class B`. So now the question is, if we have a `class
 C`, with features `{a, b}`, and `class D` with similar feature `{b}`, then which
-`b` is the `b` that will be used? The short answer, is the `b` of `class D`
-will be used. It can get more complicated however.
+`b` is the `b` that will be used? The short answer, is the `b` of `class D` will
+be used. It can get more complicated however.
 
 In less abstract terms, consider a `class A` which has method `void talk()`. We
 extend `class A` via `class B`. In `class B` we add again, the method `void
