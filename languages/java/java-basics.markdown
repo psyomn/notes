@@ -842,7 +842,34 @@ The result is going to be:
 
 So, extending the parent class `A`, and in the subclass `B` adding the same
 method with the same method parameters and return time, we can get `rid` of the
-parent's behavior. Getting `rid` - Over*rid*ing.
+parent's behavior. Getting `rid` - Over*rid*ing. Let us examine the above in a
+little more detail. First you might notice this line:
+
+~~~~java
+    A ab = new B();
+~~~~
+
+This is possible because of rules similar to that of the interface - we know
+that `B` implements whatever the interface of `A` is. Therefore, when we call
+for an operation on `ab`, we know that the operation will be either found first
+in `B`, or eventually up in its superclass `A`. Therefore we can cast a `B`
+instantiated object onto a type, declared as `A`. In essence you need to observe
+two things with the above: the left hand side `ab` is the declared type, which
+is of type `A`, and the right hand side is of dynamic type `B`.
+
+One might ask _Why would we do such a thing?_ And again the answer would be very
+similar to that of interfaces: to interchangeably be able to switch one object,
+with another for the implementation. This would provide you, as stated in the
+interface section, two things: being able to change some implementation in the
+static time during compilation, and switching between objects with different
+implementations in the runtime. The difference however is that we can reuse
+implementation when extending a class - something not possible with interfaces.
+In classes you could extend a class, and `override` functionalities you would
+want different. In interfaces, you would have to re-implement everything for
+each class that implemented that interface.
+
+### Protected Visibility and Inheritance
+
 
 ## Abstract classes
 
