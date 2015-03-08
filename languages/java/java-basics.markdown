@@ -825,7 +825,7 @@ runs? Below is the code represented in Java:
 
 If we perform the following:
 
-~~~~
+~~~~java
     public class Main {
         public static void main(String[] args) {
             A ab = new B();
