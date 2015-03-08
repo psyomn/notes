@@ -842,7 +842,7 @@ The result is going to be:
 
 So, extending the parent class `A`, and in the subclass `B` adding the same
 method with the same method parameters and return time, we can get `rid` of the
-parent's behavior. Getting `rid` - Over*rid*ing. Let us examine the above in a
+parent's behavior. Getting `rid` - Over**rid**ing. Let us examine the above in a
 little more detail. First you might notice this line:
 
 ~~~~java
