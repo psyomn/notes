@@ -870,6 +870,30 @@ each class that implemented that interface.
 
 ### Protected Visibility and Inheritance
 
+You may recall the `protected` visibility we talked about previously. When we
+have a class with `private` features, we are unable to call these features from
+the outside, from another method. Also if we extend that class, then in the
+child class we would be also unable to access these features. What about a
+visibility that would disallow outside callers from seeing such features, whilst
+providing the child classes with the parent's features? This type of visibility
+is called `protected`.
+
+If we had the following code, the operations would be legal:
+
+~~~~java
+    public class Parent {
+      protected void doThings() { /* ... */ }
+    }
+
+    /* ... */
+
+    public class Child extends Parent {
+      public void myMethod() {
+        doThings();
+      }
+    }
+
+~~~~
 
 ## Abstract classes
 
