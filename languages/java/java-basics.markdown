@@ -913,7 +913,7 @@ are named like classes, but usually have angled brackets denoting what type
 they're taking in. Here is an example:
 
 ~~~~java
-ArrayList<String> listOfStrings = new ArrayList<String>();
+    ArrayList<String> listOfStrings = new ArrayList<String>();
 ~~~~
 
 And of course, replacing _String_ with any other type (including user defined
