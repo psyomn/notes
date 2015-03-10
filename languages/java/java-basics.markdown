@@ -897,9 +897,14 @@ If we had the following code, the operations would be legal:
 
 ## Abstract classes
 
-Incomplete implementation
+Abstract classes are something that are a mix of classes, and interfaces. That
+is we have some implementation, and we define some methods to be implemented
+when the class in question is subclassed. Therefore it behaves as a class, as
+well as an interface at the same time.
 
-Comparison with interfaces and classes to complete this section.
+### Alternate nomenclature
+
+Abstract in Java is what is called `virtual` in C++.
 
 ## Templates
 
