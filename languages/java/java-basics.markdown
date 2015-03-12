@@ -902,6 +902,26 @@ is we have some implementation, and we define some methods to be implemented
 when the class in question is subclassed. Therefore it behaves as a class, as
 well as an interface at the same time.
 
+What we mean by this, is that we can freely implement any method in a class, and
+omit functionality to the methods we do not wish to implement in the base class.
+On a more concrete example, you may have some class that provides common
+functionality, depending on what another method yields. For example, imagine you
+are writing a small robot to scrape over html pages, over the internet. You want
+it to be able to detect links, and visit all the links it finds, in order to
+investigate all the possible paths. How you do this scraping, and what links you
+find, might not be important to the knowledge of the robot-scrapper - what it
+just wants, are list of links.
+
+You could have two implementations: the robot that wants to look at all the
+links on the site, and the robot, who is only interested in crawling through the
+links that are hosted on the same domain (ie: first robot doesn't really care
+what links it finds - it just passes them to the implementation; whereas the
+second gets the links, filters the uninteresting ones, and then passes them to
+the behavior).
+
+One thing to note: just like interfaces, you can not instantiate abstract
+classes.
+
 ### Alternate nomenclature
 
 Abstract in Java is what is called `virtual` in C++.
