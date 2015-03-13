@@ -922,6 +922,29 @@ the behavior).
 One thing to note: just like interfaces, you can not instantiate abstract
 classes.
 
+Here is a sample abstract class:
+
+~~~~java
+    public abstract class AbstractScraper {
+
+        public AbstractScraper(List<String> links) {
+            mLinks = links;
+        }
+
+        public void scrape() {
+            System.out.println("Doing work...");
+            List<String> links = selectLinks();
+
+            for (String link : links) {
+                System.out.println("Fetching: " + link + " ...");
+            }
+        }
+
+        public abstract List<String> selectLinks();
+        private List<String> mLinks;
+    }
+~~~~
+
 ### Alternate nomenclature
 
 Abstract in Java is what is called `virtual` in C++.
