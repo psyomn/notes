@@ -951,10 +951,8 @@ Abstract in Java is what is called `virtual` in C++.
 
 ## Templates
 
-Think about stencil art. If you're unfamiliar with this, you can [take a look
-here](http://en.wikipedia.org/wiki/Stencil_graffiti). You basically, usually
-have a cut out that you spray paint on it. This technique allows you to use
-different colors, but the same shape. Templates in Java are kind of like that.
+Cut out shape out of paper. Use paint to go over it to repaint shape. Can use
+diferent colors (TODO: expand on this).
 
 You are able to use the same functionality, but with different types. Templates
 are named like classes, but usually have angled brackets denoting what type
