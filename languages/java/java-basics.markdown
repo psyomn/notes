@@ -941,9 +941,28 @@ Here is a sample abstract class:
         }
 
         public abstract List<String> selectLinks();
-        private List<String> mLinks;
+        protected List<String> mLinks;
     }
 ~~~~
+
+Notice that we set `mLinks` to protected. And here is the concrete
+implementation:
+
+~~~~java
+    public class FetchAllScraper extends AbstractScraper {
+    public FetchAllScraper(List<String> links) {
+        super(links);
+    }
+    @Override
+    public List<String> selectLinks() {
+        return mLinks;
+    }
+~~~~
+
+Since this is the scraper that is to include all links, we may just return the
+`mLinks` member variable, when we are using `selectLinks()`. In turn, this list
+will be used in `void scrape()`, reusing the rest of the parts of the
+`AbstractScraper` class.
 
 ### Alternate nomenclature
 
