@@ -964,6 +964,9 @@ Since this is the scraper that is to include all links, we may just return the
 will be used in `void scrape()`, reusing the rest of the parts of the
 `AbstractScraper` class.
 
+On the other hand, we can make a comparison using `Regular Expressions` in Java,
+and omit any link that is not from the particular domain we are interested in.
+
 ### Alternate nomenclature
 
 Abstract in Java is what is called `virtual` in C++.
