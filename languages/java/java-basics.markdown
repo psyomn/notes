@@ -950,12 +950,13 @@ implementation:
 
 ~~~~java
     public class FetchAllScraper extends AbstractScraper {
-    public FetchAllScraper(List<String> links) {
-        super(links);
-    }
-    @Override
-    public List<String> selectLinks() {
-        return mLinks;
+        public FetchAllScraper(List<String> links) {
+            super(links);
+        }
+        @Override
+        public List<String> selectLinks() {
+            return mLinks;
+        }
     }
 ~~~~
 
@@ -966,6 +967,61 @@ will be used in `void scrape()`, reusing the rest of the parts of the
 
 On the other hand, we can make a comparison using `Regular Expressions` in Java,
 and omit any link that is not from the particular domain we are interested in.
+This way we filter out some items from the list and provide the user of this
+small 'contraption', the wanted links:
+
+~~~~java
+    public class DomainOnlyScraper extends AbstractScraper {
+
+        public DomainOnlyScraper(List<String> links, String interestedDomainName) {
+            super(links);
+            domainName = interestedDomainName;
+        }
+
+        @Override
+        public List<String> selectLinks() {
+            Pattern pat = Pattern.compile(".*" + domainName + ".*");
+            List<String> filteredList = new ArrayList<String>();
+            Matcher m;
+
+            for (String el : mLinks) {
+                m = pat.matcher(el);
+                if (m.matches()) {
+                    filteredList.add(el);
+                }
+            }
+
+            return filteredList;
+        }
+
+        private String domainName;
+    }
+~~~~
+
+And finally, the driver for the application, which we use to demonstrate the
+above:
+
+~~~~java
+    public class Main {
+        public static void main(String[] args) {
+            AbstractScraper absFetchAll, absSelective;
+            List<String> links = new ArrayList<String>();
+
+            links.add("domain1");
+            links.add("domain2");
+            links.add("domain3");
+            links.add("domain4");
+            links.add("cooldomain");
+            links.add("notsocooldomain");
+
+            absFetchAll = new FetchAllScraper(links);
+            absSelective = new DomainOnlyScraper(links, "cooldomain");
+
+            absFetchAll.scrape();
+            absSelective.scrape();
+        }
+    }
+~~~~
 
 ### Alternate nomenclature
 
