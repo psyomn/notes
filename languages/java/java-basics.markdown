@@ -1,7 +1,3 @@
-% Condensed Java Basics
-% Simon Symeonidis
-% Wed May 21 2014
-
 \tableofcontents
 
 # Introduction
