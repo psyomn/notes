@@ -1052,8 +1052,12 @@ Abstract in Java is what is called `virtual` in C++.
 
 ## Templates
 
-Cut out shape out of paper. Use paint to go over it to repaint shape. Can use
-diferent colors (TODO: expand on this).
+To explain templates, let us go over an analogy. Imagine you are cutting out a
+square shape from a piece of paper. You can use this paper with the square hole,
+and paint, to quickly draw similar shapes with the same paint. That is you have
+a set of features that you want constant when drawing the shape - the only
+difference is the color you use. Templates in essence are similar, but may a
+little more dynamic than your average stencil art.
 
 You are able to use the same functionality, but with different types. Templates
 are named like classes, but usually have angled brackets denoting what type
