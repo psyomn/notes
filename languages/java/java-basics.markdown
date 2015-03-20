@@ -1,5 +1,28 @@
 \tableofcontents
 
+--------- ---------- ---------- -------------------------
+Version   Author     Date       Comment
+--------- ---------- ---------- -------------------------
+1         Simon      19/3/2015  Released to terrorize
+                                possible readers
+--------- ---------- ---------- -------------------------
+
+# Location of notes
+
+All my notes are free to be read by the willing. Now, the quality of my writing
+is another question all together.
+
+The repository of my notes exists here:
+
+> https://github.com/psyomn/
+
+These particular notes, may be accessed here:
+
+> https://github.com/psyomn/architecture-notes/tree/master/languages/java
+
+Changes and suggestions are welcome. You will be credited for possible
+contributions.
+
 # Introduction
 
 The purpose of this document is to highlight the basics, and introduce core
@@ -1055,16 +1078,19 @@ a set of features that you want constant when drawing the shape - the only
 difference is the color you use. Templates in essence are similar, but may a
 little more dynamic than your average stencil art.
 
-You are able to use the same functionality, but with different types. Templates
-are named like classes, but usually have angled brackets denoting what type
-they're taking in. Here is an example:
+With templates, you are able to use the same functionality, but with different
+types. Templates are named like classes, but usually have angled brackets
+denoting what type they're taking in. Here is an example, that might now seem
+familiar:
 
 ~~~~java
     ArrayList<String> listOfStrings = new ArrayList<String>();
 ~~~~
 
-And of course, replacing _String_ with any other type (including user defined
-types as well) is perfectly legal. We will not discus about implementing our own
-templates.
+We know what an array list is, and possible operations it can support (such as
+`add`, `get` etc). All this functionality may be specified in an generic form.
+For example, we can say that a collection such as `ArrayList` contains elements
+of type `T`. And we can also remove these elements, or add them to the
+structure dynamically.
 
 
