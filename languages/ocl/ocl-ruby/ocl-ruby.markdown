@@ -261,8 +261,11 @@ test against each number in the list. If this expression yields true, then that
 element is desired in the new collection.
 
 Recall `select`:
+
 - it requires its input to be some collection L
+
 - it requires a predicate to test against each element E in collection L
+
 - as output, it provides a new collection L2, which contains each element E,
   which satisfied the predicate.
 
