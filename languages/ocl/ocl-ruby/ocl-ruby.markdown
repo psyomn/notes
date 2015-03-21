@@ -675,3 +675,26 @@ this is called `uniq` (unique), not to be confused with the OCL operation
     # output: [1,2,3]
 ~~~~
 
+# forAll
+
+For all states that every element in a collection, when tested with a predicate,
+will yield true. For example take the following array:
+
+~~~~ruby
+    arr = [2, 4, 6, 8]
+~~~~
+
+Let's apply a predicate on the array, and collect all the returned values.
+
+~~~~ruby
+    col = arr.collect{|e| e % 2 == 0}
+~~~~
+
+This will evaluate the expression against each element, and put the result in a
+collection. The collection will look like this:
+
+~~~~ruby
+    [true, true, true, true]
+~~~~
+
+
