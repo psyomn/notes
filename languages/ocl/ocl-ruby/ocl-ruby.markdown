@@ -9,6 +9,20 @@ anything. It would be possible to do something easilly however, like this, if
 one would wish with the Ruby programming language. That is beyond the scope of
 this document.
 
+## Source code
+
+All the source code is available here:
+
+> https://github.com/psyomn/architecture-notes/tree/master/languages/ocl/ocl-ruby/src
+
+## Ruby
+
+You can get the interpreter for windows here:
+
+> http://rubyinstaller.org/
+
+If you're on Linux, use the package manager (pacman, portage/emerge, etc).
+
 # Crash Course in Ruby
 
 We will cover some basic things in Ruby, in case the reader is not already
@@ -201,25 +215,25 @@ Ruby, in the sense that extensions and flexibility of the language does not rely
 too much on that mechanism. We show a simple inheritance example where Dog
 inherits from Animal.
 
-~~~~
-class Animal
-  def talk
-    "I am quite the animal, good sir"
-  end
-end
+~~~~ruby
+    class Animal
+      def talk
+        "I am quite the animal, good sir"
+      end
+    end
 
-class Dog < Animal
-  def talk
-    "woof woof"
-  end
-end
+    class Dog < Animal
+      def talk
+        "woof woof"
+      end
+    end
 ~~~~
 
 The `<` sign is the syntax used to extend a class. In this case we are extending
 the `Dog` class, and overriding the `talk` method. Note: code blocks in Ruby
 return as a value, the last statement evaluated. So in other words,
 `Animal#talk` will return the string `"I am quite the animal, good sir"`, and
-`Dog#talk()` will return the string `"woof woof"`.
+`Dog#talk` will return the string `"woof woof"`.
 
 So now you know about basic reflection, iteration, basic control structures, and
 classes in Ruby. There is much to learn, but this will suffice for our brief
@@ -315,8 +329,9 @@ Let's take a look at an example that requires us to:
       attr_accessor :age
     end
 
-    # Randomly generate 20 people with ages. This will give you an array of size 20,
-    # populated with Person objects, set with randomly generated ages.
+    # Randomly generate 20 people with ages. This will give you an
+    # array of size 20, populated with Person objects, set with
+    # randomly generated ages.
     people = ([Proc.new{Person.new(rand(18..90))}] * 20).map &:call
 
     # The 20 randomly generated people
@@ -599,9 +614,10 @@ absolute magnitude of points.
       end
     end
 
-    # I am extending the core library this way, so that Array has a method called
-    # 'sum' (so that it looks more familiar to OCL). In other ruby applications,
-    # this sort of thing is usually discouraged. If you need to do something like
+    # I am extending the core library this way via monkey patching,
+    # so that Array has a method called 'sum' (so that it looks more
+    # familiar to OCL). In other ruby applications, this sort of thing
+    # is usually discouraged. If you need to do something like
     # this in Ruby, you should look into Refinements.
     class Array
       def sum
@@ -662,7 +678,7 @@ absolute magnitude of points.
     # 2000
 ~~~~
 
-# Ocl asSet()
+## Ocl asSet()
 
 If we have a collection in OCL, there is a chance that there exists duplicates.
 If we don't want duplicates we can use the `asSet` operation in OCL. In Ruby
@@ -675,7 +691,7 @@ this is called `uniq` (unique), not to be confused with the OCL operation
     # output: [1,2,3]
 ~~~~
 
-# forAll
+## forAll
 
 For all states that every element in a collection, when tested with a predicate,
 will yield true. For example take the following array:
@@ -697,4 +713,104 @@ collection. The collection will look like this:
     [true, true, true, true]
 ~~~~
 
+Let's update the array to this:
 
+~~~~ruby
+    arr = [2, 4, 6, 8, 7]
+~~~~
+
+If we run the above again, we'll get an array like this:
+
+~~~~ruby
+    [true, true, true, true, false]
+~~~~
+
+Because there is only one false in the whole resulting Array, `forAll` in this
+case would evaluate to false.
+
+We can monkey patch the Array to include functionality for `forAll`, and do the
+test again with the array. It is not important to understand the implementation.
+In short, collect tests against the passed predicate, and `inject` (more
+formally known as a fold), 'sums' up the boolean values with an `and`. Exists
+does the same but uses an `or`.
+
+~~~~ruby
+    class Array
+      # @param block is a code block that you pass to
+      # this method (your predicate)
+      def forAll(&block)
+        self.collect{|e| block.call(e)}.inject{|sum,e| sum && e}
+      end
+    end
+
+    arr = [2,4,6,8]
+    p arr.forAll{|e| e % 2 == 0}
+
+    # Same array as above, but has 9, 11 as well
+    arr += [9, 11]
+    p arr.forAll{|e| e % 2 == 0}
+
+    # output
+    #   true
+    #   false
+~~~~
+
+# Exists
+
+It's exactly the same idea as the above:
+
+~~~~ruby
+    # Add the exists method
+    class Array
+      def exists(&block)
+        self.collect{|e| block.call(e)}.inject{|sum,e| sum || e}
+      end
+    end
+
+    arr = [1,2,3,4,9001]
+    p arr.exists{|e| e > 9000}
+
+    # output
+    #   true
+~~~~
+
+Very similarly, just like in OCL, we can reuse the exists, and pass a predicate
+to check against types:
+
+~~~~ruby
+    # Add the exists method
+    class Array
+      def exists(&block)
+        self.collect{|e| block.call(e)}.inject{|sum,e| sum || e}
+      end
+    end
+
+    class Person
+    end
+
+    class Dog
+    end
+
+    class Cat
+    end
+
+    class Ferret
+    end
+
+    # there exists at least one ferret in the collection
+
+    arr = [Person.new, Person.new, Dog.new, Cat.new, Ferret.new,
+           Ferret.new]
+
+    p arr.exists{|e| e.kind_of? Ferret}
+
+    arr = [Cat.new, Cat.new]
+
+    p arr.exists{|e| e.kind_of? Ferret}
+
+    # output
+    #   true
+    #   false
+~~~~
+
+This should conclude a practical, and simple study in OCL, using Ruby Arrays.

@@ -1,4 +1,16 @@
 ---
 title: A brief comparison of Ruby Arrays and OCL
 author: Simon Symeonidis
+abstract: |
+  This is a small write up that will make some comparison of collection
+  manipultions in Ruby, using Arrays. The Arrays in ruby have the operations
+  `select` and `collect` which may help the reader get a better grasp of what is
+  happening in OCL. The advantage of this comparison, is that the reader can
+  easily get the Ruby interpreter, and manipulate lists for personal practice.
+
+  However, not all OCL operations exists in Ruby's arrays. To accomodate for
+  that, we will use a technique called `Monkey Patching` in order to extend the
+  core library, and implement OCL operations such as `sum()`, `exists()`,
+  `forAll()`, and more. The reader is encouraged to download the Ruby
+  interpreter and test some of these programs on their own.
 ...
