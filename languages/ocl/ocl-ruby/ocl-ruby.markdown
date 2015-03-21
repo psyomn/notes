@@ -196,6 +196,31 @@ could get it's class name:
     puts drac.class.name
 ~~~~
 
+One last topic would be inheritance. Admitedly, inheritance is a bit funky in
+Ruby, in the sense that extensions and flexibility of the language does not rely
+too much on that mechanism. We show a simple inheritance example where Dog
+inherits from Animal.
+
+~~~~
+class Animal
+  def talk
+    "I am quite the animal, good sir"
+  end
+end
+
+class Dog < Animal
+  def talk
+    "woof woof"
+  end
+end
+~~~~
+
+The `<` sign is the syntax used to extend a class. In this case we are extending
+the `Dog` class, and overriding the `talk` method. Note: code blocks in Ruby
+return as a value, the last statement evaluated. So in other words,
+`Animal#talk` will return the string `"I am quite the animal, good sir"`, and
+`Dog#talk()` will return the string `"woof woof"`.
+
 So now you know about basic reflection, iteration, basic control structures, and
 classes in Ruby. There is much to learn, but this will suffice for our brief
 comparison to OCL.
@@ -547,6 +572,94 @@ in the following code snippet:
     # 2
     # 3
     # 3
+~~~~
+
+Similarly we can extend this to an example where we have transactions, and they
+are either earning or burning, but both inherit from the same base class. We
+want to get the total of burned points, the total of earned points, and the
+absolute magnitude of points.
+
+~~~~ruby
+    class Transaction
+      def initialize(points)
+        @points = points
+      end
+      attr_accessor :points
+    end
+
+    class Earning < Transaction
+      def initialize(points)
+        super(points)
+      end
+    end
+
+    class Burning < Transaction
+      def initialize(points)
+        super(points)
+      end
+    end
+
+    # I am extending the core library this way, so that Array has a method called
+    # 'sum' (so that it looks more familiar to OCL). In other ruby applications,
+    # this sort of thing is usually discouraged. If you need to do something like
+    # this in Ruby, you should look into Refinements.
+    class Array
+      def sum
+        self.inject{|sum,e| sum + e}
+      end
+    end
+
+    t_arr = [Earning.new(100), Earning.new(400), Earning.new(200),
+             Burning.new(200), Burning.new(100), Burning.new(300),
+             Burning.new(100), Earning.new(500), Earning.new(100)]
+
+    puts "How many transactions do we have?"
+    puts t_arr.size
+    puts
+
+    puts "Are they all kinds of transaction?"
+    puts t_arr.select{|e| e.kind_of? Transaction}.size == t_arr.size
+    puts
+
+    puts "How many transactions are earning?"
+    puts t_arr.select{|e| e.class.name == "Earning"}.size
+    puts
+
+    puts "How many transactions are burning?"
+    puts t_arr.select{|e| e.class.name == "Burning"}.size
+    puts
+
+    puts "Total Earning:"
+    puts t_arr.select{|e| e.kind_of? Earning}.collect{|e| e.points}.sum
+    puts
+
+    puts "Total Burning"
+    puts t_arr.select{|e| e.kind_of? Burning}.collect{|e| e.points}.sum
+    puts
+
+    puts "Absolute Magnitude"
+    puts t_arr.collect{|e| e.points}.sum
+
+    # How many transactions do we have?
+    # 9
+    #
+    # Are they all kinds of transaction?
+    # true
+    #
+    # How many transactions are earning?
+    # 5
+    #
+    # How many transactions are burning?
+    # 4
+    #
+    # Total Earning:
+    # 1300
+    #
+    # Total Burning
+    # 700
+    #
+    # Absolute Magnitude
+    # 2000
 ~~~~
 
 # Ocl asSet()
