@@ -1091,6 +1091,8 @@ We know what an array list is, and possible operations it can support (such as
 `add`, `get` etc). All this functionality may be specified in an generic form.
 For example, we can say that a collection such as `ArrayList` contains elements
 of type `T`. And we can also remove these elements, or add them to the
-structure dynamically.
+structure dynamically. Templates, in this respect, are much more specific than
+interfaces, but more generic than abstract classes. There will be some sort of
+implementation, but one that does not specify the types.
 
 
