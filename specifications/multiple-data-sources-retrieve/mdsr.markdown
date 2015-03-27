@@ -2,6 +2,16 @@
 % Simon Symeonidis
 % Sat Dec 27 23:06:32 EST 2014
 
+# Forenote
+
+The particular notes for this case study may be found here:
+
+> https://github.com/psyomn/architecture-notes/blob/master/specifications/multiple-data-sources-retrieve/mdsr.markdown
+
+All my notes are available for download here:
+
+> https://github.com/psyomn/architecture-notes
+
 # Multiple Data Source Retrieve
 
 This is just a few notes that I wanted to put down and improve along the way. My
