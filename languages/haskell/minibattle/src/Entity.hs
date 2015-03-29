@@ -1,7 +1,11 @@
 module Entity(
   nameOf
 , makeDefault
+, entropyAttack
 ) where
+
+  import System.Random
+  import Control.Monad
 
   data GameEntity = GameEntity {
      name :: String
@@ -44,4 +48,7 @@ module Entity(
   baseAttack :: GameEntity -> Integer
   baseAttack (GameEntity {strength=s}) = s
 
-  
+  entropyAttack :: GameEntity -> IO Integer
+  entropyAttack (GameEntity {strength=str}) =
+    liftM (\x -> mod x str) (randomIO :: IO Integer)
+
