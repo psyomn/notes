@@ -8,16 +8,16 @@ import System.Random
 import Control.Monad
 
 data GameEntity = GameEntity {
-   name :: String
-   , strength :: Integer
-   , defense :: Integer
-   , speed :: Integer
-   , magic :: Integer
-   , maxMP :: Integer
-   , hitpoints :: Integer
-   , maxHP :: Integer
+   name         :: String
+   , strength   :: Integer
+   , defense    :: Integer
+   , speed      :: Integer
+   , magic      :: Integer
+   , maxMP      :: Integer
+   , hitpoints  :: Integer
+   , maxHP      :: Integer
    , Experience :: Integer
-   , NextLevel :: Integer
+   , NextLevel  :: Integer
    }
 
 -- Prettier printing for the custom type
