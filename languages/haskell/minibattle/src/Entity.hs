@@ -16,6 +16,8 @@ data GameEntity = GameEntity {
    , maxMP :: Integer
    , hitpoints :: Integer
    , maxHP :: Integer
+   , Experience :: Integer
+   , NextLevel :: Integer
    }
 
 -- Prettier printing for the custom type
