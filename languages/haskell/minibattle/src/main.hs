@@ -1,5 +1,6 @@
 import Entity
 import Control.Monad
+import LevelingEngine
 
 strAction :: IO Integer -> IO ()
 strAction val = do

@@ -1,14 +1,20 @@
 module Entity(
-  nameOf
+  GameEntity
+, nameOf
 , makeDefault
 , entropyAttack
-, GameEntity
+
+, getExp
+
+, setName, setStrength, setDefense, setSpeed, setMagic, setMaxMP, setHitpoints
+, setMaxHP, setExperience, setNextLevel, setLevel, setExp
+
 ) where
 
 import System.Random
 import Control.Monad
 
-data GameEntity = GameEntity {
+data GameEntity = GameEntityC {
    name         :: String
    , strength   :: Integer
    , defense    :: Integer
@@ -24,7 +30,7 @@ data GameEntity = GameEntity {
 
 -- Prettier printing for the custom type
 instance Show GameEntity where
-  show (GameEntity {name=n, strength=s, defense=d, speed=spe, magic=m,
+  show (GameEntityC {name=n, strength=s, defense=d, speed=spe, magic=m,
                     maxMP=mmp, hitpoints=hp, maxHP=mhp, level=l,
                     nextLevel=nl, experience=xp}) =
     n ++ " | Level: "     ++ show l   ++ "\n"
@@ -38,11 +44,11 @@ instance Show GameEntity where
 
 -- Get the name of the entity
 nameOf :: GameEntity -> String
-nameOf (GameEntity {name = n}) = n
+nameOf (GameEntityC {name = n}) = n
 
 -- Make a default instance of the player
 makeDefault :: GameEntity
-makeDefault = GameEntity {
+makeDefault = GameEntityC {
   name = "Jonny the Player Slayer"
   , strength = 3
   , defense = 10
@@ -57,10 +63,10 @@ makeDefault = GameEntity {
 
 -- Base attack would be str + any equipment (no eq impl atm)
 baseAttack :: GameEntity -> Integer
-baseAttack (GameEntity {strength=s}) = s
+baseAttack (GameEntityC {strength=s}) = s
 
 entropyAttack :: GameEntity -> IO Integer
-entropyAttack (GameEntity {strength=str}) =
+entropyAttack (GameEntityC {strength=str}) =
   liftM (\x -> mod x str) (randomIO :: IO Integer)
 
 {-
@@ -105,3 +111,5 @@ setLevel ent v = ent { level = v }
 setExp :: GameEntity -> Integer -> GameEntity
 setExp ent newxp = ent { experience = newxp }
 
+getExp :: GameEntity -> Integer
+getExp (GameEntityC {experience=xp}) = xp
