@@ -1,0 +1,17 @@
+---
+author: Simon Symeonidis
+title: Modular RPG Entity Stats
+abstract: |
+  This is a small proof of concept, of a possible, modular engine that may be
+  used when creating some traditional RPG game with a leveling up system. The
+  approach is to use assignable functions to the leveling up system, such that
+  we can reuse the core logic of the leveling up, but have many pluggable
+  modifiers for the statistics of the entities.
+
+  This appraoch differs from Object Oriented Programming, in the sense that we
+  do not need to subtype, and have a static representation of all the Entity
+  Classes (eg: Rogue, Mage, Grunt), and also provides the possibility of having
+  similar types, with subtle differences - for example having two similar Grunts,
+  but altering the function, which determines the next level's required experience
+  gain.
+...
