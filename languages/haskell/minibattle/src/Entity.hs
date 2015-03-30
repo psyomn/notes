@@ -1,18 +1,23 @@
 module Entity(
-  GameEntity
+  GameEntity, EntityClass
+
 , nameOf
 , makeDefault
 , entropyAttack
 
-, getExp
+, getExp, getLevel, getMaxHP, getStrength, getMaxMP, getSpeed
 
 , setName, setStrength, setDefense, setSpeed, setMagic, setMaxMP, setHitpoints
 , setMaxHP, setExperience, setNextLevel, setLevel, setExp
+
+, isMage, isAssassin, isGrunt
 
 ) where
 
 import System.Random
 import Control.Monad
+
+data EntityClass = Grunt | Mage | Assassin deriving (Show,Eq)
 
 data GameEntity = GameEntityC {
    name         :: String
@@ -26,14 +31,17 @@ data GameEntity = GameEntityC {
    , experience :: Integer
    , nextLevel  :: Integer
    , level      :: Integer
+   , entClass   :: EntityClass
    }
 
 -- Prettier printing for the custom type
 instance Show GameEntity where
   show (GameEntityC {name=n, strength=s, defense=d, speed=spe, magic=m,
                     maxMP=mmp, hitpoints=hp, maxHP=mhp, level=l,
-                    nextLevel=nl, experience=xp}) =
-    n ++ " | Level: "     ++ show l   ++ "\n"
+                    nextLevel=nl, experience=xp, entClass=ec}) =
+    n
+    ++ " [" ++ show ec ++ "] "
+    ++ " | Level: "     ++ show l   ++ "\n"
     ++ " Strength     : " ++ show s   ++ "\n"
     ++ " Defense      : " ++ show d   ++ "\n"
     ++ " Speed        : " ++ show spe ++ "\n"
@@ -59,7 +67,8 @@ makeDefault = GameEntityC {
   , maxHP = 10
   , experience = 0
   , nextLevel = 30
-  , level = 1 }
+  , level = 1
+  , entClass = Grunt }
 
 -- Base attack would be str + any equipment (no eq impl atm)
 baseAttack :: GameEntity -> Integer
@@ -113,3 +122,28 @@ setExp ent newxp = ent { experience = newxp }
 
 getExp :: GameEntity -> Integer
 getExp (GameEntityC {experience=xp}) = xp
+
+getLevel :: GameEntity -> Integer
+getLevel (GameEntityC {level=l}) = l
+
+getStrength :: GameEntity -> Integer
+getStrength (GameEntityC {strength=s}) = s
+
+getMaxHP :: GameEntity -> Integer
+getMaxHP (GameEntityC {hitpoints=h}) = h
+
+getMaxMP :: GameEntity -> Integer
+getMaxMP (GameEntityC {maxMP=mmp}) = mmp
+
+getSpeed :: GameEntity -> Integer
+getSpeed (GameEntityC {speed=s}) = s
+
+isGrunt :: GameEntity -> Bool
+isGrunt (GameEntityC {entClass=c}) = c == Grunt
+
+isMage :: GameEntity -> Bool
+isMage (GameEntityC {entClass=c}) = c == Mage
+
+isAssassin :: GameEntity -> Bool
+isAssassin (GameEntityC {entClass=c}) = c == Assassin
+
