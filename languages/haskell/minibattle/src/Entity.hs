@@ -2,7 +2,7 @@ module Entity(
   GameEntity, EntityClass
 
 , nameOf
-, makeDefault
+, makeDefault, makeGrunt, makeMage, makeAssassin
 , entropyAttack
 
 , getExp, getLevel, getMaxHP, getStrength, getMaxMP, getSpeed
@@ -69,6 +69,27 @@ makeDefault = GameEntityC {
   , nextLevel = 30
   , level = 1
   , entClass = Grunt }
+
+makeGrunt :: GameEntity
+makeGrunt = makeDefault
+
+-- Specialize a default build to mage
+makeMage :: GameEntity
+makeMage = makeDefault {
+  entClass = Mage
+  , strength = 1
+  , defense = 6
+  , maxMP = 20
+  , magic = 20 }
+
+-- Specialize a default build to assassin
+makeAssassin :: GameEntity
+makeAssassin = makeDefault {
+  entClass = Assassin
+  , strength = 2
+  , speed = 6
+  , defense = 8
+  }
 
 -- Base attack would be str + any equipment (no eq impl atm)
 baseAttack :: GameEntity -> Integer

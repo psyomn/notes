@@ -1,4 +1,7 @@
 module LevelingEngine (
+  LevelingEngine
+, makeLevelingEngine
+, step
 ) where
 
 import Entity
@@ -11,28 +14,34 @@ import Entity
 -- a similar way.
 data LevelingEngine = LevelingEngineC {
        entity  :: GameEntity
-     , expappl :: GameEntity -> GameEntity
+     , expappl :: LevelingEngine -> LevelingEngine
      , attrup  :: GameEntity -> GameEntity
      }
+
+instance Show LevelingEngine where
+    show(LevelingEngineC {entity = e}) = show e
 
 makeLevelingEngine :: GameEntity -> LevelingEngine
 makeLevelingEngine ent =
     LevelingEngineC {
       entity  = ent
-    -- , expappl = makeDoubleExp
+    , expappl = makeDoubleExp
     , attrup  = autoAttrUpAssign ent
     }
 
--- TODO
--- step :: LevelingEngine -> LevelingEngine
+step :: LevelingEngine -> LevelingEngine
+step leng@(LevelingEngineC {entity=e, expappl=ex, attrup=up}) = do
+    let lengAppliedExp    = ex leng
+    let lengAppliedAttrUp = lengAppliedExp { entity = up e }
+    lengAppliedAttrUp
 
 makeDoubleExp :: LevelingEngine -> LevelingEngine
 makeDoubleExp leng@(LevelingEngineC {entity=e}) =
-    leng { entity = setExp e ((getExp e) * 2) }
+    leng { entity = incrLevel (setExp e ((getExp e) * 2)) }
 
 makeExpontExp :: LevelingEngine -> LevelingEngine
 makeExpontExp leng@(LevelingEngineC {entity=e}) =
-    leng { entity = setExp e (makeExpontExpCalc (getLevel e))}
+    leng { entity = incrLevel (setExp e (makeExpontExpCalc (getLevel e)))}
 
 makeExpontExpCalc :: Integer -> Integer
 makeExpontExpCalc currLevel = floor $ (exp 1) ** (fromIntegral (currLevel + 1))
@@ -65,3 +74,5 @@ attrUpAssassin ent =
 incrHP :: GameEntity -> Integer -> GameEntity
 incrHP ent up = setMaxHP ent (getMaxHP ent + up)
 
+incrLevel :: GameEntity -> GameEntity
+incrLevel ent = setLevel ent (getLevel ent + 1)
