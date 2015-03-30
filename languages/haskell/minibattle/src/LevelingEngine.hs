@@ -31,17 +31,17 @@ makeLevelingEngine ent =
 
 step :: LevelingEngine -> LevelingEngine
 step leng@(LevelingEngineC {entity=e, expappl=ex, attrup=up}) = do
-    let lengAppliedExp    = ex leng
-    let lengAppliedAttrUp = lengAppliedExp { entity = up e }
-    lengAppliedAttrUp
+    let lengAppliedAttrUp = leng { entity = up e }
+    let lengAppliedExp    = ex lengAppliedAttrUp
+    lengAppliedExp
 
 makeDoubleExp :: LevelingEngine -> LevelingEngine
 makeDoubleExp leng@(LevelingEngineC {entity=e}) =
-    leng { entity = incrLevel (setExp e ((getExp e) * 2)) }
+    leng { entity = incrLevel (setNextLevel e ((getNextLevel e) * 2)) }
 
 makeExpontExp :: LevelingEngine -> LevelingEngine
 makeExpontExp leng@(LevelingEngineC {entity=e}) =
-    leng { entity = incrLevel (setExp e (makeExpontExpCalc (getLevel e)))}
+    leng { entity = incrLevel (setNextLevel e (makeExpontExpCalc (getNextLevel e)))}
 
 makeExpontExpCalc :: Integer -> Integer
 makeExpontExpCalc currLevel = floor $ (exp 1) ** (fromIntegral (currLevel + 1))
@@ -76,3 +76,4 @@ incrHP ent up = setMaxHP ent (getMaxHP ent + up)
 
 incrLevel :: GameEntity -> GameEntity
 incrLevel ent = setLevel ent (getLevel ent + 1)
+

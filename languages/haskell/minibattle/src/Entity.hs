@@ -5,7 +5,7 @@ module Entity(
 , makeDefault, makeGrunt, makeMage, makeAssassin
 , entropyAttack
 
-, getExp, getLevel, getMaxHP, getStrength, getMaxMP, getSpeed
+, getExp, getLevel, getMaxHP, getStrength, getMaxMP, getSpeed, getNextLevel
 
 , setName, setStrength, setDefense, setSpeed, setMagic, setMaxMP, setHitpoints
 , setMaxHP, setExperience, setNextLevel, setLevel, setExp
@@ -158,6 +158,9 @@ getMaxMP (GameEntityC {maxMP=mmp}) = mmp
 
 getSpeed :: GameEntity -> Integer
 getSpeed (GameEntityC {speed=s}) = s
+
+getNextLevel :: GameEntity -> Integer
+getNextLevel (GameEntityC {nextLevel=nl}) = nl
 
 isGrunt :: GameEntity -> Bool
 isGrunt (GameEntityC {entClass=c}) = c == Grunt
