@@ -1,4 +1,4 @@
-\documentclass[twoside]{article}
+\documentclass[twoside,12pt]{book}
 
 \title{Haze Game Editor (Notes)}
 
@@ -10,12 +10,6 @@
 \input{conf/colors.tex}
 \input{conf/lst.tex}
 \input{conf/macros.tex}
-
-\setlength{\parindent}{0,15in}
-
-\makeatletter
-  \def\@seccntformat#1{\rlap{\hskip-36pt\csname the#1\endcsname}}
-\makeatother
 
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
@@ -44,11 +38,17 @@
 \cfoot{}
 \lfoot[\thepage]{}
 
+\chapter{Proposal}
 \include{introduction}
+
+\chapter{Analysis, and Specifications}
 \include{analysis}
+\include{entities}
+
+\chapter{Appendix}
 \include{outstanding-q}
-\include{glassary}
+\include{glossary}
 
 \bibliography{mybib}{}
-\bibliographystyle{plain}	
+\bibliographystyle{plain}
 \end{document}
