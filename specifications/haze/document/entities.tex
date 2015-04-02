@@ -14,21 +14,23 @@ therefore express this tuple as seen in specifications \ref{eq:attribute}, and
 \ref{eq:entity}.
 
 \begin{equation}
-  \label{eq:modulefn}
-  Trans = f \colon Entity \to Entity
+\begin{split}
+  f \colon Entity \to Entity \\
+  MODULES_{seq}\colon \langle f_1, f_2, ..., f_n \rangle
+\end{split}
 \end{equation}
 
 \begin{equation}
-  \label{eq:fnseq}
-  MODULES_{seq} = \{ f \in Trans \}
+\begin{split}
+  \label{eq:attribute}
+  Label\colon String \\
+  Attribute\colon Label \times \mathbb{R}
+\end{split}
 \end{equation}
 
 \begin{equation}
-  \label{eq:attribute} Attribute: Label \times \mathbb{R}
-\end{equation}
-
-\begin{equation}
-  \label{eq:entity} Entity: Attribute \times MODULE_{seq}
+  \label{eq:entity}
+  Entity\colon Attribute \times MODULE_{seq}
 \end{equation}
 
 \begin{description}
