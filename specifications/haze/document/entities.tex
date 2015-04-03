@@ -10,15 +10,8 @@ When it is time for implementation, you might wish to prefer \texttt{float}
 types instead of \texttt{double}, as the extended precision of the latter is not
 required. Each of these attributes, come bundled with a label, which will be
 used to tell the player what kind of attribute the player is observing. We can
-therefore express this tuple as seen in specifications \ref{eq:attribute}, and
-\ref{eq:entity}.
-
-\begin{equation}
-\begin{split}
-  f \colon Entity \to Entity \\
-  MODULES_{seq}\colon \langle f_1, f_2, ..., f_n \rangle
-\end{split}
-\end{equation}
+therefore express this as seen in the algebraic specifications
+\ref{eq:attribute}, and \ref{eq:entity}.
 
 \begin{equation}
 \begin{split}
@@ -28,11 +21,49 @@ therefore express this tuple as seen in specifications \ref{eq:attribute}, and
 \end{split}
 \end{equation}
 
+Now let us describe the module-plugin organization. Since we want to exhibit
+different behaviors in the stats of an Entity, we want the Entity to maintain
+a list of these behaviours. Notice that these behaviors take in a type
+\texttt{Entity}, and map it to an \texttt{Entity} as well. So these behaviors
+should essentially alter the state of the \texttt{Entity}, when fired up. So for
+instance, you could create different functions for a \textit{Fighter}, and
+define the attributes affected on a level up. This does not exclude the
+possibility of adding more functions, and composing a function out of different
+behaviours. For example, if the player is cursed, there could be a function that
+gives a penalty per level up. We show such an organization in
+Specifications~\ref{eq:funcmodules}, and later how it is bound to the entity in
+\ref{eq:entity}.
+
 \begin{equation}
-  \label{eq:entity}
-  Entity\colon Attribute \times MODULE_{seq}
+\begin{split}
+  \label{eq:funcmodules}
+  f \colon Entity \to Entity \\
+  MODULES_{seq}\colon \langle f_1, f_2, ..., f_n \rangle
+\end{split}
 \end{equation}
 
-\begin{description}
-  \itemit {potato} potato
-\end{description}
+Another essential aspect to RPG's is the equipment system, which allows the
+player to tweak the performance of the \texttt{Entity}. This is simply a type,
+which holds a label, and any number of \texttt{Attribute}s. This way we can
+specify modifiers for things like strength, intelligence, and more, as well as
+add other things like elemental damage. We can see this in specification
+\ref{eq:equipment}.
+
+\begin{equation}
+\begin{split}
+  \label{eq:equipment}
+  Equipment\colon Label \times \langle Attribute \rangle
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+  \label{eq:entity}
+  EntityClass = \{ Fighter, Mage, Thief, Assassin, Archer, ... \} \\
+  Entity\colon Label \times
+    EntityClass \times
+    \langle Attribute \rangle \times
+    \langle Equipment \rangle \times MODULE_{seq}
+\end{split}
+\end{equation}
+
