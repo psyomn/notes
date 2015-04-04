@@ -56,14 +56,85 @@ add other things like elemental damage. We can see this in specification
 \end{split}
 \end{equation}
 
+Now, for the sake of flexibility, we should provide a set of functions that will
+perform checks each time a piece of equipment is attempted to be equiped for the
+character. This should take in an \texttt{Entity}, an \texttt{Equipment} and
+yield a \texttt{Boolean}, as demonstrated in
+specification~\ref{eq:equipmentcheck}. This way, we define a sequence which
+contains all these constraints as well, with the name
+\texttt{EquipmentConstraints}. For setups where each character can equip
+anything, then this may be set as an empty list.
+
+\begin{equation}
+\begin{split}
+  \label{eq:equipmentcheck}
+  f\colon Entity \times Equipment \to Boolean \\
+  EquipConstraints_{seq} = \langle f_1, f_2, ..., f_n \rangle
+\end{split}
+\end{equation}
+
+We should also specify some container in the implementation, to contain one item
+from the enumeration shown in specification~\ref{eq:entityclass}. An interesting
+question is if it would be possible to mix any number of classes, to get a mixed
+class, and in turn automatically constrain skills or buffs on an entity. For now
+we stick to single class assignment.
+
+\begin{equation}
+  \label{eq:entityclass}
+  EntityClass = \{ Fighter, Mage, Thief, Assassin, Archer, ... \} \\
+\end{equation}
+
+And finally we can define our composite type \texttt{Entity} with the
+specification shown in \ref{eq:entity}.
+
 \begin{equation}
 \begin{split}
   \label{eq:entity}
-  EntityClass = \{ Fighter, Mage, Thief, Assassin, Archer, ... \} \\
   Entity\colon Label \times
     EntityClass \times
     \langle Attribute \rangle \times
-    \langle Equipment \rangle \times MODULE_{seq}
+    \langle Equipment \rangle \\
+    \times MODULE_{seq} \times EquipmentConstraints_{seq}
 \end{split}
 \end{equation}
+
+Note that since $MODULE_{seq}$, and $EquipmentConstraints_{seq}$ are both
+sequences of functions, with same type, which implies that we can compose them,
+in order to get a wanted result. So for instance, the final form of the entity,
+could be represented as shown in equation~\ref{eq:entitycomposition}. In
+equation \ref{eq:equipconstrcomp} we can see a similar approach, to check that
+any constraints that the entity may have, are satisfied or not, yielding a
+boolean value in the end.
+
+\begin{equation}
+\begin{split}
+  \label{eq:entitycomposition}
+  Entity_{final} = (f_1 \circ f_2 \circ ... \circ f_n)(E_{simple}) \\
+  where, \langle f_1, f_2, ..., f_n \rangle \in MODULE_{seq}
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+  \label{eq:equipconstrcomp}
+  CanEquip = (f_1 \circ f_2 \circ ... \circ f_n)(Entity_{given}, Equipment_{try}) \\
+  where, \langle f_1, f_2, ..., f_n \rangle \in EquipmentConstraints_{seq}
+\end{split}
+\end{equation}
+
+\subsection{Examples}
+
+We list a few examples, in this subsection, so that we animate the
+specifications above. Let's say we have a fighter. We can create an entity as
+shown in \ref{eq:createent}.
+
+\begin{equation}
+\begin{split}
+  \label{eq:createent}
+  fighter = Entity(``Arnold'', Fighter, \langle str, int, dex \rangle \\
+    \langle sword, shield, boots \rangle, \langle f_{strbuff}, f_{intdebuff}
+  \rangle, \langle f_{eqonlyfighter} \rangle)
+\end{split}
+\end{equation}
+
 
