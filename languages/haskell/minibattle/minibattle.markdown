@@ -80,37 +80,5 @@ makeExpontExp leng@(LevelingEngineC {entity=e}) =
 
 makeExpontExpCalc :: Integer -> Integer
 makeExpontExpCalc currLevel = floor $ (exp 1) ** (fromIntegral (currLevel + 1))
-
-processAttrUp :: LevelingEngine -> LevelingEngine
-processAttrUp leng = leng
-
-autoAttrUpAssign :: GameEntity -> (GameEntity -> GameEntity)
-autoAttrUpAssign ent
-    | isGrunt    ent = attrUpGrunt
-    | isMage     ent = attrUpMage
-    | isAssassin ent = attrUpAssassin
-    | otherwise      = attrUpGrunt
-
-attrUpGrunt :: GameEntity -> GameEntity
-attrUpGrunt ent =
-    setStrength (incrHP ent 5)
-                (getStrength ent + 3)
-
-attrUpMage :: GameEntity -> GameEntity
-attrUpMage ent =
-    setMaxMP (incrHP ent 3)
-             (getMaxMP ent + 3)
-
-attrUpAssassin :: GameEntity -> GameEntity
-attrUpAssassin ent =
-    setSpeed (incrHP ent 4)
-             (getSpeed ent + 5)
-
-incrHP :: GameEntity -> Integer -> GameEntity
-incrHP ent up = setMaxHP ent (getMaxHP ent + up)
-
-incrLevel :: GameEntity -> GameEntity
-incrLevel ent = setLevel ent (getLevel ent + 1)
-
 ~~~~
 
