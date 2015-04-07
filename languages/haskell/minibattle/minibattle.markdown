@@ -67,7 +67,10 @@ step leng@(LevelingEngineC {entity=e, expappl=ex, attrup=up}) = do
 
 With that sort of organization, we can dynamically bind the type of functions we
 want for leveling up. For example, if after a level up, we'll require double the
-experience, or an exponent of the experience.
+experience, or an exponent of the experience. We can do similar things to grant
+different buffs on level ups. For example we can assign different functions
+which would selectively update different attributes (strength, intelligence,
+etc) of the entity, and compose them with any other buffs or debuffs we see fit.
 
 ~~~~haskell
 makeDoubleExp :: LevelingEngine -> LevelingEngine
@@ -79,6 +82,7 @@ makeExpontExp leng@(LevelingEngineC {entity=e}) =
     leng { entity = incrLevel (setNextLevel e (makeExpontExpCalc (getNextLevel e)))}
 
 makeExpontExpCalc :: Integer -> Integer
-makeExpontExpCalc currLevel = floor $ (exp 1) ** (fromIntegral (currLevel + 1))
+makeExpontExpCalc currLevel =
+    floor $ (exp 1) ** (fromIntegral (currLevel + 1))
 ~~~~
 
