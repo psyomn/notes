@@ -1,41 +1,46 @@
-\section{Outstanding Questions} 
+\section{Outstanding Questions}
 
-Here is a list of questions that are not yet answered. Leaving them here to 
-check out in the future. 
+Here is a list of questions that are not yet answered. Leaving them here to
+check out in the future.
 
 \subsection{General Questions}
 
 \begin{itemize}
-\item How do we deal with map transitions? Would this be a concern to be
-directly associated to the map object, or should connections be delegated to
-other objects? (For example, if we need to link map A and map B together, we
-could have an auxiliary object that knows about this connection betwen two
-maps).
+  \item Our tool should target what platforms? In other words, we have the tool
+    that may be compiled to a few binaries, and the engine. The engine should
+    run on Windows, and Linux (and maybe, eventually Mac). If the engine is
+    cross platform, then there will be no problems, since the assets should not
+    care of what the OS is currently.
 
-\item How do we deal with \textit{changing} maps? For example in a storyline
-where the earth can be split in two, separating characters from one side of the
-screen to the other, to obstructing passages.
+  \item How do we deal with map transitions? Would this be a concern to be
+    directly associated to the map object, or should connections be delegated to
+    other objects? (For example, if we need to link map A and map B together, we
+      could have an auxiliary object that knows about this connection betwen two
+    maps).
 
-\item Since we live in the age of the internets, it would be nice to have 
-internet play with the games. The specific internet play that I had in mind was
-just to battle it out with your friends by p2p connections. It would be
-entirely possible to beef up your local statistics on your game (or your
-friend) so this should be used for pure fun, and should not be, if it is
-implemented, used as a means to have professional tournaments, for example.
-  
-\end{itemize} 
+  \item How do we deal with \textit{changing} maps? For example in a storyline
+    where the earth can be split in two, separating characters from one side of
+    the screen to the other, to obstructing passages.
 
-\subsection{Language Specific Questions} 
+  \item Since we live in the age of the internets, it would be nice to have
+    internet play with the games. The specific internet play that I had in mind
+    was just to battle it out with your friends by p2p connections. It would be
+    entirely possible to beef up your local statistics on your game (or your
+    friend) so this should be used for pure fun, and should not be, if it is
+    implemented, used as a means to have professional tournaments, for example.
+
+\end{itemize}
+
+\subsection{Language Specific Questions}
 
 \begin{itemize}
 
 \item Would interpreted and scripted languages like python or ruby serve as
-better tools in contrast to compiled languages such as C++ / C, due to the 
+better tools in contrast to compiled languages such as C++ / C, due to the
 nature of said data driven system?
 
 \item If we choose to use C++, can we use Lua for scripting specific things on
 the game?
-
 
 \end{itemize}
 
