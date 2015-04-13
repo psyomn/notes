@@ -84,15 +84,14 @@ We should also specify some container in the implementation, to contain one item
 from the enumeration shown in specification~\ref{eq:entityclass}. An interesting
 question is if it would be possible to mix any number of classes, to get a mixed
 class, and in turn automatically constrain skills or buffs on an entity. For now
-we stick to single class assignment.
+we stick to single class assignment as seen in
+specification~\ref{eq:entityclass}. And finally we can define our composite type
+\texttt{Entity} with the specification shown in \ref{eq:entity}.
 
 \begin{equation}
   \label{eq:entityclass}
   EntityClass = \{ Fighter, Mage, Thief, Assassin, Archer, ... \} \\
 \end{equation}
-
-And finally we can define our composite type \texttt{Entity} with the
-specification shown in \ref{eq:entity}.
 
 \begin{equation}
 \begin{split}
@@ -133,12 +132,13 @@ boolean value in the end.
 
 We list a few examples, in this subsection, so that we animate the
 specifications above. Let's say we have a fighter. We can create an entity as
-shown in \ref{eq:createent}.
+shown in \ref{eq:createent}. Translating this to source code at this point would
+be trivial, since each part so far has been well defined.
 
 \begin{equation}
 \begin{split}
   \label{eq:createent}
-  fighter = Entity(``Arnold'', Fighter, \langle str, int, dex \rangle \\
+  fighter = Entity('Arnold', Fighter, \langle str, int, dex \rangle \\
     \langle sword, shield, boots \rangle, \langle f_{strbuff}, f_{intdebuff}
   \rangle, \langle f_{eqonlyfighter} \rangle)
 \end{split}
