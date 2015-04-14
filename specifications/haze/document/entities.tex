@@ -128,7 +128,7 @@ boolean value in the end.
 \end{split}
 \end{equation}
 
-\subsection{Examples}
+\subsubsection{Examples}
 
 We list a few examples, in this subsection, so that we animate the
 specifications above. Let's say we have a fighter. We can create an entity as
@@ -144,7 +144,44 @@ be trivial, since each part so far has been well defined.
 \end{split}
 \end{equation}
 
+\subsection{Leveling System}
+
+You can bind possibly a leveling system to the \texttt{Entity} type. It works
+very similar to the buffs as we previously saw (binding functions to the entity,
+and letting itself deal with itself). You could do this by binding the leveling
+functions directly to the \texttt{Entity} data type, or making a data type to
+wrap around the \texttt{Entity} data type. To keep things a little simple, it
+would be easier to define a type \texttt{LevelingSystem}, and binding any
+level-up strategies in there. So in essence, from section~\ref{sec:entities}, we
+extend the specification, finally to the given specification
+at~\ref{eq:entitylevelup}.
+
+\begin{equation}
+  \begin{split}
+  \label{eq:entitylevelup}
+  Entity\colon Label \times
+    EntityClass \times
+    \langle Attribute \rangle \times
+    \langle Equipment \rangle \\
+    \times MODULE_{seq} \times EquipmentConstraints_{seq} \\
+    \times LevelingEngine
+  \end{split}
+\end{equation}
+
+The \texttt{LevelingEngine} should aggregate functions whose type should be
+$f\colon Entity \to Entity$. What this means is that these functions should
+change the state of \texttt{Entity} whenever there is a levelup that happens.
+The functions, for example that could happen for such an entity are things like
+$increaseStr$, or $increaseDef$, or even $increaseAgility$. Now the way you
+implement this depends on how you define your entities, and how you define your
+attributes that your entity aggregates.
+
 \subsection{Battle System}
 
 In this section we describe how the Entity structure (section
 \ref{sec:entities}), may be used in order to form a battle system.
+
+\subsection{Storage of Assets}
+
+In this section we describe possible strategies on how to persist the generated
+assets by the game editor.
