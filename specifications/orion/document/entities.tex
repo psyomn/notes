@@ -218,32 +218,4 @@ different level-up functions that we have assigned withing LevelingEngine.
 \end{equation}
 
 
-\subsection{Battle System}
-
-In this section we describe how the Entity structure (section
-\ref{sec:entities}), may be used in order to form a battle system.
-
-RPGs are a little different to action games in respect to how the player is
-challenged. In action games, the player is challenged to the actual (physical)
-skills and reflexes the player learns to work with the game. For example, a
-player that is good with action games, could finish an simple action game in
-one shot, whereas in RPGs the skill is virtually accumulated in points for each
-character, and leans more to mathematical models rather than skill in order to
-challenge the player. Therefore some mechanism to support and supplement these
-mathematical calculations would be required - that is, we want to make it fully
-possible for the users to tweak or write their own functions, affected by 
-different parameters in the game. 
-
-Let us define two topics of interest for the following topics: 
-
-\paragraph{Entity} is something that can interact in the map. Something more
-than a wall for example. An NPC is an Entity. A treasure chest is an entity. A
-wall is not an entity. A hidden door that can open up for the player to pass
-through is an entity. Using this generalization makes for a stripped down,
-and simple, reusable design. More information about entities can be observed in
-section \ref{sec:entities}.
-
-\paragraph{Attribute} an attribute is something that describes the abilities of
-the entity. For example if the entity was of a `Fighter' class, there would 
-exist an attribute that describes the Strength \textit{(STR)} of the character.
 
