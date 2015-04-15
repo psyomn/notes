@@ -176,6 +176,13 @@ $increaseStr$, or $increaseDef$, or even $increaseAgility$. Now the way you
 implement this depends on how you define your entities, and how you define your
 attributes that your entity aggregates.
 
+Implementation aside, the reader should notice that since we can aggregate
+different functions this way, we could modularly define attribute increases per
+level in the editor. For example for the $Fighter$ class we could aggregate a
+$increaseStr$ function with special parameters to add extra points to strength
+per level up. Or we could even aggregate the function a few times many to
+achieve the same effect.
+
 \subsection{Battle System}
 
 In this section we describe how the Entity structure (section
