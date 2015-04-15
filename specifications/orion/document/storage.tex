@@ -1,0 +1,41 @@
+\section{Storage}
+
+In this section we describe possible strategies on how to persist the generated
+assets by the game editor. One thing the reader needs to keep in mind is that
+filesystems are not cross platform. The most obvious example would be that on
+Windows machines, paths are delimited by a forward slash, and in Unix variants,
+they are delimited by a backslash. A less obvious example would be filename
+size. For example, there are different filename limits on different filesystems.
+Hence producing different assets on one machine might not work on another
+machine if you are transferring them as plain files. This is an aspect that the
+game editor should take into account (and in effect the game engine as well).
+
+\subsubsection{Storage format}
+
+We need to think about the following critical aspects:
+
+\begin{itemize}
+\item Storing paths to the tilesets
+\item Storing the used tiles of each respective tileset in the map
+\end{itemize}
+
+\subsection{Proposed Directory Structure for Assets}
+
+We can outline a possible directory structure that should be standard for any
+given game that would be created by the editor. Ultimately this should take
+care of any file organization that is required by the userbase. We should keep
+in mind that allowing the user to create their own directories for other assets
+should also be taken into consideration.
+
+\begin{lstlisting}
+  /items.xml
+  /graphics/tilesets
+  /graphics/portraits
+  /sounds/music
+  /sounds/sfx
+  /sounds/speech/en
+  /sounds/speech/el - Example, a Hellenic voice translation
+  /lang/en
+  /lang/el - Example, a Hellenic translation
+\end{lstlisting}
+

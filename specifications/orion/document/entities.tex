@@ -146,6 +146,10 @@ be trivial, since each part so far has been well defined.
 
 \subsection{Leveling System}
 
+%% TODO: Need to define experience system probably - this brings a problem
+%% however due to the modular design of entities section - how do we know about
+%% this and how can we deal with it?
+
 You can bind possibly a leveling system to the \texttt{Entity} type. It works
 very similar to the buffs as we previously saw (binding functions to the entity,
 and letting itself deal with itself). You could do this by binding the leveling
@@ -183,6 +187,37 @@ $increaseStr$ function with special parameters to add extra points to strength
 per level up. Or we could even aggregate the function a few times many to
 achieve the same effect.
 
+\subsubsection{Example}
+
+Very simply, specifications \ref{eq:examplelevelupfighter} and
+\ref{eq:examplelevelupmage} show how we'd instantiate each object. Notice the
+different level-up functions that we have assigned withing LevelingEngine.
+
+\begin{equation}
+\begin{split}
+  \label{eq:examplelevelupfighter}
+  fighter = Entity('Arnold', Fighter, \\
+    \langle str, int, dex \rangle,
+    \langle sword, shield, boots \rangle, \\
+    \langle f_{strbuff}, f_{intdebuff} \rangle,
+    \langle f_{eqonlyfighter} \rangle, \\
+    \langle incrStrBy5, incrHPBy7, decrInt \rangle)
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+  \label{eq:examplelevelupmage}
+  mage = Entity('Ataraxia', Mage, \\
+    \langle str, int, dex \rangle,
+    \langle sword, shield, boots \rangle, \\
+    \langle f_{strbuff}, f_{intdebuff} \rangle,
+    \langle f_{eqonlyfighter} \rangle, \\
+    \langle incrIntBy7, incrHPBy1, incrMPBy3 \rangle)
+\end{split}
+\end{equation}
+
+
 \subsection{Battle System}
 
 In this section we describe how the Entity structure (section
@@ -212,7 +247,3 @@ section \ref{sec:entities}.
 the entity. For example if the entity was of a `Fighter' class, there would 
 exist an attribute that describes the Strength \textit{(STR)} of the character.
 
-\subsection{Storage of Assets}
-
-In this section we describe possible strategies on how to persist the generated
-assets by the game editor.
