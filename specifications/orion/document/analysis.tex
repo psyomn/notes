@@ -12,16 +12,37 @@ aesthetic, and to help the user navigate through many things. Assets should
 contain the following:
 
 \begin{description}
-  \itemit{Graphics} Anything that has to do with things being drawn on screen.
-    Tiles, Tilesets, portraits, backgrounds, etc.
+  \itembf{Graphics}: Anything that has to do with things being drawn on screen.
+    Tiles, Tilesets, portraits, backgrounds, etc. A good thing to do before
+    proceeding to design and implementation details of this project at this
+    point, is to decide what kind of graphic formats people would be interested
+    in supporting in the engine. For instance, would \textit{JPEG} be favored?
+    What about \textit{PNG}? Or is \textit{BMP} easier to manipulate? See what
+    libraries exists, and choose something adequate.
 
-  \itemit{Sound} Anything that causes noise. Background music, sound effects, and
-    anything else that falls into this category.
+  \itembf{Sound}: Anything that causes noise. Background music, sound effects, and
+    anything else that falls into this category. Again, consider what sound
+    formats you would like to support. Probably compressed formats are best such
+    as \textit{Ogg Vorbis} or \textit{MP3}.
 
-  \itemit{Text} Anything that can be written down in a natural language.
+  \itembf{Text}: Anything that can be written down in a natural language. As a
+    consequence, a mechanism should exist that will allow for multiple
+    translations of the game, without invasive intervention (\textit{a.k.a.
+    i18n, l10n}).
 
-  \itemit{Maps} A composite that brings many of the aforementioned assets
+  \itembf{Maps}: A composite that brings many of the aforementioned assets
     together, to make up the virtual world.
+
+  \itembf{Pawn Templates}: When designing maps, there might be pawns you want to
+    use, which are very common. There should be a mechanism to allow this. For
+    example, the game editor should help the user out by providing a `Pawn
+    Template Editor', which let's say, the user could define a sign-post, that
+    the user can place in any town. As a result, the user would simply need to
+    change the text of the sign.
+
+  \itembf{Scripts}: Any behavior we want to define, without recompiling the
+    engine. Apart from a sane design, this means that the user only has to worry
+    about the scripting language, rather than tweak the game engine.
 \end{description}
 
 Another aspect that we need to think along the way is how much modular we want
