@@ -196,24 +196,18 @@ different level-up functions that we have assigned withing LevelingEngine.
 \begin{equation}
 \begin{split}
   \label{eq:examplelevelupfighter}
-  fighter = Entity('Arnold', Fighter, \\
-    \langle str, int, dex \rangle,
-    \langle sword, shield, boots \rangle, \\
-    \langle f_{strbuff}, f_{intdebuff} \rangle,
-    \langle f_{eqonlyfighter} \rangle, \\
-    \langle incrStrBy5, incrHPBy7, decrInt \rangle)
+  fighter = Entity('Arnold', Fighter, \langle str, int, dex \rangle, \langle sword, shield, boots \rangle, \\
+    \langle f_{strbuf}, f_{intdebuf} \rangle,
+    \langle f_{eqonlyfighter} \rangle, \langle incrStrBy5, incrHPBy7, decrInt \rangle)
 \end{split}
 \end{equation}
 
 \begin{equation}
 \begin{split}
   \label{eq:examplelevelupmage}
-  mage = Entity('Ataraxia', Mage, \\
-    \langle str, int, dex \rangle,
-    \langle sword, shield, boots \rangle, \\
-    \langle f_{strbuff}, f_{intdebuff} \rangle,
-    \langle f_{eqonlyfighter} \rangle, \\
-    \langle incrIntBy7, incrHPBy1, incrMPBy3 \rangle)
+  mage = Entity('Ataraxia', Mage, \langle str, int, dex \rangle, \langle sword, shield, boots \rangle, \\
+    \langle f_{strdebuf}, f_{intbuf} \rangle, \langle f_{eqonlyfighter} \rangle, \\
+  \langle incrIntBy7, incrHPBy1, incrMPBy3 \rangle)
 \end{split}
 \end{equation}
 
