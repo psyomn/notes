@@ -57,48 +57,42 @@ aspects, and pushes us towards a more stripped down product, but modular to
 allow for these maneouvers.
 
 Due to the extreme modular requirements of such a software product, it might be
-wiser to use a scripted programming language for the game engine. The rationale
-being that retro RPG games don't require too much processing power in order to
-run, and another, the dynamic power of scripted programming languages, and an
-indirect added benefit, the concise code that may be more accessible to the
-userbase of the Haze game editor.
+wiser to use a scripted programming language along the game engine. The rationale
+being that we provide some modular engine, which is possibly somewhat stripped
+down, but allow the users of the game editor to specify the missing parts, with
+the engine's scripting language. For example, we impose the the requirement on
+the developers to create a modular engine, that is able to understand some
+scripting language; we omit menus in the game engine, but through the scripting
+language, we would be able to provide it to the userbase. On the other hand,
+trying to make the engine modular to this extent might not be feasable. It is up
+to the developers to make this decision.
 
-\subsection{Methods of Interaction (Input)}
+\subsection{Methods of Interaction, Controller Input}
 
 Ultimately the editor and game engine should be able to be modular enough to
 specify different keys for different interactions. We do not want to hardcode
 for example an ``action button'', a ``menu button'', and so forth. However we
-%% TODO remove or add a joystick diagram
-can take into consideration the traditional joystick shown in Figure
-\ref{misc:joy}, and how such a minimalistic set of buttons have been able to
-let the player interact fully with games over the timespan of at least 20 years,
-we should probably provide the editor with default settings as such. Apart from
-the test of time, I can not think of any logical reason why one would require
-more controls than this, unless the userbase chooses to use other keys such as
-the function keys in order to access different menus - but this would increase
-the learning curve of the game, rather than having everything accessible via
-these said keys.
+can take into consideration the traditional \texttt{NES} controller, and how
+such a minimalistic set of buttons have been able to provide most basic
+functionalities for an RPG (and to this day a very similar format, if not
+entirely exact is still being followed for the layout of said action buttons).
+The developers might want to consider a standard layout the game engine might
+start off with, and let the users extend it as they see fit. The engine
+\textit{should support keyboard primarily}, and provide joystick support as
+well. In the case that the joystick doesn't work, fallback to keyboard.
 
-% \psyfig{figures/misc/joy.png}%
-%        {Traditional Joystick}%
-%        {misc:joy}%
-%        {4in}
-
-Let us list the buttons:
-\begin{itemize}
-\item{A, B} buttons for standard actions. Usually `A' is used for confirmations
-and `B' for cancellations.
-\item{D-Pad (Directional Pad)} is a set of four buttons in essence that on
-physical joysticks provides a physical mutual exclusion of each other from
-being pressed fown. This has to be taken into consideration when using a
-keyboard since one is able to use any combination of buttons simultaneously.
-\item{Start, Select} were usually used for menus and pausing the game. `Select'
-is not as commonly used.
-\end{itemize}
+Another aspect to think about here is external joystick support. Would it be
+possible to target a brand of joysticks that support a variety of operating
+systems? A good candidate to look at for early system testing would be
+\texttt{Logitech} controllers, as I personally have never had any problems to
+get them to work on any system. The developers should think about adapters in
+this case --- support a \texttt{Logitech} controller first, and see what the
+interface is like. Make some adapters (I'm suggesting software patterns), which
+will provide extensibility in the future.
 
 \subsection{Graphics}
 
-In the respect of graphics, we want Haze to be a retro game engine. So in this
+In the respect of graphics, we want Orion to be a retro game engine. So in this
 respect we will be interested mostly with the manipulation of 2d graphic files.
 However blending in 3d aspects to 2d environments is totally possible and could
 prove to be desirable by the userbase in the future.
@@ -108,11 +102,13 @@ most important aspect being croping as we want to extract different tiles from
 the tilesets that will exist in the assets. Just a simple reminder on some
 jargon:
 
-\paragraph{Tileset}: is an image file that contains smaller images that can be
-used repeatedly as a pattern.
+\subsubsection{Tileset}
+Is an image file that contains smaller images that can be used repeatedly as a
+pattern.
 
-\paragraph{Tile}: is a smaller graphic that is a pattern, that can be used to
-portray repeated graphics.
+\subsubsection{Tile}
+Is a smaller graphic that is a pattern, that can be used to portray repeated
+graphics.
 
 More trivially this part of the software should be able to load bigger pictures
 such as portraits and backgrounds for the games.
