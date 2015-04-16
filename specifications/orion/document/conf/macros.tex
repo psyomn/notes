@@ -5,6 +5,10 @@
 \newcommand{\pcoded}[4]{\lstinputlisting[label=#1,caption=#2,language=#3]{#4}}
 \newcommand{\pcode}[3]{\lstinputlisting[label=#1,caption=#2,language=ruby]{#3}}
 
+% global ref to document link
+\newcommand{\orionurllocation}%
+  {http://goo.gl/6JJK7w}
+
 % For printing output
 \newcommand{\poutput}[3]{\lstinputlisting[label=#1,caption=#2,language=]{#3}}
 
@@ -23,5 +27,5 @@
   \label{#3}
   \end{figure}}
 
-\newcommand{\itemit}[1]{
-  \item \textit{ #1 } }
+\newcommand{\itemit}[1]{\item\textit{#1}}
+\newcommand{\itembf}[1]{\item\textbf{#1}}
