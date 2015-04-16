@@ -8,8 +8,11 @@ THISDIR     =$(pwd)
 all: pdf
 
 pdf:
-	$(TEXER) $(OUTPUT_FLAG) core.tex 
+	$(TEXER) $(OUTPUT_FLAG) core.tex
 	cd $(OUTPUT_DIR); $(BIBC) core; cd ..
+	cp bibliography.bib $(OUTPUT_DIR)
+	cd $(OUTPUT_DIR) && bibtex core.aux
+	$(TEXER) $(OUTPUT_FLAG) core.tex
 	$(TEXER) $(OUTPUT_FLAG) core.tex
 	mv $(OUTPUT_DIR)core.pdf $(TARGET).pdf
 
