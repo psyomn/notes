@@ -7,7 +7,9 @@ Windows machines, paths are delimited by a forward slash, and in Unix variants,
 they are delimited by a backslash. A less obvious example would be filename
 size. For example, there are different filename limits on different filesystems.
 Hence producing different assets on one machine might not work on another
-machine if you are transferring them as plain files. This is an aspect that the
+machine if you are transferring them as plain files. Or even different character
+support on different filesystems: on ext4, you are able to use certain
+characters and symbols, that NTFS might not allow. This is an aspect that the
 game editor should take into account (and in effect the game engine as well).
 
 \subsubsection{Storage format}
