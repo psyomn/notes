@@ -1,4 +1,4 @@
-TARGET      =haze
+TARGET      =orion
 TEXER       =pdflatex
 OUTPUT_DIR  =output/
 OUTPUT_FLAG =-output-directory $(OUTPUT_DIR)
