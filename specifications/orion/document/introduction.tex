@@ -11,13 +11,14 @@ developed by known game companies.
 
 This is a relatively small and loose specification, where we elaborate on what
 we want our custom designed game maker to do, and define a modular core we can
-build on, and let users extend, via the finished product. We wish to design and
-implement a game making tool which will allow users to make RPG games easilly in
-particular. In effect, we would not be as focused for other aspects in the
-resulting games such as physics, or other features. We strictly want a tool
-coupled to this genre, but one that does a good job at that. We are not
-interested in designing a tool where you could make any game --- our scope is
-narrowed down, and well defined.
+build on, and let users extend via the finished product. We wish to design and
+implement a game making tool which will allow users to particularly make RPG
+games easilly. In effect, we would not be as focused for other aspects in the
+resulting games such as physics, or other features extensively elaborated upon,
+in commercial grade game makers. We strictly want a tool best for this genre,
+and one that does a good job at that. In other words, we are not interested in
+designing a tool where you could make any game --- our scope is narrowed down,
+and well defined.
 
 In this document, we describe a two part project, where each component should be
 worked upon at the same time. The heart of the project lies in the engine of the
@@ -26,12 +27,14 @@ setup, where it will look for assets, load and manipulate them to achieve
 different game environments. In other words, we want a engine that will be
 easilly extendable from the end-user's perspective.
 
-The second part of the project, which again, must be developed concurrently, is
-the game editor. The game editor, in effect is an asset management and editing
-tool, which should be capable of generating some organization of these assets
-such that the engine will be able to readilly take all the information in, and
-load a different game environment. The game editor should reuse parts of the
-core engine such that the environment in design, and in execution is consistent.
+The second part of the project, which again, must be developed parallel to the
+engine, is the game editor. The game editor, in effect is an asset management
+and editing tool, which should be capable of generating some organization of
+these assets such that the engine will be able to readilly take all the
+information in, and load a different game environment. The game editor should
+reuse parts of the core engine such that the environment in design, and in
+execution is consistent. It also would be nonsensical to duplicate redundant
+work.
 
 This particular project will aim to be open source. At the time of the writing,
 we wish to release under GPLv3. This does not strike out the possibility of
@@ -44,8 +47,8 @@ Regardless, similar arrangements can be seen with the \texttt{Ren'py} engine
 
 Finally, along the development of this game editor, the collaboration between
 the developers, and the interested party aim to enhance this technical document
-with documentation of unanticipated obstacles that are found along the way of
-research and analysis, and provided under a creative commons license.
+with documentation of unanticipated obstacles that are found along the way
+whilst implementing the engine, and provided under a creative commons license.
 
 \subsection{About this Specification}
 
@@ -62,7 +65,7 @@ different path --- else please make a pull request).
 
 \url{\orionurllocation}
 
-\subsection{Motivation (Userbase)}
+\subsection{Targeted Audience}
 
 A primary motivation for making this engine and game editor on the user side,
 would be that many have the desire to work on a videogame but do not have the
@@ -72,10 +75,12 @@ software is open source, they would be easilly implemented. An interested
 userbase would help keep the project alive, even if previous developers decide
 to abandon the software.
 
-\subsection{Motivation (Developer)}
+\subsection{As a Developer}
 
 A lot of technical implications exist in game development, and in our case we
 wish to provide the tool on many different platforms as well as a cross platform
 engine. These aspects are all something that can contribute to the technical
-growth of any contributing developer.
+growth of any contributing developer, and quite possibly rank as a good capstone
+project. On the other hand, a good capstone project implies risk of failure, of
+the whole project.
 
