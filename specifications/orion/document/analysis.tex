@@ -1,5 +1,56 @@
 \section{Analysis}
 
+\subsection{Describing Abstract Data Types}
+
+We will be using a form of algebraic specifications in order to describe the
+data structures, in an abstract form. This is in the hopes to provide abstract
+enough ideas, without imposing technical details too much. It will be up to the
+implementers of the engine to find out the best way to implement the features
+of the structures, in case there are possible discrepancies.
+
+\subsubsection{Examples}
+
+Consider the specification in \ref{eq:as:e1}. This is how we will represent
+data structures in this document. This would translate to listing \ref{lst:as:e1}
+in Java code. We also see some types later on in the specification, which are
+essentially lists. We denote these attributes by surrounding them with angled
+brackets. To see such an example, one may observe specification \ref{eq:as:e2},
+where we define a structure, that has a label, and aggregates a list of numbers.
+Since in specification \ref{eq:as:e2} there is a sequence, there would be many
+data structures one could use in Java to implement this. This abstraction is
+what is hoped to be achieved in this document (though at the time of 
+implementation it should be very well known on carefully thought decisions 
+what should be used).
+
+\begin{equation}
+\label{eq:as:e1}
+\begin{split}
+Name\colon String \\
+Surname\colon String \\
+Age\colon \mathbb{Z} \\
+Person\colon Name \times Surname \times Age
+\end{split}
+\end{equation}
+
+\begin{lstlisting}[caption=Representing the algebraic specification in Java
+                  ,language=Java,label=lst:as:e1]
+class Person {
+  private String name;
+  private String surname;
+  private int age;
+}
+\end{lstlisting}
+
+\begin{equation}
+\label{eq:as:e2}
+\begin{split}
+Label\colon String \\
+MyStructure\colon Label \times \langle \mathbb{Z} \rangle
+\end{split}
+\end{equation}
+
+\subsection{Overall Description} 
+
 Ultimately we want two things. A game engine, and a game editor. The engine is
 not to be modified - a standalone binary, or the like, must be provided, that
 will look in predetermined locations for assets and tie the whole game
@@ -139,7 +190,7 @@ I would suggest the use of Ogg Vorbis. The engine is open source and Ogg Vorbis
 is pretty awesome when it comes to application.
 
 For background music, we want to be able to loop the song. It would be also
-quite adventageous to point exactly where we want it to loop, as a song might
+quite advantageous to point exactly where we want it to loop, as a song might
 have an intro that is not repeated later on. I've seen this being omitted a few
 many times and it's something that I personally did not like when I found it
 lacking.
@@ -151,7 +202,8 @@ monotonous and not irritate the user as well.
 Also, another thing to take into consideration is voice actors, and games that
 not only have the text of speech displayed, but actually can enabled it to have
 the speech spoken out. This is another aspect of internationalization and
-localization that we need to take care off later on as well.
+localization that we need to take care off later on as well. The text should
+have more metadata bound, such that referencing these voice samples is possible.
 
 \subsection{Maps}
 
@@ -166,6 +218,29 @@ to deal with is also collisions, and appropriate actions to take on these
 collisions. Role playing games are very simple in this aspect (but we should
 still provide a rich set of actions that may be performed for the sake of
 expressiveness of our users).
+
+\begin{equation}
+Label\colon String
+\end{equation}
+
+\begin{equation}
+Layer\colon Map \times Label \times Metadata
+\end{equation}
+
+\begin{equation}
+Map\colon ResourceId \times Label \times \langle Layer \rangle
+\end{equation}
+
+\subsubsection{Movement in Maps}
+
+The reader should recall, or take a look at two games. One game is 
+\textit{Chrono Trigger}, and the other is \textit{Final Fantasy VI}. These two
+games have similar if not same maps. The difference is how the players are able
+to move on the maps. In \textit{Chrono Trigger} you are able to move in any
+direction you please. In \textit{Final Fantasy VI}, you are constrained at the
+up, down, left, and right directions, and these positions are fixed --- you only
+move one tile at a time, and you can think of it as if the player were `snapped
+to a grid'.
 
 \subsubsection{Layers}
 
@@ -190,14 +265,19 @@ instance it should be a reusable function so that the player can either step
 on a tile to transport, or activate in a conversation with a NPC which would
 teleport you instead.
 
-\subsubsection{Tiling}
+\subsubsection{Tiles, and Tilesets}
 
 The maps should be illustrated with tilesets. The tilesets should be on the
 same dialog of the map editor, as should be the aforementioned layers. A map
-can be designed using many different tilesets. A good demonstration of the
-required layout to provide a comprehensive and usable interfacr to the user
-is laid out in Figure \ref{ui:map-editor}
+can be designed using many different tilesets. A demonstration of the
+suggested layout to provide a comprehensive and usable interface to the user
+is shown in Figure \ref{ui:map-editor}.
 
+\begin{equation}
+\begin{split}
+Layer\colon 
+\end{split}
+\end{equation}
 
 \psyfig{figures/ui/map-editor.png}%
        {Map Editor UI}%
@@ -205,3 +285,18 @@ is laid out in Figure \ref{ui:map-editor}
        {5in}
 
 
+\subsection{State Machines}
+
+There are different events that may happen in the game. To keep track of 
+things, the most headache-free way would be to have a state machine mechanism,
+preferably generic and reusable, ready to be manipulated by our engine. For
+example game events could be processed this way. In order for some event to
+happen in the game, we'd want to have some other event fired up. The easiest
+example is speech which may be affected by in game events.
+
+Having a state machine, would also centralize potentially global information
+that you might not wish to have scattered around in different game scripts (for
+example if the user was designing a game, and the engine supported a gaming
+script, and the user defined a bunch of global variables in order to deal with
+things changing, and reacting to those changes). It is also possible to visualize
+state machines with tools such as graphviz as well.

@@ -12,14 +12,11 @@ support on different filesystems: on ext4, you are able to use certain
 characters and symbols, that NTFS might not allow. This is an aspect that the
 game editor should take into account (and in effect the game engine as well).
 
-\subsubsection{Storage format}
-
-We need to think about the following critical aspects:
-
-\begin{itemize}
-\item Storing paths to the tilesets
-\item Storing the used tiles of each respective tileset in the map
-\end{itemize}
+Another thing to think about is if you would possibly want your engine to read
+special zip files with more metadata about the game. For example, once the game
+the user is designing, is complete, and is to be released, packaging it in a zip
+format (or alike: example: cbr for comic books) for distribution, could be 
+preferable. This is a nice to have feature, however.
 
 \subsection{Proposed Directory Structure for Assets}
 
