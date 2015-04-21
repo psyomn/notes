@@ -18,8 +18,8 @@ brackets. To see such an example, one may observe specification \ref{eq:as:e2},
 where we define a structure, that has a label, and aggregates a list of numbers.
 Since in specification \ref{eq:as:e2} there is a sequence, there would be many
 data structures one could use in Java to implement this. This abstraction is
-what is hoped to be achieved in this document (though at the time of 
-implementation it should be very well known on carefully thought decisions 
+what is hoped to be achieved in this document (though at the time of
+implementation it should be very well known on carefully thought decisions
 what should be used).
 
 \begin{equation}
@@ -49,7 +49,7 @@ MyStructure\colon Label \times \langle \mathbb{Z} \rangle
 \end{split}
 \end{equation}
 
-\subsection{Overall Description} 
+\subsection{Overall Description}
 
 Ultimately we want two things. A game engine, and a game editor. The engine is
 not to be modified - a standalone binary, or the like, must be provided, that
@@ -205,6 +205,34 @@ the speech spoken out. This is another aspect of internationalization and
 localization that we need to take care off later on as well. The text should
 have more metadata bound, such that referencing these voice samples is possible.
 
+\subsubsection{Tiles, and Tilesets}
+
+The maps should be illustrated with tilesets. The tilesets should be on the
+same dialog of the map editor, as should be the aforementioned layers. A map
+can be designed using many different tilesets. A demonstration of the
+suggested layout to provide a comprehensive and usable interface to the user
+is shown in Figure~\ref{ui:map-editor}. In the specification
+\ref{eq:tile-explain}, we notice that \texttt{Tile} is composed of two things:
+tileset ids, and offsets. What this means is that we know that the tile will
+look for some tileset of known origin (thanks to some identifier), and will be
+given an offset. The offset in this context can be a natural, including 0
+($\mathbb{N}_0$) --- in other words $\{ 0, 1, 2, 3, ... \}$. These would label
+specific tiles on the tileset. The tileset needs to specify what kind of grid
+it has as well. And if the grid has thick borders. Then, from the grid we would
+extract the tiles from left to right, and top to bottom. We count each tile in
+the grid, with an offset number.
+
+\begin{equation}
+  \begin{split} \label{eq:tile-explain}
+  Tile\colon TilesetId \times TileOffset
+\end{split}
+\end{equation}
+
+\psyfig{figures/ui/map-editor.png}%
+       {Map Editor UI}%
+       {ui:map-editor}%
+       {5in}
+
 \subsection{Maps}
 
 Maps are bits and pieces that build the world of the game. They are pretty
@@ -217,14 +245,17 @@ for. One of them are moving entities, and the others stills. A quality one has
 to deal with is also collisions, and appropriate actions to take on these
 collisions. Role playing games are very simple in this aspect (but we should
 still provide a rich set of actions that may be performed for the sake of
-expressiveness of our users).
+expressiveness of our users). In specification \ref{eq:bigmapspec}, we define a
+few things the reader has not encountered yet. We recommend going over this
+section a few times, as some of these properties are described more in depth in
+their respective sections below.
 
 \begin{equation}
-\begin{split}
+\begin{split} \label{eq:bigmapspec}
 Label\colon String \\
 Metadata\colon \langle String \times String \rangle \\
 TileMatrix\colon \langle \langle Tile \rangle \rangle \\
-Tile\colon TilesetId \times TileId
+Tile\colon TilesetId \times TileOffset
 \end{split}
 \end{equation}
 
@@ -238,7 +269,7 @@ Map\colon ResourceId \times Label \times \langle Layer \rangle \times \langle En
 
 \subsubsection{Movement in Maps}
 
-The reader should recall, or take a look at two games. One game is 
+The reader should recall, or take a look at two games. One game is
 \textit{Chrono Trigger}, and the other is \textit{Final Fantasy VI}. These two
 games have similar if not same maps. The difference is how the players are able
 to move on the maps. In \textit{Chrono Trigger} you are able to move in any
@@ -261,6 +292,13 @@ different trees for this. That would waste space, and create extra work. Hence
 in the tree graphics, we would make their background transparent in order to
 make them reusable with any background.
 
+\begin{equation}
+\begin{split}
+Tile\colon TilesetId \times TileOffset \\
+TileMatrix\colon \langle \langle Tile \rangle \rangle
+\end{split}
+\end{equation}
+
 \subsubsection{Portals}
 
 Portals connect maps together and make it possible for the player to travel
@@ -270,29 +308,9 @@ instance it should be a reusable function so that the player can either step
 on a tile to transport, or activate in a conversation with a NPC which would
 teleport you instead.
 
-\subsubsection{Tiles, and Tilesets}
-
-The maps should be illustrated with tilesets. The tilesets should be on the
-same dialog of the map editor, as should be the aforementioned layers. A map
-can be designed using many different tilesets. A demonstration of the
-suggested layout to provide a comprehensive and usable interface to the user
-is shown in Figure \ref{ui:map-editor}.
-
-\begin{equation}
-\begin{split}
-Layer\colon 
-\end{split}
-\end{equation}
-
-\psyfig{figures/ui/map-editor.png}%
-       {Map Editor UI}%
-       {ui:map-editor}%
-       {5in}
-
-
 \subsection{State Machines}
 
-There are different events that may happen in the game. To keep track of 
+There are different events that may happen in the game. To keep track of
 things, the most headache-free way would be to have a state machine mechanism,
 preferably generic and reusable, ready to be manipulated by our engine. For
 example game events could be processed this way. In order for some event to
