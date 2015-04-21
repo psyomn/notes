@@ -220,15 +220,20 @@ still provide a rich set of actions that may be performed for the sake of
 expressiveness of our users).
 
 \begin{equation}
-Label\colon String
+\begin{split}
+Label\colon String \\
+Metadata\colon \langle String \times String \rangle \\
+TileMatrix\colon \langle \langle Tile \rangle \rangle \\
+Tile\colon TilesetId \times TileId
+\end{split}
 \end{equation}
 
 \begin{equation}
-Layer\colon Map \times Label \times Metadata
+Layer\colon Label \times TileMatrix \times Metadata
 \end{equation}
 
 \begin{equation}
-Map\colon ResourceId \times Label \times \langle Layer \rangle
+Map\colon ResourceId \times Label \times \langle Layer \rangle \times \langle Entity \rangle
 \end{equation}
 
 \subsubsection{Movement in Maps}
