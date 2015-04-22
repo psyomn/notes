@@ -5,54 +5,9 @@ document, for the unfamiliar reader.
 
 \begin{description}
 
-\item {Map}: A part of the world the game takes place in. A map will contain
-  information about what tilesets it's using, and the specific tiles used from
-  that tileset. So in other words, each time a tile is set in the map, there
-  should be a tuple stored somewhere, which contains an id of the tileset being
-  used (or possibly a path), and an id which references the tile inside of that
-  tileset.
-
-\item {Map Layers}: A map can have many layers, and transparency of images must
-  be supported. There are two reasons: you might want to have layers that add
-  extra niceties in the form of graphics. For example seeing things from an
-  overhead view, and having leaves of trees (or branches) be over a player, yet
-  see the player under the branches. Another motivation would be that we can add
-  obstructions on different layers, meaning that the player could go on
-  different floors of a smaller building for example, while everything is in
-  fact on only one map. For example think of a bridge, where the player can move
-  under, and over.
-
-\item {Tile}: a (usually) square graphic that can be used as a pattern to fill
-  in the space of the map. For example a ``grass pattern'' can be expressed in
-  one square graphic, and reused in order to build the map. Tiles exist on
-  \textit{map layers}.
-
-\item {Tileset}: A collection of tiles (as described above). Tilesets usually
-  have a particular style, or respect a scene (castle tilesets, should have
-  things that are found in castles, overworld should have grass and trees, etc).
-
-%% TODO is this really the name I want?
-\item {Entity}: An entity in a game, is anyting that might have some stats, and
-  more information attached to it (usually these are monsters, can be nps, and
-  the heroes the player can control).
-
 \item {NPC}: Stands for `non-playable-character', and they are the people the
   main character finds in villages, or eslewhere, that usually offer helpful
   hints and tips.
-
-\item {Pawn}: A pawn is a placeable `thing' in a map, on a layer. These differ
-  to tiles, in the sense that they are animated, and more than simple tiles on a
-  map. For example NPCs, treasure chests, and anything else that might be deemed
-  special. Pawns should contain some scripted behavior, that can tie the game
-  together. For example it should be possible to perform map transitions via
-  some minor scripting language, via a Pawn. These functionalities should
-  include more things like changing the sprite, and more.
-
-\item {Portal}: A connecting unit between map `A' and map `B'. There might be
-  many ways going about this --- maybe this is a special feature of a map, or
-  there can be reusable functionality coded inside the engine, which would be
-  used via a placed entity on the map, to perform this transition.
-
 
 \end{description}
 

@@ -63,7 +63,7 @@ aesthetic, and to help the user navigate through many things. Assets should
 contain the following:
 
 \begin{description}
-  \itembf{Graphics}: Anything that has to do with things being drawn on screen.
+  \itemit {Graphics}: Anything that has to do with things being drawn on screen.
     Tiles, Tilesets, portraits, backgrounds, etc. A good thing to do before
     proceeding to design and implementation details of this project at this
     point, is to decide what kind of graphic formats people would be interested
@@ -71,30 +71,73 @@ contain the following:
     What about \textit{PNG}? Or is \textit{BMP} easier to manipulate? See what
     libraries exists, and choose something adequate.
 
-  \itembf{Sound}: Anything that causes noise. Background music, sound effects, and
+  \itemit {Sound}: Anything that causes noise. Background music, sound effects, and
     anything else that falls into this category. Again, consider what sound
     formats you would like to support. Probably compressed formats are best such
     as \textit{Ogg Vorbis} or \textit{MP3}.
 
-  \itembf{Text}: Anything that can be written down in a natural language. As a
+  \itemit {Text}: Anything that can be written down in a natural language. As a
     consequence, a mechanism should exist that will allow for multiple
     translations of the game, without invasive intervention (\textit{a.k.a.
     i18n, l10n}). Rails uses an organization, which involves YAML parsing
     \cite{ruby:i18n}, and Qt also does something similar \cite{qt:i18n}.
 
-  \itembf{Maps}: A composite that brings many of the aforementioned assets
-    together, to make up the virtual world.
+  \itemit {Map}: A part of the world the game takes place in. A map will contain
+    information about what tilesets it's using, and the specific tiles used from
+    that tileset. So in other words, each time a tile is set in the map, there
+    should be a tuple stored somewhere, which contains an id of the tileset being
+    used (or possibly a path), and an id which references the tile inside of that
+    tileset.
 
-  \itembf{Pawn Templates}: When designing maps, there might be pawns you want to
+  \itemit {Map Layers}: A map can have many layers, and transparency of images must
+    be supported. There are two reasons: you might want to have layers that add
+    extra niceties in the form of graphics. For example seeing things from an
+    overhead view, and having leaves of trees (or branches) be over a player, yet
+    see the player under the branches. Another motivation would be that we can add
+    obstructions on different layers, meaning that the player could go on
+    different floors of a smaller building for example, while everything is in
+    fact on only one map. For example think of a bridge, where the player can move
+    under, and over.
+
+  \itemit {Tile}: a (usually) square graphic that can be used as a pattern to fill
+    in the space of the map. For example a ``grass pattern'' can be expressed in
+    one square graphic, and reused in order to build the map. Tiles exist on
+    \textit{map layers}.
+
+  \itemit {Tileset}: A collection of tiles (as described above). Tilesets usually
+    have a particular style, or respect a scene (castle tilesets, should have
+    things that are found in castles, overworld should have grass and trees, etc).
+
+
+  \itemit {Pawn Templates}: When designing maps, there might be pawns you want to
     use, which are very common. There should be a mechanism to allow this. For
     example, the game editor should help the user out by providing a `Pawn
     Template Editor', which let's say, the user could define a sign-post, that
     the user can place in any town. As a result, the user would simply need to
     change the text of the sign.
 
-  \itembf{Scripts}: Any behavior we want to define, without recompiling the
+  \itemit {Scripts}: Any behavior we want to define, without recompiling the
     engine. Apart from a sane design, this means that the user only has to worry
     about the scripting language, rather than tweak the game engine.
+
+  \itemit {Entity}: An entity in a game, is anyting that might have some stats, and
+    more information attached to it (usually these are monsters, can be nps, and
+    the heroes the player can control).
+
+  \itemit {Pawn}: A pawn is a placeable `thing' in a map, on a layer. These differ
+    to tiles, in the sense that they are animated, and more than simple tiles on a
+    map. For example NPCs, treasure chests, and anything else that might be deemed
+    special. Pawns should contain some scripted behavior, that can tie the game
+    together. For example it should be possible to perform map transitions via
+    some minor scripting language, via a Pawn. These functionalities should
+    include more things like changing the sprite, and more.
+
+  \itemit {Portal}: A connecting unit between map `A' and map `B'. There might be
+    many ways going about this --- maybe this is a special feature of a map, or
+    there can be reusable functionality coded inside the engine, which would be
+    used via a placed entity on the map, to perform this transition. A Portal, may
+    be a Pawn.
+
 \end{description}
 
 Another aspect that we need to think along the way is how much modular we want
@@ -177,17 +220,19 @@ factor out this functionality in some other way?
 
 That is exactly where the said mechanisms come in, and we can have multiple
 translations for the same application available, ready to update, and even add
-more languages without the need of reloading the application. In the future if
-let's say a game is made by this editor and engine, and it is accepted, we
-would like to provide a means for translators to have no trouble to go about
-their work.
+more languages without the need of reloading or recompiling the application. In
+the future if let's say a game is made by this editor and engine, and it is
+accepted, we would like to provide a means for translators to have no trouble to
+go about their work.
 
 \subsection{Sound}
 
 Sound is pretty much anything that makes noise while the player is playing the
 game. If more recent technology is to be used in order to write the music, then
-I would suggest the use of Ogg Vorbis. The engine is open source and Ogg Vorbis
-is pretty awesome when it comes to application.
+I would suggest the use of Ogg Vorbis and MP3. The engine is open source and Ogg
+Vorbis is also open source. Some distributions, or even users tend to be
+restrictive on what codecs they want to have, and sometimes they blacklist the
+MP3 format as well.
 
 For background music, we want to be able to loop the song. It would be also
 quite advantageous to point exactly where we want it to loop, as a song might
