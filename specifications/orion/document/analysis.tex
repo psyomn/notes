@@ -124,19 +124,28 @@ contain the following:
     more information attached to it (usually these are monsters, can be nps, and
     the heroes the player can control).
 
-  \itemit {Pawn}: A pawn is a placeable `thing' in a map, on a layer. These differ
-    to tiles, in the sense that they are animated, and more than simple tiles on a
-    map. For example NPCs, treasure chests, and anything else that might be deemed
-    special. Pawns should contain some scripted behavior, that can tie the game
-    together. For example it should be possible to perform map transitions via
-    some minor scripting language, via a Pawn. These functionalities should
-    include more things like changing the sprite, and more.
+  \itemit {Pawn (nonstandard terminology)}: A pawn is a placeable `thing' in a
+    map, on a layer. These differ to tiles, in the sense that they are animated,
+    and more than simple tiles on a map. For example NPCs, treasure chests, and
+    anything else that might be deemed special. Pawns should contain some
+    scripted behavior, that can tie the game together. For example it should be
+    possible to perform map transitions via some minor scripting language, via a
+    Pawn. These functionalities should include more things like changing the
+    sprite, and more.
 
   \itemit {Portal}: A connecting unit between map `A' and map `B'. There might be
     many ways going about this --- maybe this is a special feature of a map, or
     there can be reusable functionality coded inside the engine, which would be
     used via a placed entity on the map, to perform this transition. A Portal, may
     be a Pawn.
+
+  \itemit {Sprite and Spritesheets}: a sprite is similar to tiles. The term is
+    used for graphics, but in this case, the difference is that we associate
+    animation with this term. A landscape will use tiles and tilesets for a
+    graphical representation. The pawns, or other things that might be moving on
+    the map, or are interacted with, will be using sprites. Sprites use the same
+    setup as tiles --- a grid that separates graphics. The difference is that
+    each `tile' in the spritesheet is the next animated frame.
 
 \end{description}
 
@@ -280,7 +289,7 @@ the grid, with an offset number.
 
 Now for a visual representation of the above, we can observe
 Figure~\ref{sprites:arachne:1} which shows some sprite-art from a user called
-\texttt{Arachne}, form \texttt{tigsource.com}.
+\texttt{Arachne}, from \texttt{tigsource.com}.
 
 \psyfig{figures/sprites/dungeontiles-test.png}%
        {Dungeon Tiles of Arachne on tigsource.com \cite{arachnesprite1}}%
