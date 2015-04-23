@@ -278,7 +278,9 @@ the grid, with an offset number.
 
 \begin{equation}
   \begin{split} \label{eq:tile-explain}
-  Tile\colon TilesetId \times TileOffset
+  GridWidth\colon \mathbb{N}_0 \\
+  Tile\colon TilesetId \times TileOffset \\
+  Tileset\colon ImageResource \times GridWidth
 \end{split}
 \end{equation}
 
@@ -287,14 +289,28 @@ the grid, with an offset number.
        {ui:map-editor}%
        {5in}
 
-Now for a visual representation of the above, we can observe
+Now for a visual representation of the above specification, we can observe
 Figure~\ref{sprites:arachne:1} which shows some sprite-art from a user called
 \texttt{Arachne}, from \texttt{tigsource.com}.
 
 \psyfig{figures/sprites/dungeontiles-test.png}%
        {Dungeon Tiles of Arachne on tigsource.com \cite{arachnesprite1}}%
        {sprites:arachne:1}%
-       {5in}
+       {3in}
+
+As you may notice, just like real tiles, the tiles in
+Figure~\ref{sprites:arachne:1} are of square shape; same length of sides. There
+are other variations of tiles, such as hexagonal tiles seen in other games. For
+this specification, we will focus on simple, square tiles. There is one
+consideration to think of however: in some cases, some spritesheets or tilesets
+contain a grid, who's lines have a width. Usually it's a size of 1 pixel, but
+there should be mechanisms to deal with a variable length of pixels. We can see
+such a thing in Figure~\ref{sprites:arachne:gridwidth}.
+
+\psyfig{figures/sprites/dungeontiles-with-gridwidth.png}%
+       {Dungeon Tiles of Arachne modified with grid-width}%
+       {sprites:arachne:gridwidth}%
+       {3in}
 
 \subsection{Maps}
 
