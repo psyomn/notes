@@ -159,16 +159,17 @@ portraits to vary in emotional expressions. These are all very specialized
 aspects, and pushes us towards a more stripped down product, but modular to
 allow for these maneouvers.
 
-Due to the extreme modular requirements of such a software product, it might be
-wiser to use a scripted programming language along the game engine. The rationale
-being that we provide some modular engine, which is possibly somewhat stripped
-down, but allow the users of the game editor to specify the missing parts, with
-the engine's scripting language. For example, we impose the the requirement on
-the developers to create a modular engine, that is able to understand some
-scripting language; we omit menus in the game engine, but through the scripting
-language, we would be able to provide it to the userbase. On the other hand,
-trying to make the engine modular to this extent might not be feasable. It is up
-to the developers to make this decision.
+Due to the modular requirements of such a software product, it might be wiser to
+use a scripted programming language along the game engine. The rationale being
+that we provide some modular engine, which is possibly somewhat stripped down,
+but allow the users of the game editor to specify the missing parts, with the
+engine's scripting language. For example, we impose the the requirement on the
+developers to create a modular engine, that is able to understand some scripting
+language; we omit menus in the game engine, but through the scripting language,
+we would be able to provide it to the userbase. On the other hand, trying to
+make the engine modular to this extent might not be feasable. It is up to the
+developers to make this decision. These are all thoughts the developer should
+keep in mind.
 
 \subsection{Methods of Interaction, Controller Input}
 
@@ -233,6 +234,26 @@ more languages without the need of reloading or recompiling the application. In
 the future if let's say a game is made by this editor and engine, and it is
 accepted, we would like to provide a means for translators to have no trouble to
 go about their work.
+
+A final aspect, but important, is the support of UTF-8 characters. I18n, and
+l10n imply this, but we explicitly state this so that the developers don't
+oversee this important feature. This could indirectly serve as a way to include
+common symbols in text, which would be otherwise impossible.
+
+\subsubsection{Character Rendering}
+
+There are two ways that a game can render characters. One way is to render the
+characters on screen using some type of font. Another way is to provide an
+image, separated in equal square segments, where each square represents a
+character. This would allow the user to design custom fonts for the game.
+However, the characters may lose their quality when resizing the game screen.
+We show a small example of such graphics in Figure~\ref{fig:asciisprite}.
+
+\psyfig{figures/sprites/charmap-oldschool_white_0.png}%
+{Character map by \texttt{domsson} on \texttt{opengameart.org}
+\cite{donssonascii}}%
+       {fig:asciisprite}%
+       {2in}
 
 \subsection{Sound}
 
