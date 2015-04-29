@@ -216,7 +216,22 @@ different level-up functions that we have assigned withing LevelingEngine.
 
 \subsection{Asset Fetching} \label{sec:asset-fetch}
 
-In other technologies, semantic versioning has proven to be a very nice feature to have.
-We do this with assets, in order to speed up development in the early stages of the game.
-We can also provide sprite templates for artists to work with, in this way.
+In other technologies, semantic versioning has proven to be a very nice feature
+to have.  We do this with assets, in order to speed up development in the early
+stages of the game.  We can also provide sprite templates for artists to work
+with, in this way.
 
+Having said that, we need to keep a few things in mind:
+\begin{enumerate}
+
+  \item Whether we want to copy from these repositories, the assets once. For
+    example if we want to provide skeletons to the developers or artists, where
+    they can begin their work onto.
+
+  \item Whether we want to provide links, similar to git submodules, where the
+    art and assets may be developed upon idependantly, and eventually pulled in
+    whenever there are updates. This should disallow the users of the system to
+    edit these assets --- this sort of thing should be done on the external
+    repositories \textit{only}.
+
+\end{enumerate}
