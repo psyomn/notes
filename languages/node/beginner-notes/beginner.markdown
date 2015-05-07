@@ -28,3 +28,37 @@ tutorials.
 ~~~~~nocode
     $ learnyounode
 ~~~~~
+
+## First Exercise
+
+Getting argument values in node programs may be done in the following manner:
+
+~~~~javascript
+    var args = process.argv;
+~~~~
+
+The arguments are given in an array. However one has to be careful: the two
+first elements in the array is the name of the entity executing the script (in
+this case it is the node binary), and the name of the actual, running script.
+Anything after these two elements is actually the arguments supplied to the
+script.
+
+So the following code snippet:
+
+~~~~nocode
+    var args = process.argv;
+    console.log(args);
+~~~~
+
+Prints the following in console:
+
+~~~~nocode
+psyomn@aeolus beginner-notes $ node examples/getargs.js firstarg 2 3 4
+[ 'node',
+  '/home/psyomn/programming/architecture-notes/languages/node/beginner-notes/examples/getargs.js',
+  'firstarg',
+  '2',
+  '3',
+  '4' ]
+~~~~
+
