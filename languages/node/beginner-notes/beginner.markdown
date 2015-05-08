@@ -29,7 +29,7 @@ tutorials.
     $ learnyounode
 ~~~~~
 
-## First Exercise
+## Getting argument values
 
 Getting argument values in node programs may be done in the following manner:
 
@@ -61,4 +61,34 @@ psyomn@aeolus beginner-notes $ node examples/getargs.js firstarg 2 3 4
   '3',
   '4' ]
 ~~~~
+
+## Folds in arrays
+
+To perform folds, we define a function we want to use, and pass it in the reduce
+function. Alternatively we can pass a simple anonymous function to achieve the
+same result, similar to lambdas.
+
+~~~~nocode
+    function sum (prev, next, ix, arr) {
+      return (+prev) + (+next);
+    }
+
+    var arr = [1,2,3,4];
+    var strarr = ["1", "2", "3", "4", "5"];
+
+    console.log(arr.reduce(sum));
+    console.log(strarr.reduce(sum));
+    console.log(arr.reduce(function (p,n,x,a) { return p + n; }));
+~~~~
+
+The above prints out the following:
+
+~~~~node
+    psyomn@aeolus examples $ node foldexample.js 
+    10
+    15
+    10
+~~~~
+
+
 
