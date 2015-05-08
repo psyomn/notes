@@ -68,7 +68,7 @@ To perform folds, we define a function we want to use, and pass it in the reduce
 function. Alternatively we can pass a simple anonymous function to achieve the
 same result, similar to lambdas.
 
-~~~~nocode
+~~~~javascript
     function sum (prev, next, ix, arr) {
       return (+prev) + (+next);
     }
