@@ -84,7 +84,7 @@ same result, similar to lambdas.
 The above prints out the following:
 
 ~~~~node
-    psyomn@aeolus examples $ node foldexample.js 
+    psyomn@aeolus examples $ node foldexample.js
     10
     15
     10
@@ -92,3 +92,42 @@ The above prints out the following:
 
 
 
+## Async Calls
+
+Node supports asynchronous calls. For example if you have IO calls,
+which take time, you can run that operation in the background, while consuming
+other ones. You use callbacks in order to tie everything together. For example,
+take the following code:
+
+~~~~javascript
+    var fs = require('fs');
+    var countLines = undefined;
+
+    function fileLines(callback) {
+      fs.readFile(process.argv[2], function handleFile (err, data) {
+        var strContents = data.toString();
+        countLines = 0;
+
+        for (var i = 0; i < strContents.length; ++i) {
+          if (strContents[i] == '\n') {
+            countLines += 1;
+          }
+        }
+        callback();
+      });
+    }
+
+    function logLines() {
+      console.log(countLines);
+    }
+
+    fileLines(logLines);
+~~~~
+
+For example the expensive IO call in this case is the readFile part, which will
+be done asynchronously. Notice we are passing a parameter called `callback`. We
+do this to have a function called, when we are don with the body of this
+expensive `readFile` operation. In this case we want to print the result.
+
+If you had not this organization, and you ran it without the callbacks, then the
+print call would print `undefined`.
