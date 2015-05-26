@@ -126,7 +126,7 @@ take the following code:
 
 For example the expensive IO call in this case is the readFile part, which will
 be done asynchronously. Notice we are passing a parameter called `callback`. We
-do this to have a function called, when we are don with the body of this
+do this to have a function called, when we are done with the body of this
 expensive `readFile` operation. In this case we want to print the result.
 
 If you had not this organization, and you ran it without the callbacks, then the
