@@ -3,3 +3,6 @@
 name = "arch_filters"
 version = "0.0.1"
 authors = ["psyomn <lethaljellybean@gmail.com>"]
+
+[dependencies]
+rand = "0.3"

@@ -1,43 +1,48 @@
-use std::rand;
-use std::rand::Rng;
-use std::io::timer::sleep;
-use std::time::duration::Duration;
+/// Rust version this compiles against:
+/// rustc 1.2.0-dev (2dd5ad0be 2015-05-18) (built 2015-05-19)
+extern crate rand;
+
+use rand::Rng;
+use std::thread::sleep_ms;
+use std::thread::{spawn};
+use std::sync::mpsc::{Sender, Receiver, channel};
+use std::io::Write;
 
 /// A source, that generates random numbers. Numbers are from 0 to 100, and
 /// send it to the next filter. Notice there is no receiver.
-fn random_number_source(s: Sender<int>) {
-    let mut r = rand::task_rng();
+fn random_number_source(s: Sender<i32>) {
+    let mut r = rand::thread_rng();
 
     loop {
-        sleep(Duration::seconds(1));
-        s.send(r.gen::<int>() % 200);
+        sleep_ms(1000);
+        s.send(r.gen::<i32>() % 200);
     }
 }
 
 /// Whatever number is taken in, we multiply by 10, and send it to the next
 /// filter
-fn times_10_filter(s: Sender<int>, r: Receiver<int>) {
+fn times_10_filter(s: Sender<i32>, r: Receiver<i32>) {
     loop {
-        let n: int = r.recv() * 10;
+        let n: i32 = r.recv().unwrap() * 10;
         s.send(n);
     }
 }
 
 /// Simply adds 2, to whatever number is received
-fn plus_2_filter(s: Sender<int>, r: Receiver<int>) {
+fn plus_2_filter(s: Sender<i32>, r: Receiver<i32>) {
     loop {
-        let n: int = r.recv() + 2;
+        let n: i32 = r.recv().unwrap() + 2;
         s.send(n);
     }
 }
 
 /// Substracts a random number, where the random number is max __magnitude__ of 40.
 /// NOTE: this might add numbers if gen returns a negative number
-fn minus_up_to_40_filter(s: Sender<int>, r: Receiver<int>) {
+fn minus_up_to_40_filter(s: Sender<i32>, r: Receiver<i32>) {
     loop {
-        let mut rand = rand::task_rng();
-        let sub: int = rand.gen::<int>() % 41;
-        let rslt: int = r.recv() - sub;
+        let mut rand = rand::thread_rng();
+        let sub: i32 = rand.gen::<i32>() % 41;
+        let rslt: i32 = r.recv().unwrap() - sub;
         s.send(rslt);
     }
 }
@@ -45,22 +50,22 @@ fn minus_up_to_40_filter(s: Sender<int>, r: Receiver<int>) {
 /// Main can be our sink. Let's have this setup:
 ///   randnumsource -> times10 -> plus2 -> minusupto40 -> sink
 fn main() {
-    let (s_src, r_t10)  : (Sender<int>, Receiver<int>) = channel();
-    let (s_t10, r_p2)   : (Sender<int>, Receiver<int>) = channel();
-    let (s_p2,  r_m40)  : (Sender<int>, Receiver<int>) = channel();
-    let (s_m40, r_sink) : (Sender<int>, Receiver<int>) = channel();
+    let (s_src, r_t10)  : (Sender<i32>, Receiver<i32>) = channel();
+    let (s_t10, r_p2)   : (Sender<i32>, Receiver<i32>) = channel();
+    let (s_p2,  r_m40)  : (Sender<i32>, Receiver<i32>) = channel();
+    let (s_m40, r_sink) : (Sender<i32>, Receiver<i32>) = channel();
 
-    spawn(proc(){ random_number_source(s_src)         });
-    spawn(proc(){ times_10_filter(s_t10, r_t10)       });
-    spawn(proc(){ plus_2_filter(s_p2, r_p2)           });
-    spawn(proc(){ minus_up_to_40_filter(s_m40, r_m40) });
+    spawn(||{ random_number_source(s_src)         });
+    spawn(||{ times_10_filter(s_t10, r_t10)       });
+    spawn(||{ plus_2_filter(s_p2, r_p2)           });
+    spawn(||{ minus_up_to_40_filter(s_m40, r_m40) });
 
     println!("Sink is listening...");
 
     loop {
-        let val: int = r_sink.recv();
+        let val: i32 = r_sink.recv().unwrap();
         print!("{}, ", val);
-        std::io::stdio::flush();
+        std::io::stdout().flush();
     }
 }
 
