@@ -1,0 +1,21 @@
+%%%
+%%% Macro shorthand to add figures
+%%%
+
+\newcommand{\psyfig}[3]{%
+    \begin{figure}[h!]
+    \centering
+    \includegraphics[max width=\linewidth, keepaspectratio]{#1}
+    \caption{#2}
+    \label{fig:#3}
+    \end{figure}}
+
+    %% TODO LEGACY: need to fix other document parts using this
+\newcommand{\psyfigd}[3]{%
+    \begin{figure}[h!]
+    \centering
+    \includegraphics[max width=\linewidth, keepaspectratio]{#1}
+    \caption{#2}
+    \label{fig:#3}
+    \end{figure}}
+

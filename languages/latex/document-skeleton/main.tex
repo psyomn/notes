@@ -1,0 +1,54 @@
+\documentclass[12pt,twoside]{article}
+\title{\Huge{DRAFT: Do not redistribute} \\
+  The Prevalence of Aspect Orientation in Open Source Projects
+  }
+
+\author{}
+\date{\today}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{grffile} % added to understand *.png
+\usepackage[export]{adjustbox}
+\usepackage[labelfont=bf]{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{psyan}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont={white,bf},textfont={white}}
+
+
+%%% Macros
+\input{psy-macros/psy-fig}
+\input{psy-macros/psy-rcode}
+\input{psy-macros/psy-itembf}
+
+\pagenumbering{arabic}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\listoffigures
+\lstlistoflistings
+
+%%% Not actually a macro - forced to declare here due to lstset et al.
+\input{psy-macros/psy-listing}
+
+\section{Introduction}
+
+This is a test. Let's see if we can cite things properly
+\cite{constantinides2002reasoning}. And below we are going to add a code
+snippet.
+
+
+\begin{lstlisting}[language=Java,caption="This is a simple Javascript program"]
+  console.log("Hello world");
+\end{lstlisting}
+
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}
