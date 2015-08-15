@@ -1,0 +1,6 @@
+[config]
+name = "myconfig"
+purpose = "to test out different things"
+myarr = ["hello", "there", "world"]
+
+[somethingelse]

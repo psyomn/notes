@@ -1,0 +1,12 @@
+[package]
+name = "scraps"
+version = "0.1.0"
+authors = ["psyomn <lethaljellybean@gmail.com>"]
+
+[[bin]]
+name = "scraps"
+
+[dependencies]
+toml = "0.1"
+getopts = "*"
+
