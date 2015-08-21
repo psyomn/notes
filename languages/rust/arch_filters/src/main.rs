@@ -5,8 +5,16 @@ extern crate rand;
 use rand::Rng;
 use std::thread::sleep_ms;
 use std::thread::{spawn};
-use std::sync::mpsc::{Sender, Receiver, channel};
+use std::sync::mpsc::{Sender, Receiver, channel, SendError};
 use std::io::Write;
+
+/// Will only print something if something goes wrong.
+fn common_send_handle(r: Result<(), SendError<i32>>) -> () {
+    match r {
+        Ok(..) => {},
+        Err(e) => println!("Problem when sending information: {}", e),
+    };
+}
 
 /// A source, that generates random numbers. Numbers are from 0 to 100, and
 /// send it to the next filter. Notice there is no receiver.
@@ -15,7 +23,8 @@ fn random_number_source(s: Sender<i32>) {
 
     loop {
         sleep_ms(1000);
-        s.send(r.gen::<i32>() % 200);
+        let r = s.send(r.gen::<i32>() % 200);
+        common_send_handle(r);
     }
 }
 
@@ -24,7 +33,8 @@ fn random_number_source(s: Sender<i32>) {
 fn times_10_filter(s: Sender<i32>, r: Receiver<i32>) {
     loop {
         let n: i32 = r.recv().unwrap() * 10;
-        s.send(n);
+        let r =s.send(n);
+        common_send_handle(r);
     }
 }
 
@@ -32,7 +42,8 @@ fn times_10_filter(s: Sender<i32>, r: Receiver<i32>) {
 fn plus_2_filter(s: Sender<i32>, r: Receiver<i32>) {
     loop {
         let n: i32 = r.recv().unwrap() + 2;
-        s.send(n);
+        let r = s.send(n);
+        common_send_handle(r);
     }
 }
 
@@ -43,7 +54,8 @@ fn minus_up_to_40_filter(s: Sender<i32>, r: Receiver<i32>) {
         let mut rand = rand::thread_rng();
         let sub: i32 = rand.gen::<i32>() % 41;
         let rslt: i32 = r.recv().unwrap() - sub;
-        s.send(rslt);
+        let r = s.send(rslt);
+        common_send_handle(r);
     }
 }
 
@@ -65,7 +77,7 @@ fn main() {
     loop {
         let val: i32 = r_sink.recv().unwrap();
         print!("{}, ", val);
-        std::io::stdout().flush();
+        std::io::stdout().flush().unwrap();
     }
 }
 
