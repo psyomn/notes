@@ -4,8 +4,5 @@ name = "rustex"
 version = "0.0.1"
 authors = ["psyomn <lethaljellybean@gmail.com>"]
 
-[[bin]]
-name = "rustexsample"
-
 [dependencies]
 csv = "0.14.0"

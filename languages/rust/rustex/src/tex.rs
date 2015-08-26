@@ -1,3 +1,12 @@
+pub enum DocItem {
+    List(Vec<DocItem>),
+    Info(Info),
+}
+
+pub struct DocTree {
+    label: String,
+}
+
 pub struct Info {
     title: String,
     authors: Vec<String>,
@@ -47,26 +56,22 @@ pub fn s(text: &str) {
 
 /// subsubsection
 pub fn ss(text: &str) {
-    tag("subsubsection", text);
-    nl();
+    println!("{}", tag("subsubsection", text));
 }
 
 /// Print raw
 pub fn r(text: &str) {
     println!("{}", text);
-    nl();
 }
 
 /// Itemize stuff
 pub fn items(items: Vec<&str>) {
-    tag("begin", "itemize");
-    nl();
+    println!("{}", tag("begin", "itemize"));
     for el in items.iter() {
         print!("  \\item ");
         println!("{}", el);
     }
-    tag("end", "itemize");
-    nl();
+    println!("{}", tag("end", "itemize"));
 }
 
 /// Common way of having simple tags
@@ -94,3 +99,8 @@ pub fn pkg(ps: Vec<&str>) -> () {
         }
     }
 }
+
+pub fn dclass(opts: String, doctype: String) -> () {
+    println!("\\documentclass[{}]{{{}}}", opts, doctype);
+}
+
