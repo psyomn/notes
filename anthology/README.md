@@ -7,3 +7,6 @@ one document (hopefully).
 Because doing this with the structure of the other writeups I have in this repo,
 is going to be very hard, I've decided to go through each and add commands to
 generate to stripped down tex, and hopefully automate most of this.
+
+EDIT: this is a WIP; this ended up being a little more complicated than what I
+anticipated...
