@@ -13,7 +13,7 @@ fn main() -> () {
         Err(e) => panic!("Could not start client: {}", e),
     };
 
-    client.send("send a message!".to_owned());
+    send_loop(&mut client);
 }
 
 /// Simple helper to read the nick
@@ -21,14 +21,14 @@ fn read_nick() -> String {
     let mut nick: String = String::new();
 
     print!("nick: ");
-    io::stdout().flush();
+    io::stdout().flush().unwrap();
     loop {
         match io::stdin().read_line(&mut nick) {
             Ok(1...4) => {
                 println!("bigger nick required");
                 nick.clear();
                 print!("nick: ");
-                io::stdout().flush();
+                io::stdout().flush().unwrap();
             },
             Ok(..) => {
                 break
@@ -42,3 +42,23 @@ fn read_nick() -> String {
 
     nick.trim().into()
 }
+
+fn send_loop(c: &mut Client) -> () {
+    let mut message: String = String::new();
+
+    loop {
+        message.clear();
+        let read_ret = io::stdin().read_line(&mut message);
+        match read_ret {
+            Ok(..) => {
+                println!("read a line");
+                match c.send(message.clone()) {
+                    Ok(..) => println!("Received 200!"),
+                    Err(e) => println!("Something went wrong: {}", e),
+                }
+            },
+            Err(..) => continue,
+        }
+    }
+}
+

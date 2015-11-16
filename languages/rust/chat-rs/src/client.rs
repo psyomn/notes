@@ -1,6 +1,6 @@
 use std::net::TcpStream;
-use std::io::Error;
-use std::io::Write;
+use std::io::{Error, ErrorKind};
+use std::io::{Write, Read};
 
 #[derive(Debug)]
 pub struct Client {
@@ -18,7 +18,16 @@ impl Client {
 
     pub fn listen(&self) -> () { }
 
-    pub fn send(&mut self, message: String) -> Result<usize, Error> {
-        self.connection.write(&message.into_bytes())
+    pub fn send(&mut self, message: String) -> Result<(), Error> {
+        println!("Client: sending info");
+        let _ = self.connection.write_all(&message.into_bytes());
+        let mut b: [u8; 1] = [0u8];
+        println!("Waiting for ack from server");
+        let _ = self.connection.read(&mut b);
+
+        match b[0] {
+            200 => Ok(()),
+            e@_   => Err(Error::new(ErrorKind::Other, format!("Bad receive {:?}", e).as_ref())),
+        }
     }
 }
