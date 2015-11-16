@@ -11,6 +11,5 @@ path = "src/run_server.rs"
 name = "chat-client"
 path = "src/run_client.rs"
 
-
 [dependencies]
 gtk = "0.0.5"
