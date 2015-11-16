@@ -4,11 +4,11 @@ name = "chat"
 version = "0.1.0"
 
 [[bin]]
-name = "chat-rs-server"
+name = "chat-server"
 path = "src/run_server.rs"
 
 [[bin]]
-name = "chat-rs-client"
+name = "chat-client"
 path = "src/run_client.rs"
 
 
