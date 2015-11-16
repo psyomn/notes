@@ -1,0 +1,16 @@
+[package]
+authors = ["psyomn <lethaljellybean@gmail.com>"]
+name = "chat"
+version = "0.1.0"
+
+[[bin]]
+name = "chat-rs-server"
+path = "src/run_server.rs"
+
+[[bin]]
+name = "chat-rs-client"
+path = "src/run_client.rs"
+
+
+[dependencies]
+gtk = "0.0.5"
