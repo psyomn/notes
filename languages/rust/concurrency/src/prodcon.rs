@@ -7,11 +7,23 @@ use std::sync::mpsc::{Sender, Receiver, channel};
 use std::thread;
 use std::thread::JoinHandle;
 use std::num::Wrapping;
+use std::env;
 
 const NUMBER: u64 = 5381;
 
 fn main() -> () {
-    let hashes_wanted: u16 = 21;
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() != 2 {
+        println!("Usage:\n  prodcon <hash-num>");
+        return;
+    }
+
+    let hashes_wanted: u16 = match args.iter().nth(1) {
+        Some(v) => v.parse::<u16>().unwrap_or(21),
+        None    => 21,
+    };
+
     let cores = num_cpus::get() as u16;
     let grain: u16 = hashes_wanted / cores;
     let extra = hashes_wanted % cores;
