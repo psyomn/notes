@@ -1,5 +1,6 @@
 /// Rust version this compiles against:
 /// rustc 1.2.0-dev (2dd5ad0be 2015-05-18) (built 2015-05-19)
+/// rustc 1.4.0-dev (8ab8581f6 2015-10-27) (works with)
 extern crate rand;
 
 use rand::Rng;
