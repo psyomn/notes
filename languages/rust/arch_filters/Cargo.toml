@@ -1,8 +1,20 @@
 [package]
-
+authors = ["psyomn <lethaljellybean@gmail.com>"]
 name = "arch_filters"
 version = "0.0.1"
-authors = ["psyomn <lethaljellybean@gmail.com>"]
+
+[[bin]]
+name = "arch-filters"
+path = "src/archfilt.rs"
+
+[[bin]]
+name = "talking-threads"
+path = "src/talkingthreads.rs"
+
+[[bin]]
+name = "prodcom"
+path = "src/prodcon.rs"
 
 [dependencies]
+num_cpus = "0.2.7"
 rand = "0.3"
