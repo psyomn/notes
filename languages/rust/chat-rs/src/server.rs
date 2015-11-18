@@ -12,41 +12,28 @@ pub struct Server {
     port: u16,
     listening_done: bool,
     clients: Vec<JoinHandle<()>>,
-    mess_handle_rcv: Option<Receiver<String>>,
-    mess_handle_snd: Option<Sender<String>>,
-    mess_handle: Option<JoinHandle<()>>,
+    mess_handle_snd: Sender<String>,
+    mess_handle: JoinHandle<()>,
 }
 
 impl Server {
     pub fn new(h: String, p: u16) -> Server {
         let (sender, receiver) = channel::<String>();
 
+        let handle = thread::spawn(move || {
+            message_relayer(receiver);
+        });
+
         let mut srv = Server {
             host: h,
             port: p,
             listening_done: false,
             clients: vec![],
-            mess_handle_rcv: Some(receiver),
-            mess_handle_snd: Some(sender),
-            mess_handle: None,
+            mess_handle_snd: sender,
+            mess_handle: handle,
         };
-
-        srv.init_message_handler();
 
         srv
-    }
-
-    pub fn init_message_handler(&mut self) -> () {
-        let recv = match self.mess_handle_rcv {
-            Some(v) => v,
-            None => return,
-        };
-
-        self.mess_handle_rcv = None;
-
-        self.mess_handle = Some(thread::spawn(move || {
-            message_relayer(recv);
-        }));
     }
 
     pub fn listen(&mut self) -> () {
@@ -58,11 +45,9 @@ impl Server {
         for stream in listener.incoming() {
             match stream {
                 Ok(mut ss) => {
-                    // let snd = match self.mess_handle_channel {
-                    //     (ref sender, _) => sender.clone(),
-                    // };
-                    // let t = thread::spawn(move || { handle_client(ss, snd) });
-                    // self.clients.push(t);
+                    let snd = self.mess_handle_snd.clone();
+                    let t = thread::spawn(move || { handle_client(ss, snd) });
+                    self.clients.push(t);
                 },
                 Err(mut e) => {
                     write!(io::stderr(), "Error!");
@@ -79,13 +64,23 @@ fn handle_client(mut s: TcpStream, sender: Sender<String>) -> () {
         let _ = s.read(&mut v8);
         let recv: String = String::from_utf8_lossy(&v8).into_owned();
         println!("Recv: {}", recv);
+        sender.send(recv);
         match s.write(&[SUCCESS]) {
             Ok(..) => println!("Wrote to client!"),
-            Err(..) => println!("Couldn't send ack to client"),
+            Err(..) => {
+                println!("Client disconnected");
+                break;
+            },
         }
     }
 }
 
 fn message_relayer(r: Receiver<String>) {
+    loop {
+        match r.recv() {
+            Ok(s) => println!("I should relay this to all connected clients: {}", s),
+            Err(..) => continue,
+        }
+    }
 }
 
