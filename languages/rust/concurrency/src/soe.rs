@@ -1,7 +1,6 @@
 //! Just some idea I had in the mean time that if one number is found to divide the next term, then
 //! the parallel parts may bail, and wait for the next order from the master thread
 
-use std::sync::mpsc::{Sender, Receiver, channel};
 
 fn main() -> () {
     println!("{:?}", simple_soe(500_000));
@@ -35,23 +34,61 @@ fn multi_soe() -> () {}
 
 fn soe_master() -> () {}
 
-enum WorkerState {
-    Work,
-    Listen,
-    Exit,
+mod masters {
+    use std::sync::mpsc::{Sender, Receiver, channel};
+    use std::thread::JoinHandle;
+    use std::thread;
+
+    struct Master {
+        workers: Vec<JoinHandle<Vec<u64>>>,
+        listen: Receiver<bool>,
+    }
+
+    impl Master {
+        pub fn new(cores: u16) -> Master {
+            let (found_snd, found_rcv) = channel::<bool>();
+            for _ in 0..cores {
+            }
+
+            Master {
+                workers: vec![],
+                listen: found_rcv,
+            }
+        }
+    }
 }
 
-struct SoeWorker {
-    pub state: WorkerState,
-}
+mod workers {
+    use std::sync::mpsc::{Sender, Receiver, channel};
 
-impl SoeWorker {
-    pub fn run(&self) -> () {
-        loop {
-            match self.state {
-                WorkerState::Work => continue,
-                WorkerState::Listen => continue,
-                WorkerState::Exit => break,
+    enum WorkerState {
+        Work,
+        Listen,
+        Exit,
+    }
+
+    struct SoeWorker {
+        pub state: WorkerState,
+        cn_to_master: Sender<bool>,
+        cn_next_term: Receiver<u64>,
+    }
+
+    impl SoeWorker {
+        pub fn new(msender: Sender<bool>, mterms: Receiver<u64>) -> SoeWorker {
+            SoeWorker {
+                state: WorkerState::Listen,
+                cn_to_master: msender,
+                cn_next_term: mterms,
+            }
+        }
+
+        pub fn run(&self) -> () {
+            loop {
+                match self.state {
+                    WorkerState::Work => continue,
+                    WorkerState::Listen => continue,
+                    WorkerState::Exit => break,
+                }
             }
         }
     }
