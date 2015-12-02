@@ -6,6 +6,7 @@ using std::cout;
 using std::endl;
 
 void work() {
+  std::mutex m;
   cout << "Work stuff" << endl;
 }
 
