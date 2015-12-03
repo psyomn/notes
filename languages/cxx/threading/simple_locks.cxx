@@ -1,9 +1,11 @@
 #include <iostream>
 #include <thread>
+#include <vector>
 
 using std::thread;
 using std::cout;
 using std::endl;
+using std::vector;
 
 void work() {
   cout << "Work stuff" << endl;
