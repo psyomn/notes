@@ -8,6 +8,7 @@ using std::endl;
 using std::vector;
 
 void work() {
+  std::mutex m;
   cout << "Work stuff" << endl;
 }
 
