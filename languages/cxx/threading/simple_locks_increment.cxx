@@ -19,7 +19,7 @@ class Counter {
 
   void threaded_count() {
     std::thread t(&Counter::incrementor, this, 0);
-    std::thread t2(&Counter::incrementor, this, 0);
+    std::thread t2(&Counter::incrementor, this, 1);
 
     t.join();
     t2.join();
