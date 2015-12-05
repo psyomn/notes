@@ -19,7 +19,7 @@ class Counter {
 
   void threaded_count() {
     std::thread t(&Counter::incrementor, this, 0);
-    std::thread t2(&Counter::incrementor, this, 1);
+    std::thread t2(&Counter::incrementor, this, 0);
 
     t.join();
     t2.join();
@@ -31,26 +31,26 @@ class Counter {
     switch(t) {
     case 0:
       while (m_count <= m_to_max) {
+        m_count_mutex.lock();
         if (m_count % 2 == 0) {
-          m_count_mutex.lock();
           cout << m_label << " : t1 incrementing from " << m_count;
           m_count += 1;
           cout << " to " << m_count << endl;
-          m_count_mutex.unlock();
         }
+        m_count_mutex.unlock();
         /* not my problem. the other should deal with this*/
         std::this_thread::yield();
       }
       break;
     default:
       while (m_count <= m_to_max) {
+        m_count_mutex.lock();
         if (m_count % 2 == 1) {
-          m_count_mutex.lock();
           cout << m_label << " : t2 incrementing from " << m_count;
           m_count += 1;
           cout << " to " << m_count << endl;
-          m_count_mutex.unlock();
         }
+        m_count_mutex.unlock();
         std::this_thread::yield();
       }
       break;
