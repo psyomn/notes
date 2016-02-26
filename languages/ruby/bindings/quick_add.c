@@ -5,6 +5,7 @@ VALUE QuickAdd = Qnil;
 VALUE ret_i(VALUE);
 VALUE ret_f(VALUE);
 VALUE wop(VALUE, VALUE);
+VALUE variadic(VALUE, VALUE);
 
 void
 Init_quick_add() {
@@ -12,6 +13,7 @@ Init_quick_add() {
   rb_define_method(QuickAdd, "ret_i", ret_i, 0);
   rb_define_method(QuickAdd, "ret_f", ret_f, 0);
   rb_define_method(QuickAdd, "with_one_param", wop, 1);
+  rb_define_method(QuickAdd, "variadic", variadic, -2);
 }
 
 VALUE
@@ -55,5 +57,15 @@ wop(VALUE _self, VALUE _param) {
   }
 
   return Qnil;
+}
+
+VALUE
+variadic(VALUE _self, VALUE _args) {
+  if (RB_TYPE_P(_args, T_ARRAY)) {
+    char buff[1024];
+    sprintf(buff, "VARIADIC: number of params are: %ld", RARRAY_LEN(_args));
+    return rb_str_new_cstr(buff);
+  }
+  return rb_str_new_cstr("You passed nothing");
 }
 
