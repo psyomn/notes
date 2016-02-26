@@ -35,22 +35,22 @@ wop(VALUE _self, VALUE _param) {
   if (RB_TYPE_P(_param, T_STRING)) {
     return rb_str_new_cstr("You passed a string!\n");
   }
-  else if (RB_TYPE_P(_param, T_FLOAT)) {
+  if (RB_TYPE_P(_param, T_FLOAT)) {
     return rb_str_new_cstr("You passed a float!\n");
   }
-  else if (RB_TYPE_P(_param, T_SYMBOL)) {
+  if (RB_TYPE_P(_param, T_SYMBOL)) {
     return rb_str_new_cstr("You passed a symbol!\n");
   }
-  else if (RB_TYPE_P(_param, T_NIL)) {
+  if (RB_TYPE_P(_param, T_NIL)) {
     return rb_str_new_cstr("You passed a nil!\n");
   }
-  else if (RB_TYPE_P(_param, T_ARRAY)) {
+  if (RB_TYPE_P(_param, T_ARRAY)) {
     return rb_str_new_cstr("You passed an array!\n");
   }
-  else if (RB_TYPE_P(_param, T_HASH)) {
+  if (RB_TYPE_P(_param, T_HASH)) {
     return rb_str_new_cstr("You passed a hash!\n");
   }
-  else if (RTEST(_param)) {
+  if (RTEST(_param)) {
     return rb_str_new_cstr("You passed a truthy value!\n");
   }
 
