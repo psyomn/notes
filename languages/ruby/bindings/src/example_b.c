@@ -1,6 +1,6 @@
 #include <ruby.h>
 
-VALUE QuickAdd = Qnil;
+VALUE ExampleB = Qnil;
 
 VALUE ret_i(VALUE);
 VALUE ret_f(VALUE);
@@ -8,12 +8,12 @@ VALUE wop(VALUE, VALUE);
 VALUE variadic(VALUE, VALUE);
 
 void
-Init_quick_add() {
-  QuickAdd = rb_define_module("QuickAdd");
-  rb_define_method(QuickAdd, "ret_i", ret_i, 0);
-  rb_define_method(QuickAdd, "ret_f", ret_f, 0);
-  rb_define_method(QuickAdd, "with_one_param", wop, 1);
-  rb_define_method(QuickAdd, "variadic", variadic, -2);
+Init_example_b() {
+  ExampleB = rb_define_module("ExampleB");
+  rb_define_method(ExampleB, "ret_i", ret_i, 0);
+  rb_define_method(ExampleB, "ret_f", ret_f, 0);
+  rb_define_method(ExampleB, "with_one_param", wop, 1);
+  rb_define_method(ExampleB, "variadic", variadic, -2);
 }
 
 VALUE

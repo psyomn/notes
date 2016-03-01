@@ -1,6 +1,6 @@
 require 'mkmf'
 
-extension_name = 'quick_add'
+extension_name = 'example_b'
 
 dir_config(extension_name)
 

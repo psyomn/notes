@@ -1,8 +1,8 @@
 # run with ruby -I. test.rb
-require 'quick_add'
+require 'example_b'
 
 class Person
-  include QuickAdd
+  include ExampleB
 end
 
 p Person.new.ret_i
