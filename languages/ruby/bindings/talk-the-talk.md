@@ -29,6 +29,7 @@
 * you need an extconf.rb
 * require 'mkmf'
 * What is mkmf?
+* writing a simple png interface to check headers
 
 # Bindings with filemagic
 * https://github.com/blackwinter/ruby-filemagic/blob/master/ext/filemagic/filemagic.c
