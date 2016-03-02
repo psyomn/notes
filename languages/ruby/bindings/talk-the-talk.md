@@ -19,8 +19,7 @@
 # Motivation
 
 ## Performance
-* djb is a ... simple hashing algorithm
-* Ockham's razor: djb in C vs Ruby
+* you might want to do serious number crunching in a c module
 
 ## Porting Existing Libraries
 * Better to use time tested and mature software
