@@ -6,7 +6,7 @@
 * *ffi*: https://github.com/ffi/ffi
 * *rubyinline*: https://github.com/seattlerb/rubyinline
 
-# Mission
+# Stuff to talk about
 
 * Introduce extconf
 
