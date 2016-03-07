@@ -28,17 +28,22 @@
 
 ## Porting Existing Libraries
 
+* Usually a more popular reason
 * Better to use time tested and mature software
-
 * But what if they're provided as compiled libraries?
 
 # Writing your first utility
 
 * you need an extconf.rb
-
 * require 'mkmf'
-
 * What is mkmf?
+
+~~~~ruby
+    require 'mkmf'
+    extension_name = 'example_b'
+    dir_config(extension_name)
+    create_makefile(extension_name)
+~~~~
 
 # Bindings with filemagic
 
