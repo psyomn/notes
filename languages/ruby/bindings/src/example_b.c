@@ -1,4 +1,5 @@
 #include <ruby.h>
+#include <time.h>
 
 VALUE ExampleB = Qnil;
 
@@ -69,3 +70,19 @@ variadic(VALUE _self, VALUE _args) {
   return rb_str_new_cstr("You passed nothing");
 }
 
+
+VALUE
+djb(VALUE _self, VALUE _str) {
+
+  if (!RB_TYPE_P(_str, T_STRING)) {
+    rb_raise("pass a string");
+  }
+
+  const unsigned int magic = 5381;
+
+  int c;
+
+
+
+  return Qnil;
+}
