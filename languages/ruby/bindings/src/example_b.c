@@ -7,6 +7,7 @@ VALUE ret_i(VALUE);
 VALUE ret_f(VALUE);
 VALUE wop(VALUE, VALUE);
 VALUE variadic(VALUE, VALUE);
+VALUE djb2(VALUE, VALUE);
 
 void
 Init_example_b() {
@@ -15,6 +16,7 @@ Init_example_b() {
   rb_define_method(ExampleB, "ret_f", ret_f, 0);
   rb_define_method(ExampleB, "with_one_param", wop, 1);
   rb_define_method(ExampleB, "variadic", variadic, -2);
+  rb_define_method(ExampleB, "djb2", djb2, 1);
 }
 
 VALUE
@@ -72,17 +74,23 @@ variadic(VALUE _self, VALUE _args) {
 
 
 VALUE
-djb(VALUE _self, VALUE _str) {
+djb2(VALUE _self, VALUE _str) {
 
   if (!RB_TYPE_P(_str, T_STRING)) {
-    rb_raise("pass a string");
+    rb_raise(rb_eTypeError, "pass a string");
   }
 
-  const unsigned int magic = 5381;
+  unsigned long hash = 5381;
+
+  char * str = RSTRING(_str);
+  char ret_hex_string[65];
 
   int c;
 
+  while(c = *str++)
+    hash = ((hash << 5) + hash) + c;
 
+  sprintf(&ret_hex_string[0], "%x", hash);
 
-  return Qnil;
+  return INT2NUM(hash);
 }
