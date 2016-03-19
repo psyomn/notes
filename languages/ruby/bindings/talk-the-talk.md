@@ -2,14 +2,11 @@
 % psyomn
 
 # Possible ways to write bindings
-
 * via native C extensions (extconf/mkmf)
-
 * *ffi*: https://github.com/ffi/ffi
-
 * *rubyinline*: https://github.com/seattlerb/rubyinline
 
-# Mission
+# Stuff to talk about
 
 * Introduce extconf
 
@@ -22,9 +19,7 @@
 # Motivation
 
 ## Performance
-
-* djb is a ... simple hashing algorithm
-* Ockham's razor: djb in C vs Ruby
+* you might want to do serious number crunching in a c module
 
 ## Porting Existing Libraries
 
@@ -41,10 +36,10 @@
 -->
 
 # Writing your first utility
-
 * you need an extconf.rb
 * require 'mkmf'
 * What is mkmf?
+* writing a simple png interface to check headers
 
 ~~~~ruby
     require 'mkmf'
@@ -78,12 +73,14 @@
 
 * What is inside the library?
 * What does the gem do?
+* https://github.com/blackwinter/ruby-filemagic/blob/master/ext/filemagic/filemagic.c
 
 # Bindings with iplists
+* https://github.com/tokenrove/normalize-iplist
 
 # Other interesting readings
-
 * Skylight.io: Yehuda Katz talks about using Rust with Ruby
+  * http://blog.skylight.io/bending-the-curve-writing-safe-fast-native-gems-with-rust/
 
 <!--
 /usr/lib64/ruby/site_ruby/2.2.0/rubygems/core_ext/kernel_require.rb:54:in
