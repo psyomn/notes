@@ -15,10 +15,6 @@ path = "src/talkingthreads.rs"
 name = "prodcom"
 path = "src/prodcon.rs"
 
-[[bin]]
-name = "soe"
-path = "src/soe.rs"
-
 [dependencies]
 num_cpus = "0.2.7"
 rand = "0.3"

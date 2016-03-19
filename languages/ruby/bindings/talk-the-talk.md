@@ -32,6 +32,14 @@
 * Better to use time tested and mature software
 * But what if they're provided as compiled libraries?
 
+<!--
+  How do we do something simple?
+
+  * How to make the makefile script
+  * How to compile
+  * How to run
+-->
+
 # Writing your first utility
 
 * you need an extconf.rb
@@ -45,10 +53,30 @@
     create_makefile(extension_name)
 ~~~~
 
+# Defining things in C
+
+* Module definition in the C file
+* Method definition in the C file
+  * done via magic numbers
+  * In the positives means number of args
+  * -1
+  * -2 means variadic
+
+# Types from C to Ruby
+* There exists predicates to check for types or,
+* Another common pattern is to use a switch against object id type
+
+<!--
+  How do we do something a little more involved?
+
+  * How do we link against the library?
+  * What utilities from ruby.h may we use and pass back?
+  * How are exceptions handled?
+-->
+
 # Bindings with filemagic
 
 * What is inside the library?
-
 * What does the gem do?
 
 # Bindings with iplists

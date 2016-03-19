@@ -1,4 +1,5 @@
-PFLAGS=-V geometry:margin=1in --number-section --variable fontsize=12pt
+PFLAGS=-V geometry:margin=1in --number-section --variable fontsize=12pt --listings
+
 all:
 	pandoc \
 	$(PFLAGS) \

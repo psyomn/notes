@@ -18,3 +18,17 @@ p person.variadic(1)
 p person.variadic(1, 2)
 p person.variadic(1, 2, 3)
 p person.variadic
+
+def rbdjb2(str)
+  hash = 5381
+
+  str.chars.each do |c|
+    hash = ((hash << 5) + hash) + c.ord % (2 ** 32)
+  end
+
+  hash
+end
+
+
+p person.djb2("hello world")
+p rbdjb2("hello world")
