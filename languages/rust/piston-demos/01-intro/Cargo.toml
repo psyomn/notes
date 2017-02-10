@@ -1,0 +1,8 @@
+[package]
+name = "intro"
+version = "0.1.0"
+authors = ["Simon Symeonidis <lethaljellybean@gmail.com>"]
+
+[dependencies]
+piston_window = "0.64.0"
+rand = "0.3"
