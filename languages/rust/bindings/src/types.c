@@ -18,7 +18,14 @@ struct simple {
 
 struct simple*
 create_simple() {
-  return malloc(sizeof(struct simple));
+  struct simple* spl = malloc(sizeof(struct simple));
+
+  spl->one = 1;
+  spl->two = 2;
+  spl->three = 3;
+  spl->four = 4;
+
+  return spl;
 }
 
 void
