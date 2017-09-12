@@ -12,6 +12,11 @@ bad_popcount(uint64_t var) {
 }
 
 uint8_t
+cpu_popcount(uint64_t var) {
+  return __builtin_popcount(var);
+}
+
+uint8_t
 hamming_distance(a, b) uint64_t a, b; {
   return bad_popcount(a ^ b);
 }
@@ -21,7 +26,9 @@ int main(void) {
     printf("popcount(%zu) = %d\n", x, bad_popcount(x));
   }
 
-  printf("%d\n", hamming_distance(0b1100, 0b0110));
+  printf("hamming distance: %d\n", hamming_distance(0b1100, 0b0110));
+
+  printf("builtin popcount: %d\n", cpu_popcount(0b1111));
 	 
   return 0;
 }
