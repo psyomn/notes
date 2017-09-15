@@ -1,2 +1,2 @@
 all:
-	gcc misc.c -o misc
+	gcc popcount.c -o popcount 
