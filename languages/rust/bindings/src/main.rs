@@ -18,6 +18,14 @@ struct simple {
     pub four: uint64_t,
 }
 
+#[repr(C)]
+struct disordered {
+    pub four: uint64_t,
+    pub one: uint16_t,
+    pub two: uint16_t,
+    pub three: uint32_t,
+}
+
 #[link(name="types", kind="static")]
 extern {
     fn nothing() -> ();
@@ -34,7 +42,6 @@ fn main() {
 
     unsafe {
         let sample_u32t: uint32_t = 12;
-        let mut spl: *mut simple;
 
         // Some of the benign calls here
         nothing();
@@ -49,12 +56,20 @@ fn main() {
         owned_len = string_length(CString::new(owned_string).unwrap().as_ptr());
 
         // Create a simple struct and print values
-        spl = create_simple();
+        let spl = create_simple();
         println!("simple one: {}", (*spl).one);
         println!("simple two: {}", (*spl).two);
         println!("simple three: {}", (*spl).three);
         println!("simple four: {}", (*spl).four);
         libc::free(spl as *mut libc::c_void);
+
+        // Using repr, and representing a struct in a bad way:
+        let dis = create_simple() as *mut disordered;
+        println!("disordered one: {}", (*dis).one);
+        println!("disordered two: {}", (*dis).two);
+        println!("disordered three: {}", (*dis).three);
+        println!("disordered four: {}", (*dis).four);
+        libc::free(dis as *mut libc::c_void);
     }
 
     println!("string_length(\"test\") returns: {}", s_len);
