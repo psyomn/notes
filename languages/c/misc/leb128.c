@@ -16,20 +16,22 @@ void uleb128(const char* number_string) {
 
     const uint64_t to_add = c - 0x30;
     if (result > ((~(uint64_t)(0)) - to_add)) goto error;
-      
+
     result += to_add;
   }
 
   for (size_t x = 0; x < sizeof(result); ++x) {
     uint8_t current = *p;
-    uint8_t bits = current & (0xF >> 1);
+    uint8_t bits = current & (0x7F);
     result >>= 7;
 
-    if (result != 0) bits |= ~(0XF >> 1);
+    if (result != 0) bits |= 0x80;
 
     printf("%x ", bits);
   }
 
+  // TODO cross check with this
+  // http://llvm.org/doxygen/LEB128_8h_source.html
   return;
 
 error:
