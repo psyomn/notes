@@ -16,7 +16,7 @@ void uleb128(const char* number_string) {
 
     const uint64_t to_add = c - 0x30;
     if (result > ((~(uint64_t)(0)) - to_add)) goto error;
-      
+
     result += to_add;
   }
 
