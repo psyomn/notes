@@ -1,2 +1,2 @@
 all:
-	pandoc -t beamer intro.md -o intro.pdf
+	pandoc --listings -H listings.tex -t beamer intro.md -o intro.pdf

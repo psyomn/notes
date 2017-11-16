@@ -39,6 +39,7 @@
 
 # Is Ada popular yet?
 
+- Nope, and probably will never be.
 ![Ada vs C/C++/C# on Google Trends](./ada-google-trends.png)
 
 # Why does Ada look that way
@@ -101,6 +102,15 @@ end Hello_World;
   files. In Ada, these files are Signature (ads), and Body files (adb)
   respectively.
 
+# Before we start
+
+- To compile things you need to run `gnatmake` on a file.
+- For our purposes a simple file called `main.adb` will suffice.
+
+```nocode
+$ gnatmake main.adb
+```
+
 # I have no mouth and I must scream
 
 - Let's write a very simple program.
@@ -109,14 +119,14 @@ end Hello_World;
 -- main.adb
 procedure Main is
 begin
-    null;
+   null;
 end Main;
 ```
 
 # Including standard libraries
 
 ```ada
--- maind.adb
+-- main.adb
 with Ada.Text_IO; use Ada.Text_IO;
 procedure Main is
 begin
@@ -132,17 +142,67 @@ end package Main;
 - Functions and procedures must be declared in the declarative part of
   the function or procedure.
 
-# Functions, Procedures II
+# Functions, Procedures: Procedures
 
 ```ada
 with Ada.Text_IO; use Ada.Text_IO;
-procedure Main is
-  procedure Do_Thing(X : Positive) is begin
-  end Do_Thing;
-begin
 
+procedure Main is
+   procedure Do_Thing(X : Integer) is begin
+      Put_Line("im doing the thingy thing" & X'Img);
+   end Do_Thing;
+begin
+   Do_Thing(123);
+   -- output: im doing the thingy thing 123
 end Main;
 ```
+
+# Functions, Procedures: Function Syntax
+
+```ada
+with Ada.Text_IO; use Ada.Text_IO;
+
+procedure Main is
+   function Funcky_Thing(X : Integer; Y : Integer) return Integer is
+      Result : Integer := X + Y;
+   begin
+      return Result;
+   end Funcky_Thing;
+
+   Val : Integer;
+begin
+   Val := Funcky_Thing(10, 12);
+   Put_Line("funcky: " & Val'Img);
+end Main;
+```
+
+# Functions, Procedures: Ins and Outs
+
+```ada
+with Ada.Text_IO; use Ada.Text_IO;
+
+procedure Main is
+   procedure Em_Pleh
+     (X: in Integer; Y: out Integer; Z: in out Integer) is
+   begin
+      case X is
+         when 1       => Y := 10;
+         when 2 .. 10 => Y := 90;
+         when others  => Y := 666;
+      end case;
+      Z := Z + 1;
+   end Em_Pleh;
+   type Range_Type is range 1 .. 10;
+   M_X, M_Y, M_Z : Integer := 0;
+begin
+   for I in Range_Type loop
+      Em_Pleh (X => M_X, Y => M_Y, Z => M_Z);
+   end loop;
+   Put_Line ("X:" & M_X'Img & " Y:" & M_Y'Img & " Z:" & M_Z'Img);
+end Main;
+```
+
+# Small Exercise
 
 # Parallel Programming
 
