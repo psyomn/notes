@@ -2,6 +2,6 @@ set terminal png
 set output outputname
 set title giventitle
 set xlabel "Time (minutes)"
-set ylabel "Unit"
+set ylabel givenunit
 set datafile separator ","
 plot name with lines title "rb", name2 with lines title "cr"

@@ -3,12 +3,10 @@
 set -x
 
 function plot() {
-    gnuplot -e "name='$1';name2='$2';giventitle='$3';outputname='$4'" gnuplot-settings
+    gnuplot -e "givenunit='$1';name='$2';name2='$3';giventitle='$4';outputname='$5'" gnuplot-settings
 }
 
-# gnuplot -e "name='stlkr.cr.stats.txt.cpu';name2='stlkr.rb.stats.txt.cpu';giventitle='mytitlelol';outputname='cpu.png'" gnuplot-settings
-
-plot stlkr.rb.stats.txt.cpu stlkr.cr.stats.txt.cpu cpu cpu.png
-plot stlkr.rb.stats.txt.mem stlkr.cr.stats.txt.mem mem mem.png
-plot stlkr.rb.stats.txt.rss stlkr.cr.stats.txt.rss rss rss.png
-plot stlkr.rb.stats.txt.vsz stlkr.cr.stats.txt.vsz vsz vsz.png
+plot 'cpu%' stlkr.rb.stats.txt.cpu stlkr.cr.stats.txt.cpu cpu cpu.png
+plot 'mem%' stlkr.rb.stats.txt.mem stlkr.cr.stats.txt.mem mem mem.png
+plot 'rss kb' stlkr.rb.stats.txt.rss stlkr.cr.stats.txt.rss rss rss.png
+plot 'vsz kb' stlkr.rb.stats.txt.vsz stlkr.cr.stats.txt.vsz vsz vsz.png
