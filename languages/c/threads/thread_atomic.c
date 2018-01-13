@@ -3,13 +3,13 @@
 #include <pthread.h>
 #include <stdatomic.h>
 
-size_t SHARED_COUNTER = 0;
+_Atomic(size_t) SHARED_COUNTER = 0;
 
 static void *thread_func(void* data) {
     int count = 10000;
 
     while (count--) {
-        SHARED_COUNTER += 1;
+      SHARED_COUNTER++;
     }
 }
 
