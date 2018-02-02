@@ -1,0 +1,161 @@
+\documentclass[12pt,twoside]{article}
+
+\title{Nous: A simple monitoring system}
+\author{Simon Symeonidis}
+\date{Fri Feb  2 11:01:51 EST 2018}
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{grffile} % added to understand *.png
+\usepackage[export]{adjustbox}
+\usepackage[labelfont=bf]{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{psyan}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont={white,bf},textfont={white}}
+
+%%% Macros
+\input{psy-macros/psy-fig}
+\input{psy-macros/psy-rcode}
+\input{psy-macros/psy-itembf}
+
+\pagenumbering{arabic}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\listoffigures
+\lstlistoflistings
+
+%%% Not actually a macro - forced to declare here due to lstset et al.
+\input{psy-macros/psy-listing}
+
+\section{Summary}
+Ensuring that large systems are working well together can be
+very messy. As a result simple problems that could be avoided
+get neglected and build up to problems that can result in
+failures.
+
+We treat systems as black boxes, and view them connected by
+the data flow that enters and exits each of them. These systems as
+black boxes are then monitored with a publish or subscribe method to a
+central repository, that stores and alerts about infractions on
+defined contracts.
+
+The contracts are defined with a simple DSL, which declare certain
+endpoints of systems, where they can be queried about their
+status. For the implementation of \textit{NOUS} this is done via
+\textit{JSON REST} endpoints, being queried and compared against each
+other.
+
+\section{Contracts}
+Should be human readable SLAs. Human readable documentation: enforce
+documetation Conditions on served json from different endpoint. This
+is done with the `WITH' keyword, which is not optional. We see a
+DSL/Sketch of this contracts as such:
+
+%% TODO: What would be cases against dynamic loading in this context?
+%% ie our contracts could just be erlang files that get dynamically
+%% loaded and compiled.
+
+\begin{lstlisting}[language=nouscontract,caption='Sample Contract']
+-- NOTE: all of the endpoints should be returning JSON. We are
+-- assuming JSON everywhere, though there could middleware that deals
+-- with other formats.
+--
+-- TODO: do we care about invariants?
+-- Collect different variables from different endpoints that
+-- eventually will be needed to form the contract
+--
+-- TODO: what kind of access do we want for the keys?
+-- TODO: what about array index access?
+FROM www.a.com/status PORT 1234
+ GET .key1 AS a_key1,
+     .key2 AS a_key2,
+     .keyx.innerkey AS a_innerkey;
+
+FROM www.b.com/otherplace/status
+PORT 80
+ GET .key1 AS b_key1,
+     .key2 AS b_key2,
+     .keyx.innerkey AS b_innerkey;
+
+FROM 123.32.21.23/rofl/hahaha/status&derp=json
+PORT 9001
+ GET .key1 AS c_key1,
+     .key2 AS c_key2,
+     .keyx.innerkey AS c_innerkey;
+
+ENSURE                  -- example contract
+  a_key1 =  b_key2 AND  -- logically this means nothing, just
+  b_key1 <  a_key2 OR   -- sketching to see what I care about
+  c_key1 >  a_key3 AND  -- dsl-wise
+  c_key1 >= a_key3 AND  -- ie: want and, or logical ops, and
+  c_key1 <= a_key2 OR   -- <, >, <=,  >=, <> (not)
+  c_key3 <> b_key3
+
+WITH
+  '
+  This is some text that will go here and should go here
+  and support multiline stuff. Also it should describe what
+  went wrong. For example, this contract would say that
+  "a_key1 must be equal to b_key2, because we have some
+  client that required the system a certain way."
+  ';
+\end{lstlisting}
+
+\section{Layout of Platform}
+Registry like platform as it connects a bunch of services
+together. Publish or subscribe architecture will make it possible to
+choose whether applications are
+
+\section{Security}
+Should there be methods of authentication, or do we rely on firewalls
+setup by the box?
+
+\section{History}
+Should we worry about storing snapshots of things over time? By
+doing this, we could have a easy way for querying things.
+
+\paragraph{Optimistic Storing}
+Store everything (n*m where n is services, and m are number log
+from intervals) (ie a lot). This, though wasteful, can give a
+better view of what is happening to the system over a span of
+time.
+
+\paragraph{Pessimistic Storing}
+Store only infractions. This will store less things but on the
+other hand will not allow for an overall view as the above.
+
+\section{Storage Method}
+Snapshots of infractions (probably json?). Don't need complicated
+store. Maybe even Mnesia would be good for this use case.
+
+\section{Runtime Requirements}
+Being able to dynamically ship contracts. This could be done
+through networked file transfer for example. ie: have a fodler
+`contracts/`, that gets poppulated with contracts shipped by some
+technique.
+
+\subsection{Reliability}
+What hard promises can this service provide?
+What happens if this service crashes?
+
+\section{Alerting Mechanisms}
+Methods of nofifications for when something goes bad.
+\begin{itemize}
+  \item Send an email (and eventually maybe even fine grain to poke
+    people responsible for failures).
+\end{itemize}
+
+\section{Questions and Notes}
+\begin{itemize}
+  \item{Service Disovery}: This might be a little problematic: how can
+    we know where services with different statuses exist?
+  \item{YECC}: (erlang parser generator) to make parser that
+    understands contract dsl.
+\end{itemize}
+
+\end{document}
