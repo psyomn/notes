@@ -1,6 +1,8 @@
 \documentclass[12pt,twoside]{article}
 
-\title{Nous: A simple monitoring system}
+\newcommand{\projectname}[0]{\textit{nous}}
+
+\title{\projectname: A simple monitoring system}
 \author{Simon Symeonidis}
 \date{Fri Feb  2 11:01:51 EST 2018}
 \usepackage[margin=1in]{geometry}
@@ -46,19 +48,32 @@ defined contracts.
 
 The contracts are defined with a simple DSL, which declare certain
 endpoints of systems, where they can be queried about their
-status. For the implementation of \textit{NOUS} this is done via
+status. For the implementation of \projectname this is done via
 \textit{JSON REST} endpoints, being queried and compared against each
 other.
 
+\section{System States}
+There can be many states the system is in. For \projectname we define
+states `OK', and `BAD' to be the only two possible states a system can
+be in. An intermediate state makes no sense.
+
+\section{System REST endpoint}
+
+REST endpoints must be adhere to a very simple JSON format in order to
+be queriable by \projectname.
+\begin{lstlisting}[caption='Sample REST endpoint]
+  {
+    "status": "OK",
+    ...
+  }
+\end{lstlisting}
+
 \section{Contracts}
+\subsection{Contracts as DSLs}
 Should be human readable SLAs. Human readable documentation: enforce
 documetation Conditions on served json from different endpoint. This
 is done with the `WITH' keyword, which is not optional. We see a
 DSL/Sketch of this contracts as such:
-
-%% TODO: What would be cases against dynamic loading in this context?
-%% ie our contracts could just be erlang files that get dynamically
-%% loaded and compiled.
 
 \begin{lstlisting}[language=nouscontract,caption='Sample Contract']
 -- NOTE: all of the endpoints should be returning JSON. We are
@@ -104,7 +119,16 @@ WITH
   "a_key1 must be equal to b_key2, because we have some
   client that required the system a certain way."
   ';
+
+PERSIST OPTIMISTIC;
 \end{lstlisting}
+
+\subsection{Contracts piggybacking on Language Features}
+On the other hand, contracts don't need to necessarilly be a DSL. For
+example it would be interesting to see contracts being dynamically
+loaded with a language like Erlang. An advantage to dynamic loading is
+that the contracts do not trigger a complete recompile of the system,
+allowing them to be tweaked during runtime.
 
 \section{Layout of Platform}
 Registry like platform as it connects a bunch of services
@@ -112,22 +136,28 @@ together. Publish or subscribe architecture will make it possible to
 choose whether applications are
 
 \section{Security}
-Should there be methods of authentication, or do we rely on firewalls
-setup by the box?
+For this particular system, we provide no authentication
+mechanism. This concern should be pushed to the firewalls of the
+machine. It would not make sense to publicly expose this service
+anyway.
 
 \section{History}
 Should we worry about storing snapshots of things over time? By
 doing this, we could have a easy way for querying things.
 
-\paragraph{Optimistic Storing}
-Store everything (n*m where n is services, and m are number log
+\paragraph{Preferred: Optimistic Storing}
+Store everything ($n \times m$ where n is services, and m are number log
 from intervals) (ie a lot). This, though wasteful, can give a
 better view of what is happening to the system over a span of
 time.
 
-\paragraph{Pessimistic Storing}
+\paragraph{Considered: Pessimistic Storing}
 Store only infractions. This will store less things but on the
-other hand will not allow for an overall view as the above.
+other hand will not allow for an overall view as the above. This is
+not great if the system is to be able to monitor for anomalies in the
+future. However, this can be enabled by certain flags when the system
+is running, and left up to the user of the system to define when this
+will benecessary.
 
 \section{Storage Method}
 Snapshots of infractions (probably json?). Don't need complicated
@@ -146,16 +176,31 @@ What happens if this service crashes?
 \section{Alerting Mechanisms}
 Methods of nofifications for when something goes bad.
 \begin{itemize}
-  \item Send an email (and eventually maybe even fine grain to poke
-    people responsible for failures).
+  \itembf{Messaging/Poking Module}: It would be nice to send out
+    alerts in some maner. Due to the many available services, this
+    part could be logically implemented as a plugin.
+  \begin{itemize}
+    \itembf{Send an email}: (and eventually maybe even fine grain to
+      poke people responsible for failures).
+    \itembf{Ping person/people in chat}: Poking someone on IRC or some
+      other chat client is also nice.
+  \end{itemize}
 \end{itemize}
 
 \section{Questions and Notes}
 \begin{itemize}
-  \item{Service Disovery}: This might be a little problematic: how can
+  \itembf{Service Disovery}: This might be a little problematic: how can
     we know where services with different statuses exist?
-  \item{YECC}: (erlang parser generator) to make parser that
-    understands contract dsl.
-\end{itemize}
 
+  \itembf{YECC}: (erlang parser generator) to make parser that
+    understands contract dsl.
+
+  \itembf{Contracts Backwards Compatible}: It should be obvious that
+    contracts that you specify in one point in time should be still
+    usable in the future.
+
+  \itembf{Testing Strategy}: Since a lot of things rely on services
+    built around \projectname we'll have to think about how to
+    effectively write tests that make sense.
+\end{itemize}
 \end{document}
