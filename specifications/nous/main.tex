@@ -52,13 +52,29 @@ status. For the implementation of \projectname this is done via
 \textit{JSON REST} endpoints, being queried and compared against each
 other.
 
-\section{System States}
+\section{Observed System States}
 There can be many states the system is in. For \projectname we define
 states `OK', and `BAD' to be the only two possible states a system can
 be in. An intermediate state makes no sense.
 
-\section{System REST endpoint}
+\subsection{Possible States}
+\begin{itemize}
+\item OK
+\item BAD
+\end{itemize}
 
+\subsection{When Monitored Service has Crashed}
+In case the service we are monitoring has crashed, sending a request
+and getting a response is impossible. We care about the following:
+
+\begin{itemize}
+  \itembf{Retries}: Logarithmic backoff. Retry a few times until the
+    state of the system is retrievable.
+  \itembf{Auto-Bad}: Until the state of the system is retrieved, we
+    assume that the status of the monitored system is `BAD'.
+\end{itemize}
+
+\section{System REST endpoint}
 REST endpoints must be adhere to a very simple JSON format in order to
 be queriable by \projectname.
 \begin{lstlisting}[caption='Sample REST endpoint]
@@ -67,6 +83,16 @@ be queriable by \projectname.
     ...
   }
 \end{lstlisting}
+
+\subsection{What about loose variables without state?}
+There may be cases that we want to expose information that makes state
+redundant. For example if we were to just expose a \textit{semver} of
+the monitored running system, it would not make sense to attach a
+\textit{status} environment variable.
+
+\paragraph{Problem}: The specification requires that all maps, have at
+their root a status element, however this doesn't make sense with the
+above (for example exposing a \textit{semver}.
 
 \section{Contracts}
 \subsection{Contracts as DSLs}
@@ -130,10 +156,57 @@ loaded with a language like Erlang. An advantage to dynamic loading is
 that the contracts do not trigger a complete recompile of the system,
 allowing them to be tweaked during runtime.
 
+\subsection{Fast feedback on contract loading}
+\projectname \ plans to allow for quick and easy ways to load contracts,
+such that tweaking them in runtime is something pleasant for the
+programmers using this service. As such we need to worry about things
+getting loaded, or erroring out before actually being loaded, and
+giving direct feedback.
+
+\subsubsection{Notification through logs}
+Tailing logs tend to be pretty standard for this sort of thing. This
+requires an extra terminal, and running a command on the side.
+
+\subsubsection{Notification through filesystem}
+A simple way to poke users, to show if things loaded or not is to do
+it through empty files on the contract folder. For example if we had a
+setup like the following:
+
+\begin{verbatim}
+contracts/
+  c1.contract
+  c2.contract
+\end{verbatim}
+
+We could create files appended with `loaded' or `error', to denote
+what went well or wrong. This way we don't need to tail the logs
+(though logs may be idependantly be produced). For example if
+\textit{c1} was loaded and \textit{c2} had problems being loaded we
+could get the following:
+
+\begin{verbatim}
+contracts/
+  c1.contract
+  c1.contract.loaded
+  c2.contract
+  c2.contract.error
+\end{verbatim}
+
+Cleanups can probably be a pain in this case, and I foresee that it
+might add a lot of crappy code this way, to manage this feature.
+
+\subsection{Expiry of Contracts}
+It may be the case that certain contrats need expiry or re-evaluation
+after some time. A sanity poke here would be nice. In other words, the
+ability to fail a contract regardless of criteria, after a certain
+date.
+
 \section{Layout of Platform}
 Registry like platform as it connects a bunch of services
-together. Publish or subscribe architecture will make it possible to
-choose whether applications are
+together. Subscribe architecture is chosen in this case, as it can be
+the case that certain services may never publish their state if things
+go wrong -- in other words, it's better for \projectname to query, and
+deduce problems of services.
 
 \section{Security}
 For this particular system, we provide no authentication
@@ -146,10 +219,8 @@ Should we worry about storing snapshots of things over time? By
 doing this, we could have a easy way for querying things.
 
 \paragraph{Preferred: Optimistic Storing}
-Store everything ($n \times m$ where n is services, and m are number log
-from intervals) (ie a lot). This, though wasteful, can give a
-better view of what is happening to the system over a span of
-time.
+Store everything. This, though wasteful, can give a better view of
+what is happening to the system over a span of time.
 
 \paragraph{Considered: Pessimistic Storing}
 Store only infractions. This will store less things but on the
@@ -159,7 +230,7 @@ future. However, this can be enabled by certain flags when the system
 is running, and left up to the user of the system to define when this
 will benecessary.
 
-\section{Storage Method}
+\subsection{Storage Method}
 Snapshots of infractions (probably json?). Don't need complicated
 store. Maybe even Mnesia would be good for this use case.
 
@@ -202,5 +273,12 @@ Methods of nofifications for when something goes bad.
   \itembf{Testing Strategy}: Since a lot of things rely on services
     built around \projectname we'll have to think about how to
     effectively write tests that make sense.
+
+  \itembf{Continuous Integration}: Would be good to be able to query
+    questionable services like Travis CI, to monitor build time of
+    projects, and how they're faring over time (ie build times
+    dramatically increasing between two builds). Susceptible to frog
+    boil.
+
 \end{itemize}
 \end{document}
