@@ -12,18 +12,31 @@ struct coordinate {
     int64_t z;
 };
 
-struct coordinate* make_coords(size_t num) {
+enum make_config { zero = 0, gen_rand = 1, seq = 2 };
+
+struct coordinate* make_coords(size_t num, enum make_config conf) {
     int fd = open("/dev/random", O_RDONLY);
     struct coordinate* coords = calloc(num, sizeof(*coords));
-    uint64_t settings[num];
+    if (conf == zero) return coords;
 
+    uint64_t settings[num];
     read(fd, settings, num * sizeof(settings));
     close(fd);
 
-    for (size_t i = 0; i < num; ++i) {
-        coords[i] = (struct coordinate) {
-            .x = settings[i] & 0xFFFF
-        };
+    if (conf == gen_rand) {
+        for (size_t i = 0; i < num; ++i) {
+            coords[i] = (struct coordinate) {
+                .x = settings[i] & 0xFFFF,
+                .y = (settings[i] & 0xFFFF0000) >> 16,
+                .z = (settings[i] & 0xFFFF00000000) >> 32,
+            };
+        }
+    }
+
+    if (conf == seq) {
+        for (size_t i = 0; i < num; ++i) {
+            coords[i] = (struct coordinate) { .x = i, .y = i, .z = i };
+        }
     }
 
     return coords;
@@ -31,11 +44,11 @@ struct coordinate* make_coords(size_t num) {
 
 int main(int argc, char* argv[]) {
     (void) argc, (void) argv;
-
     FILE* sout = freopen(NULL, "wb", stdout);
-    uint8_t bytes[] = { 1, 2, 3, 4, 5, 0};
-    size_t len = sizeof(bytes) / sizeof(bytes[0]);
-
-    fwrite(bytes, sizeof(bytes[0]), len, sout);
+    size_t len = 100000;
+    struct coordinate* coords = make_coords(len, seq);
+    fwrite(&len, sizeof(uint64_t), 1, sout);
+    fwrite(coords, sizeof(coords[0]), len, sout);
+    free(coords);
     return 0;
 }
