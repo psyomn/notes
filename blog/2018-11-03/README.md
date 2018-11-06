@@ -61,14 +61,14 @@ Next important tidbit is here:
 
 ```c
   /* name of function you want to act as a pluggable interface */
-  pluginfunc = (int (*)(int)) dlsym(handle, "execute");
+  pluginfunc = dlsym(handle, "execute");
 ```
 
 We use dlsym to find the address of the function called `execute` in
 the library, and finally invoke:
 
 ```c
-  printf("pluginfunc result: %d\n", (*pluginfunc)(10));
+  printf("pluginfunc result: %d\n", pluginfunc(10));
 ```
 
 Considering the two implementations:
@@ -96,3 +96,5 @@ pluginfunc result: 5
 ```
 
 That was kind of fun :).
+
+Edit: added some corrections, thanks to @RAttab (github.com/RAttab)

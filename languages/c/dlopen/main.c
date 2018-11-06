@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
   dlerror();
 
   /* name of function you want to act as a pluggable interface */
-  pluginfunc = (int (*)(int)) dlsym(handle, "execute");
+  pluginfunc = dlsym(handle, "execute");
 
   error = dlerror();
   if (error) {
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  printf("pluginfunc result: %d\n", (*pluginfunc)(10));
+  printf("pluginfunc result: %d\n", pluginfunc(10));
 
   dlclose(handle);
 
