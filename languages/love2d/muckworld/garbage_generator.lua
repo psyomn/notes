@@ -5,10 +5,6 @@ require "obstacle"
 GarbageGenerator = {}
 GarbageGenerator.__index = GarbageGenerator
 
--- sunkenTruck = Obstacle:makeSunkenTruck(30, 50)
--- lamp = Obstacle:makeLamp(100, 200)
--- garbage = {sunkenTruck, lamp}
-
 function GarbageGenerator:new()
    local gg = {}
    setmetatable(gg, GarbageGenerator)
@@ -29,61 +25,71 @@ function GarbageGenerator:update(dt)
    if self.curr >= 1.0 then
       -- generate debris
       self.curr = 0.0
+
       local r = math.random(1, 10)
       local pos_x = math.random(1, 2)
       local pos_y = math.random(1, 2)
+      local niceness = 100
+      local the_x, the_y = 0, 0
+      local std_vel = 100.0
+      local the_x_vel, the_y_vel = 0.0, 0.0
 
       if r >= 5 then
+         -- TODO: 10% chance to generate somehting
          local gchoice = math.random(1, 2)
 
+         -- calculate where to place the object
+         if pos_x == 1 then -- left
+            the_x = 0 - niceness
+            the_x_vel = std_vel
+         else -- right
+            the_x = love.graphics.getWidth() + niceness
+            the_x_vel = -std_vel
+         end
+
+         if pos_y == 1 then -- top
+            the_y = 0 - niceness
+            the_y_vel = std_vel
+         else -- bottom
+            the_y = love.graphics.getHeight() + niceness
+            the_y_vel = -std_vel
+         end
+
+         obs = nil
          if gchoice == 1 then
-            -- obs = Obstacle:makeSunkenTruck(
-            --    math.random(love.graphics.getWidth()),
-            --    math.random(love.graphics.getHeight()))
-            obs = Obstacle:new(love.graphics.newImage("img/sunken_truck.png"), 30, 30)
-
-            table.insert(self.items, obs)
+            obs = Obstacle:makeSunkenTruck(the_x, the_y)
+         elseif gchoice == 2 then
+            obs = Obstacle:makeLamp(the_x, the_y)
+         else
+            print("garbage generator: did not know that choice")
+            os.exit(1)
          end
 
-         if gchoice == 2 then
-            -- obs = Obstacle:makeLamp(
-            --    math.random(love.graphics.getWidth()),
-            --    math.random(love.graphics.getHeight()))
+         obs:setVelocity(the_x_vel, the_y_vel)
 
-            obs = Obstacle:new(love.graphics.newImage("img/64x32_Objects_to_put_in_Sludge.png"), 10, 10)
-
-            table.insert(self.items, obs)
-         end
-
-         for i, el in ipairs(self.items) do
-            el:print()
-         end
+         table.insert(self.items, obs)
       end
    end
 
-   -- TODO cleanup debris
-   -- newlist = {}
-   -- for i, el in ipairs(self.items) do
-   --    nicety = 100
-   --    maxX = love.graphics.getWidth() + nicety
-   --    maxY = love.graphics.getHeight() + nicety
-   --    minX = 0 - nicety
-   --    minY = 0 - nicety
+   -- Cleanup
+   newlist = {}
+   for i, el in ipairs(self.items) do
+      nicety = 100
+      maxX = love.graphics.getWidth() + nicety
+      maxY = love.graphics.getHeight() + nicety
+      minX = 0 - nicety
+      minY = 0 - nicety
 
-   --    -- if not el:isExpired(maxX, maxY, minX, minY) then
-   --    table.insert(newlist,el)
-   --    -- end
-   -- end
+      if not el:isExpired(maxX, maxY, minX, minY) then
+         table.insert(newlist,el)
+      end
+   end
 
-   -- self.items = newlist
+   self.items = newlist
 end
 
 function GarbageGenerator:draw()
    for i, el in pairs(self.items) do
       el:draw()
    end
-end
-
-function GarbageGenerator:getItems()
-   return self.items
 end

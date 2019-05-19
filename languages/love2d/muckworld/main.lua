@@ -18,7 +18,7 @@ function love.load()
 
    --Debris---------------------------------------------------
    -----------------------------------------------------------
-   garbage_generator = GarbageGenerator:new()
+   gGenerator = GarbageGenerator:new()
 
    --Background-----------------------------------------------
    -----------------------------------------------------------
@@ -41,9 +41,8 @@ function love.load()
    quadcoord.x = quadcoord.x % bkg:getWidth()
    quadcoord.y = quadcoord.y % bkg:getHeight()
 
-   updateableList = {garbage_generator, ship}
-   drawableList = {garbage_generator, ship}
-
+   updateableList = {gGenerator, ship}
+   drawableList = {gGenerator, ship}
 end
 
 function love.update(dt)
@@ -54,13 +53,13 @@ function love.update(dt)
          gameState = "playing"
       end
 
-      if titleImgScaleX > 0.04 then
-         return
-      end
-
-      if textCounter == 1 then
+      if textCounter >= 1 then
          textVisible = not textVisible
          textCounter = 0
+      end
+
+      if titleImgScaleX > 0.04 then
+         return
       end
 
       titleImgScaleX = math.sin(titleImgScaleX + dt / 10)
@@ -80,17 +79,19 @@ function love.draw()
          love.graphics.getWidth() / 2,
          love.graphics.getHeight() / 2,
          0,
-         titleImg:getWidth() * titleImgScaleX,
-         titleImg:getHeight() * titleImgScaleY,
+         titleImg:getWidth() * titleImgScaleX / 24,
+         titleImg:getHeight() * titleImgScaleY / 24,
          titleImg:getWidth() / 2,
          titleImg:getHeight() / 2
       )
 
-      love.graphics.print(
-         "Press [SPACE] to start game",
-         0,
-         love.graphics.getHeight() - 50,
-         0, 2, 2)
+      if textVisible then
+         love.graphics.print(
+            "Press [SPACE] to start game",
+            0,
+            love.graphics.getHeight() - 50,
+            0, 2, 2)
+      end
 
       return
    end

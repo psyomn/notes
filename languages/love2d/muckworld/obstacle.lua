@@ -1,16 +1,20 @@
 Obstacle = {}
 Obstacle.__index = Obstacle
 
+local id = 0
+
 function Obstacle:new(img, x, y)
    local obs = {}
    setmetatable(obs,Obstacle)
 
-   self.img = img
-   self.x = x
-   self.y = y
+   obs.img = img
+   obs.x = x
+   obs.y = y
+   obs.x_vel = 0
+   obs.y_vel = 0
+   obs.id = id
 
-   self.x_vel = 0
-   self.y_vel = 0
+   id = id + 1
 
    return obs
 end
@@ -31,12 +35,16 @@ function Obstacle:setVelocity(x, y)
 end
 
 function Obstacle:update(dt)
-   self.x_vel = self.x_vel + self.x_vel * dt
-   self.y_vel = self.y_vel + self.y_vel * dt
+   self.x = self.x + self.x_vel * dt
+   self.y = self.y + self.y_vel * dt
 end
 
 function Obstacle:draw()
    love.graphics.draw(self.img, self.x, self.y)
+end
+
+function Obstacle:getId()
+   return self.id
 end
 
 function Obstacle:print()
@@ -54,4 +62,12 @@ function Obstacle:isExpired(maxX, maxY, minX, minY)
    if self.y > maxY then return true end
    if self.x < minX then return true end
    if self.y < minY then return true end
+end
+
+function Obstacle:getX()
+   return self.x
+end
+
+function Obstacle:getY()
+   return self.y
 end

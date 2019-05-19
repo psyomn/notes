@@ -5,15 +5,15 @@ function Ship:new(x, y)
    local ship = {}
    setmetatable(ship,Ship)
 
-   self.img = love.graphics.newImage("img/Pirate_Ship.png")
+   ship.img = love.graphics.newImage("img/Pirate_Ship.png")
 
-   self.x = x
-   self.y = y
-   self.x_vel = 0
-   self.y_vel = 0
+   ship.x = x
+   ship.y = y
+   ship.x_vel = 0
+   ship.y_vel = 0
 
-   self.std_vel = 200
-   self.visc = 600
+   ship.std_vel = 200
+   ship.visc = 600
    return ship
 end
 
