@@ -12,8 +12,8 @@ function Ship:new(x, y)
    self.x_vel = 0
    self.y_vel = 0
 
-   self.std_vel = 300
-   self.visc = -500
+   self.std_vel = 200
+   self.visc = 600
    return ship
 end
 
@@ -34,22 +34,32 @@ function Ship:update(dt)
       self.y_vel = self.std_vel
    end
 
-   if self.x_vel ~= 0 then
-      self.x = self.x + self.x_vel * dt
-      self.x_vel = self.x_vel - self.visc
+   if love.keyboard.isDown("space") then
+      -- TODO: pew pew placeholder
    end
 
    if self.y_vel ~= 0 then
+      if self.y_vel > 0 then
+         self.y_vel = self.y_vel - self.visc * dt
+      end
+
+      if self.y_vel < 0 then
+         self.y_vel = self.y_vel + self.visc * dt
+      end
+   end
+
+   -- slidy slide
+   if self.x_vel ~= 0 then
+      if self.x_vel > 0 then
+        self.x_vel = self.x_vel - self.visc * dt
+      end
+
+      if self.x_vel < 0 then
+         self.x_vel = self.x_vel + self.visc * dt
+      end
+
+      self.x = self.x + self.x_vel * dt
       self.y = self.y + self.y_vel * dt
-      self.y_vel = self.y_vel - self.visc
-   end
-
-   if self.y_vel < 0 then
-      self.y_vel = 0
-   end
-
-   if self.x_vel < 0 then
-      self.X_vel = 0
    end
 end
 
