@@ -70,6 +70,19 @@ function love.update(dt)
    for i, el in ipairs(updateableList) do
       el:update(dt)
    end
+
+   -- check collisions
+   for i, el in ipairs(updateableList) do
+      if el ~= ship then
+         ret = el:collidesWith(
+            ship:getX(), ship:getY(),
+            ship:getToX(), ship:getToY())
+
+         if ret then
+            gameState = "gameoverman"
+         end
+      end
+   end
 end
 
 function love.draw()
@@ -93,6 +106,14 @@ function love.draw()
             0, 2, 2)
       end
 
+      return
+   end
+
+   if gameState == "gameoverman" then
+      love.graphics.print(
+         "game over! Press space to restart",
+         10,
+         love.graphics.getHeight() / 2)
       return
    end
 

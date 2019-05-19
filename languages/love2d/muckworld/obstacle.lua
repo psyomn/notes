@@ -8,8 +8,12 @@ function Obstacle:new(img, x, y)
    setmetatable(obs,Obstacle)
 
    obs.img = img
+
    obs.x = x
    obs.y = y
+   obs.to_x = img:getWidth()
+   obs.to_y = img:getHeight()
+
    obs.x_vel = 0
    obs.y_vel = 0
    obs.id = id
@@ -70,4 +74,11 @@ end
 
 function Obstacle:getY()
    return self.y
+end
+
+function Obstacle:collidesWith(x, y, to_x, to_y)
+   return self.x < x+to_x and
+      to_x < self.x + self.to_x and
+      self.y < y+to_y and
+      to_y < self.y + self.to_y
 end

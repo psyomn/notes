@@ -9,6 +9,9 @@ function Ship:new(x, y)
 
    ship.x = x
    ship.y = y
+   ship.to_x = ship.img:getWidth()
+   ship.to_y = ship.img:getHeight()
+
    ship.x_vel = 0
    ship.y_vel = 0
 
@@ -65,4 +68,20 @@ end
 
 function Ship:draw()
    love.graphics.draw(self.img, self.x, self.y)
+end
+
+function Ship:getX()
+   return self.x
+end
+
+function Ship:getY()
+   return self.y
+end
+
+function Ship:getToX()
+   return self.to_x
+end
+
+function Ship:getToY()
+   return self.to_y
 end

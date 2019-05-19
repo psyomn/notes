@@ -1,5 +1,6 @@
 require "init"
 require "obstacle"
+require "enemy_ship"
 
 -- This should create debris etc, where the player has to avoid
 GarbageGenerator = {}
@@ -25,18 +26,18 @@ function GarbageGenerator:update(dt)
    if self.curr >= 1.0 then
       -- generate debris
       self.curr = 0.0
-
       local r = math.random(1, 10)
-      local pos_x = math.random(1, 2)
-      local pos_y = math.random(1, 2)
-      local niceness = 100
-      local the_x, the_y = 0, 0
-      local std_vel = 100.0
-      local the_x_vel, the_y_vel = 0.0, 0.0
 
       if r >= 5 then
+         local pos_x = math.random(1, 2)
+         local pos_y = math.random(1, 2)
+         local niceness = 100
+         local the_x, the_y = 0, 0
+         local std_vel = 100.0
+         local the_x_vel, the_y_vel = 0.0, 0.0
+
          -- TODO: 10% chance to generate somehting
-         local gchoice = math.random(1, 2)
+         local gchoice = math.random(1, 3)
 
          -- calculate where to place the object
          if pos_x == 1 then -- left
@@ -60,6 +61,8 @@ function GarbageGenerator:update(dt)
             obs = Obstacle:makeSunkenTruck(the_x, the_y)
          elseif gchoice == 2 then
             obs = Obstacle:makeLamp(the_x, the_y)
+         elseif gchoice == 3 then
+            obs = EnemyShip:new(the_x, the_y)
          else
             print("garbage generator: did not know that choice")
             os.exit(1)
@@ -91,5 +94,15 @@ end
 function GarbageGenerator:draw()
    for i, el in pairs(self.items) do
       el:draw()
+   end
+end
+
+function GarbageGenerator:collidesWith(x, y, to_x, to_y)
+   -- should iterate through all known objects and
+   -- check for collisions
+   for i, el in ipairs(self.items) do
+      if el:collidesWith(x, y, to_x, to_y) then
+         return true
+      end
    end
 end
