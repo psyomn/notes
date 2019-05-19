@@ -69,6 +69,7 @@ function GarbageGenerator:update(dt)
          end
 
          obs:setVelocity(the_x_vel, the_y_vel)
+         obs:setParent(self)
 
          table.insert(self.items, obs)
       end
@@ -99,7 +100,7 @@ end
 
 function GarbageGenerator:collidesWith(x, y, to_x, to_y)
    -- should iterate through all known objects and
-   -- check for collisions
+   -- check for collisions against just the ship for simplicity
    for i, el in ipairs(self.items) do
       if el:collidesWith(x, y, to_x, to_y) then
          return true

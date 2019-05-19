@@ -5,7 +5,7 @@ require "garbage_generator"
 
 function love.load()
    -- TODO: uncomment me when done
-   -- muckTheme:play()
+   muckTheme:play()
 
    --Intro assets---------------------------------------------
    -----------------------------------------------------------
@@ -67,6 +67,14 @@ function love.update(dt)
       return
    end
 
+   if gameState == "gameoverman" then
+      if love.keyboard.isDown("space") then
+         gameState = "intro"
+         love.load()
+         return
+      end
+   end
+
    for i, el in ipairs(updateableList) do
       el:update(dt)
    end
@@ -78,9 +86,10 @@ function love.update(dt)
             ship:getX(), ship:getY(),
             ship:getToX(), ship:getToY())
 
-         if ret then
-            gameState = "gameoverman"
-         end
+         -- TODO: uncomment if you want gameovers, man
+         -- if ret then
+         --    gameState = "gameoverman"
+         -- end
       end
    end
 end
@@ -113,7 +122,8 @@ function love.draw()
       love.graphics.print(
          "game over! Press space to restart",
          10,
-         love.graphics.getHeight() / 2)
+         love.graphics.getHeight() / 2,
+         0, 2, 2)
       return
    end
 

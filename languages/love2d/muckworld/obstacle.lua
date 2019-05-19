@@ -13,6 +13,7 @@ function Obstacle:new(img, x, y)
    obs.y = y
    obs.to_x = img:getWidth()
    obs.to_y = img:getHeight()
+   obs.parent = nil
 
    obs.x_vel = 0
    obs.y_vel = 0
@@ -81,4 +82,8 @@ function Obstacle:collidesWith(x, y, to_x, to_y)
       to_x < self.x + self.to_x and
       self.y < y+to_y and
       to_y < self.y + self.to_y
+end
+
+function Obstacle:setParent(parent)
+   self.parent = parent
 end

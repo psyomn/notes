@@ -27,18 +27,43 @@ function Bullet:draw()
    love.graphics.draw(self.img, self.x, self.y, self.r)
 end
 
-function Bullet:collideWith(x, y, to_x, to_y)
-   return ((self.x >= x && self.x <= to_x) ||
-      (self.y >= y && self.y <= to_y)) ||
-   ((self.to_x >= x && self.to_x <= to_x) ||
-      (self.to_y >= y && self.to_y <= to_y))
+function Bullet:collidesWith(x, y, to_x, to_y)
+   return self.x < x+to_x and
+      to_x < self.x + self.to_x and
+      self.y < y+to_y and
+      to_y < self.y + self.to_y
 end
 
 function Bullet:shouldRemove()
    local niceness = 100
 
-   return self.x > (love.graphics.getWidth() + niceness) ||
-   self.y > (love.graphics.getHeight() + niceness) ||
-   self.x < -niceness ||
-   self.y < -niceness
+   return self.x > (love.graphics.getWidth() + niceness) or
+      self.y > (love.graphics.getHeight() + niceness) or
+      self.x < -niceness or
+      self.y < -niceness
+end
+
+function Bullet:getX()
+   return self.x
+end
+
+function Bullet:getY()
+   return self.y
+end
+
+function Bullet:getToX()
+   return self.to_x
+end
+
+function Bullet:getToY()
+   return self.to_y
+end
+
+function Bullet:isExpired()
+   -- this is for checking if it's outside of the window
+   -- quite a bit, so we can get rid of the garbage collector
+   if self.x > maxX then return true end
+   if self.y > maxY then return true end
+   if self.x < minX then return true end
+   if self.y < minY then return true end
 end
