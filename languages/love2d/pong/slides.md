@@ -61,10 +61,6 @@ Meatbag = {}
 Meatbag.__index = Meatbag
 ```
 
-# Lua: Hacking Object Orientation
-
-- TODO what does __index mean
-
 # Lua: Object Orientation I
 
 ```lua
@@ -75,7 +71,7 @@ Meatbag.__index = Meatbag
 -- you define a constructor this way
 -- notice the : and not a .
 function Meatbag:new(name, age)
-  -- notice that we
+  -- notice that we do the local now. do the local now.
   local obj = {}
   -- this is important, don't forget to do this
   setmetatable(obj,Meatbag)
@@ -108,4 +104,115 @@ end
 person = Meatbag:new("jonny", 17)
 print(person:getName()) -- notice the :
 print(person:getAge())
+```
+
+# Love2d
+
+Games usually have a loop that certain things fire off. It's a common
+thing you'll see a lot of game engines do. These concerns are
+typically:
+
+- Loading your game state
+- Updating your state
+- Drawing the results
+
+# Love2d II: Game loop
+
+Nothing special; your game look would look something like this:
+
+```c
+// load game state stuff
+
+while (running) {
+    // get input / events
+
+    // update objects states
+
+    // draw them on the screen
+}
+```
+
+# Love2d III: FPS is not always first person shooter
+
+- PC Masters has 60fps
+- Console plebs have 30fps
+- Could there be problems porting games that rely on these figures?
+  (spoiler: this never happens, but entertain the idea for the
+  explanation).
+- Let's say our object, for example a ball, moves one pixel every game
+  loop. PC Masters will see the ball move twice as fast as the Console
+  plebs.
+- This is not good.
+- How would a better approach look like?
+
+# Love2d IV: Delta Time
+
+- Delta time solves this problem.
+- Between each game loop, we calculate the distance that the object
+  would have been displaced.
+- For now we can use a simple equation to get distance displaced
+
+> pos\_x' = pos\_x + dt * velocity
+
+- And of course you can do the same thing for the `y` coords
+
+> pos\_y' = pos\_y + dt * velocity
+
+# Love2d: Objects
+
+- It's usually comfortable to define objects which are representing
+  actors in your game, with certain configurations
+- You'll usually want x, y positions, and a height, width
+- You'll also want a x velocity, and a y velocity
+
+# Love2d: Skeleton
+
+- create a directory with your game name `pong/`
+- create a `main.lua` file inside
+- you'll need three methods (and notice the `.` used in this special
+  case -- don't ask me what that is)
+
+```lua
+function love.load()
+end
+
+function love.update(dt)
+end
+
+function love.draw()
+end
+```
+
+# Love2d: Useful stuff
+
+- Rectangles are important. Here's how to draw one
+
+```lua
+love.graphics.rectangle("fill", x, y, width, height)
+```
+
+- Keyboard input is important
+
+```lua
+love.keyboard.isDown("up")  love.keyboard.isDown("right")
+love.keyboard.isDown("left") love.keyboard.isDown("down")
+love.keyboard.isDown("w") love.keyboard.isDown("a")
+love.keyboard.isDown("s") love.keyboard.isDown("d")
+```
+
+# Love2d: Rectangle Intersection
+
+- If you're too lazy to think about it:
+
+```lua
+-- Intersection check between two rectangles
+-- can be done this way:
+--   Bx + Bw > Ax &&
+--   By + Bh > Ay &&
+--   Ax + Aw > Bx &&
+--   Ay + Ah > By;
+return other:getX() + other:getWidth() > self.x and
+    other:getY() + other:getHeight() > self.y and
+    self.x + self.width > other:getX() and
+    self.y + self.height > other:getY()
 ```
