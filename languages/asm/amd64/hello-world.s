@@ -3,17 +3,17 @@
 ;;; amd should look like.
         section .data
 
-        message db "Hello world", 0xA
+        message         db "Hello world", 0xA
+	message_len 	equ $ - message
 
         section .text
         global _start
 
 _start:
-        ;; This is how you can call a system call
         mov rax, 1
         mov rdi, 1
         mov rsi, message
-        mov rdx, 14
+        mov rdx, message_len
         syscall
 
         jmp halt
