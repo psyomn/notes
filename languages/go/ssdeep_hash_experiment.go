@@ -10,16 +10,16 @@ import (
 
 var (
 	test_strings = []string{
-		`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA this is error 1000`,
-		`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA this is error 1001`,
-		`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA this is error 1002`,
-		`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA totally different thing that you would expect`,
-		`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA totally different thing that you would not expect`,
-		`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA totally different thing that you would maybe expect`,
-		`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA totally different thing that you would never know about`,
-		`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA pika pika`,
-		`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA pika pika chu`,
-		`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA pika pikaaaa`,
+		`AAAAAAAAAAAAAAAAAAAAAA this is error 1000`,
+		`AAAAAAAAAAAAAAAAAAAAAA this is error 1001`,
+		`AAAAAAAAAAAAAAAAAAAAAA this is error 1002`,
+		`AAAAAAAAAAAAAAAAAAAAAA totally different thing that you would expect`,
+		`AAAAAAAAAAAAAAAAAAAAAA totally different thing that you would not expect`,
+		`AAAAAAAAAAAAAAAAAAAAAA totally different thing that you would maybe expect`,
+		`AAAAAAAAAAAAAAAAAAAAAA totally different thing that you would never know about`,
+		`AAAAAAAAAAAAAAAAAAAAAA pika pika`,
+		`AAAAAAAAAAAAAAAAAAAAAA pika pika chu`,
+		`AAAAAAAAAAAAAAAAAAAAAA pika pikaaaa`,
 	}
 )
 
@@ -36,15 +36,29 @@ func main() {
 	// we turn this safeguard off.
 	ssdeep.Force = true
 
+	var hashes []string
 	for _, testReader := range testReaders {
-		fmt.Println(testReader.Size())
 		str, err := ssdeep.FuzzyReader(testReader, int(testReader.Size()))
 		if err != nil {
 			fmt.Println("problem processing test string:", err)
 			os.Exit(1)
 		}
 
+		hashes = append(hashes, str)
 		fmt.Println(str)
 	}
 
+	fmt.Println("")
+
+	fmt.Println("score of first and second hash: ")
+	ret, _ := ssdeep.Distance(hashes[0], hashes[1])
+	fmt.Println(ret)
+
+	fmt.Println("score of first and last: ")
+	ret, _ = ssdeep.Distance(hashes[0], hashes[len(hashes)-1])
+	fmt.Println(ret)
+
+	fmt.Println("score of first and fourth: ")
+	ret, _ = ssdeep.Distance(hashes[0], hashes[3])
+	fmt.Println(ret)
 }
