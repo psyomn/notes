@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -82,9 +84,22 @@ void client(char *path) {
     exit(EXIT_FAILURE);
   }
 
-  const char *message = "hello there stalker";
-  send(client_fd, message, strlen(message), 0);
+  struct statx stx = {0};
+  if (statx(AT_FDCWD, path, 0, 0, &stx) == -1) {
+    perror("could not statx file");
+    exit(EXIT_FAILURE);
+  }
+
+  const int send_fd = open(path, O_RDONLY);
+  const size_t send_size = stx.stx_size;
+
+  if (sendfile(client_fd, send_fd, 0, send_size) == -1) {
+    perror("sendfile");
+    exit(EXIT_FAILURE);
+  }
+
   close(client_fd);
+  close(send_fd);
 }
 
 void server(void) {
