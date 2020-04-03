@@ -19,7 +19,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-prototypes -Winline")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wundef -Wnested-externs -Wcast-qual")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wshadow -Wunreachable-code")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wlogical-op -Wfloat-equal")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-aliasing=2")
+# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-aliasing=2")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wredundant-decls")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wold-style-definition -Werror")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ggdb3")
@@ -34,3 +34,4 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS}")
 ## Sources
 
 add_executable(statx-example src/statx-example.c)
+add_executable(sendfile-horror src/sendfile-horror.c)
