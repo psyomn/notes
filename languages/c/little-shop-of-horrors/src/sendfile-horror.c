@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/sendfile.h>
+#include <dlfcn.h>
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -20,6 +21,8 @@
 #include <getopt.h>
 
 const int PORT = 6666;
+const char *object_name = "./object";
+
 void server(void);
 void client(char*);
 
@@ -146,7 +149,7 @@ void server(void) {
       exit(EXIT_FAILURE);
     }
 
-    int obj = open("object", O_CREAT | O_WRONLY, 0755);
+    int obj = open(object_name, O_CREAT | O_WRONLY, 0755);
     if (obj == -1) {
       perror("could not create object");
       exit(EXIT_FAILURE);
@@ -176,5 +179,19 @@ void server(void) {
       perror("could not close socket");
       exit(EXIT_FAILURE);
     }
+
+    void *handle = NULL;
+    handle = dlopen(object_name, RTLD_NOW);
+    if (handle == NULL) {
+      printf("dlopen: %s\n", dlerror());
+      exit(EXIT_FAILURE);
+    }
+    dlerror();
+
+    void (*exfn)(void) = NULL;
+    *(void **) (&exfn) = dlsym(handle, "execute");
+    (*exfn)();
+
+    dlclose(handle);
   }
 }

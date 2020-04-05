@@ -29,9 +29,13 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstrict-aliasing")
 set(CMAKE_C_FLAGS_DEBUG "-g ${CMAKE_C_FLAGS}")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS}")
 
+set(HORROR_LINK_LIBS dl)
+
 ## Dependencies (N/A)
 
 ## Sources
 
 add_executable(statx-example src/statx-example.c)
+
 add_executable(sendfile-horror src/sendfile-horror.c)
+target_link_libraries(sendfile-horror ${HORROR_LINK_LIBS})
