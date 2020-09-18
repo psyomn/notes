@@ -48,6 +48,7 @@ class Brainfuck {
   inline int GetExitCode() const { return mExitCode == Status::success ? 0 : 1; }
 
   Status Validate();
+  inline void OutputMode(enum OutputMode outputMode) { mOutputMode = outputMode; }
  private:
   enum Status mExitCode;
   std::size_t mCellPos;

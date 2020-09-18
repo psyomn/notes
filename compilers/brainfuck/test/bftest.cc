@@ -73,24 +73,12 @@ TEST (bf_test, hello_world_by_primo)
 {
   std::stringstream ss;
   bfi::Brainfuck bf(ss);
-  // https://esolangs.org/wiki/Brainfuck#Examples
+
+  bf.OutputMode(bfi::Brainfuck::OutputMode::raw);
+
+  // https://esolangs.org/wiki/Brainfuck#Examples primo's hello world in brainfuck
   bf.FromString("--<-<<+[+[<+>--->->->-<<<]>]<<--.<++++++.<<-..<<.<+.>>.>>.<<<.+++.>>.>>-.<<<+.");
   bf.Run();
 
-  ASSERT_EQ(ss.str(), "arg");
+  ASSERT_EQ(ss.str(), "Hello, World!");
 }
-
-// TEST (bf_test, broken_loop_test)
-// {
-//   {
-//     std::stringstream ss;
-//     bfi::Brainfuck bf(ss);
-//     bf.FromString("[");
-//     bf.Run();
-//   }
-//   {
-//     std::stringstream ss;
-//     bfi::Brainfuck bf(ss);
-//     bf.FromString("++++[");
-//   }
-// }
