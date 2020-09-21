@@ -15,8 +15,6 @@ int main(int argc, char *argv[]) {
   auto path = std::filesystem::path(argv[1]);
   bfi::Brainfuck bf(std::cout);
 
-  std::cout << "process " << path << std::endl;
-
   bf.FromFile(path);
   bf.Run();
 
