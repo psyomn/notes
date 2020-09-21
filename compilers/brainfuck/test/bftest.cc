@@ -134,3 +134,8 @@ TEST (bf_test, simple_validation)
     ASSERT_EQ(bf.Validate(), bfi::Brainfuck::Status::success);
   }
 }
+
+TEST (bf_test, ignore_non_brainfuck)
+{
+  ASSERT_EQ(RunBF("this is part.brainfuck+part.non+brainfuck."), "012");
+}
