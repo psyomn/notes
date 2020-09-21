@@ -6,6 +6,7 @@
 #include <fstream>
 #include <streambuf>
 #include <cstdint>
+#include <cstddef>
 
 namespace bfi {
 class Brainfuck {
@@ -14,12 +15,12 @@ class Brainfuck {
   enum OutputMode { raw, text };
 
   Brainfuck(std::ostream& stream) :
-    mExitCode(Status::started),
+    mMaxCells(300000),
+    mStatus(Status::started),
     mCellPos(0),
     mCodePos(0),
-    mBrackDepth(0),
     mCode(""),
-    mCells(std::vector<std::uint8_t>(300000, 0)),
+    mCells(std::vector<std::uint8_t>(mMaxCells, 0)),
     mOutputMode(OutputMode::text),
     mOutputStream(stream) {}
 
@@ -44,16 +45,19 @@ class Brainfuck {
   void JumpLBrack();
   void JumpRBrack();
 
-  inline Status GetStatus() const { return mExitCode; }
-  inline int GetExitCode() const { return mExitCode == Status::success ? 0 : 1; }
+  inline Status GetStatus() const { return mStatus; }
+  inline int GetExitCode() const { return mStatus == Status::success ? 0 : 1; }
+  inline std::size_t GetCellPos() const { return mCellPos; }
+  inline std::size_t GetMaxNumCells() const { return mMaxCells; }
 
-  Status Validate();
+  enum Status Validate();
   inline void OutputMode(enum OutputMode outputMode) { mOutputMode = outputMode; }
+
  private:
-  enum Status mExitCode;
+  const std::size_t mMaxCells;
+  enum Status mStatus;
   std::size_t mCellPos;
   std::size_t mCodePos;
-  std::size_t mBrackDepth;
   std::string mCode;
   std::vector<std::uint8_t> mCells;
   enum OutputMode mOutputMode;

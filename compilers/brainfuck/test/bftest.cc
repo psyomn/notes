@@ -59,14 +59,49 @@ TEST (bf_test, nested_loops_test)
   ASSERT_EQ(RunBF("+[+[+[+[+[-.]]]]]"), "43210");
 }
 
+TEST (bf_test, extraneous_movr)
+{
+  std::stringstream ss;
+  bfi::Brainfuck bf(ss);
+
+  bf.FromString("++++>++++<[[-]>]<<<<.>.");
+  bf.Run();
+
+  ASSERT_EQ(bf.GetStatus(), bfi::Brainfuck::Status::success);
+}
+
 TEST (bf_test, zero_all_right)
 {
   std::stringstream ss;
   bfi::Brainfuck bf(ss);
-  bf.FromString("++++>++++>++++>++++<<<<[[-]>]<<<<.>.>.>.");
+
+  bf.FromString("++++>++++<[[-]>]<<.>.");
   bf.Run();
 
-  ASSERT_EQ(ss.str(), "0000");
+  ASSERT_EQ(ss.str(), "00");
+}
+
+TEST (bf_test, check_min_wrap_around)
+{
+  std::stringstream ss;
+  bfi::Brainfuck bf(ss);
+  const std::size_t expectedMaxIndex = bf.GetMaxNumCells() - 1;
+
+  bf.FromString("<");
+  bf.Run();
+
+  ASSERT_EQ(bf.GetCellPos(), expectedMaxIndex);
+}
+
+TEST (bf_test, check_max_wrap_around)
+{
+  std::stringstream ss;
+  bfi::Brainfuck bf(ss);
+
+  bf.FromString("<>");
+  bf.Run();
+
+  ASSERT_EQ(bf.GetCellPos(), 0);
 }
 
 TEST (bf_test, hello_world_by_primo)
@@ -81,4 +116,21 @@ TEST (bf_test, hello_world_by_primo)
   bf.Run();
 
   ASSERT_EQ(ss.str(), "Hello, World!");
+}
+
+TEST (bf_test, simple_validation)
+{
+  {
+    std::stringstream ss;
+    bfi::Brainfuck bf(ss);
+    bf.FromString("[[[.]]");
+    ASSERT_EQ(bf.Validate(), bfi::Brainfuck::Status::error);
+  }
+
+  {
+    std::stringstream ss;
+    bfi::Brainfuck bf(ss);
+    bf.FromString("[[[.]]]");
+    ASSERT_EQ(bf.Validate(), bfi::Brainfuck::Status::success);
+  }
 }

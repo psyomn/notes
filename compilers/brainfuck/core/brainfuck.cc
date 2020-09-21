@@ -9,7 +9,6 @@ namespace bfi {
     std::stringstream buffer;
     buffer << t.rdbuf();
     mCode = buffer.str();
-    std::cout << mCode << std::endl;
   }
 
   void Brainfuck::FromString(const std::string& str) {
@@ -18,8 +17,14 @@ namespace bfi {
 
   void Brainfuck::MoveCursor(enum CursorDirection direction) {
     switch (direction) {
-    case CursorDirection::right: ++mCellPos; break;
-    case CursorDirection::left: --mCellPos; break;
+    case CursorDirection::right:
+      if (mCellPos == mCells.size() - 1) mCellPos = 0;
+      else ++mCellPos;
+      break;
+    case CursorDirection::left:
+      if (mCellPos == 0) mCellPos = mCells.size() - 1;
+      else --mCellPos;
+      break;
     }
   }
 
@@ -45,9 +50,9 @@ namespace bfi {
   }
 
   void Brainfuck::Run() {
-    enum Status currentStatus = executing;
+    mStatus = executing;
 
-    while (currentStatus == Status::executing) {
+    while (mStatus == Status::executing) {
       switch (mCode[mCodePos]) {
       case '+': IncrCell();   break;
       case '-': DecrCell();   break;
@@ -60,7 +65,7 @@ namespace bfi {
       }
 
       ++mCodePos;
-      if (mCodePos > mCode.size()) currentStatus = Status::success;
+      if (mCodePos > mCode.size()) mStatus = Status::success;
     }
   }
 
@@ -96,7 +101,15 @@ namespace bfi {
     }
   }
 
-  Brainfuck::Status Brainfuck::Validate() {
-    // TODO
+  enum Brainfuck::Status Brainfuck::Validate() {
+    std::size_t cursor = 0;
+    for (auto const& c : mCode) {
+      switch (c) {
+      case '[': ++cursor; break;
+      case ']': --cursor; break;
+      }
+    }
+
+    return cursor == 0 ? Status::success : Status::error;
   }
 }
