@@ -1,0 +1,23 @@
+* PLAN
+
+Not really a plan of sorts, but I'll be keeping tidbits of my notes
+that don't fit in a blog here.
+
+** cmake: ExternalProject_Add
+
+   I discovered this recently, and I'll be trying out the dependency
+   management for it with my new project.
+
+   Maybe writing a short blog about this could be good for future notes.
+
+** bazel: cheat sheet
+
+   To check output on stdout. Probably can be defaults in bazelrc or
+   the likes.
+
+   bazel test --test_output=errors ...
+
+   To build everything in a package:
+
+   bazel test ...
+   bazel build ...
