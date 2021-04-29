@@ -17,3 +17,8 @@ https://kunststube.net/encoding/
 Write your Own Virtual Machine
 {Justin Meiners, Ryan Pendleton}
 https://justinmeiners.github.io/lc3-vm/
+
+[HOTOS15]
+Scalability! But at what COST?
+{Frank McSherry, Michael Isard, Derek G. Murray}
+https://www.usenix.org/system/files/conference/hotos15/hotos15-paper-mcsherry.pdf
